@@ -7,10 +7,10 @@ let
         attrNames
         getEnv;
     
-    inherit (nixpgs.lib)
+    inherit (nixpkgs.lib)
         nixosSystem;
     
-    inherit (nixpgsl.lib.lists)
+    inherit (nixpkgs.lib.lists)
         foldr;
 
     hsc_dir_path = ./host-specific_configuration;
