@@ -1,4 +1,4 @@
-nixpgs:
+nixpkgs:
 
 let
     inherit (builtins)

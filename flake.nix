@@ -1,11 +1,11 @@
 {
     inputs = {
-        nixpgs.url = "nixpkgs";
+        nixpkgs.url = "nixpkgs";
     };
-    outputs = { nixpgs, ... }@inputs:
+    outputs = { nixpkgs, ... }@inputs:
     let
         configuration = import ./configuration.nix;
-        lib = (import ./lib.nix) nixpgs;
+        lib = (import ./lib.nix) nixpkgs;
     in
     {
         nixosConfigurations = 
