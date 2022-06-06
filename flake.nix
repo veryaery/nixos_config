@@ -7,8 +7,7 @@
     outputs = { nixpkgs, ... }@inputs:
         {
             nixosConfigurations.vm = {
-                inherit (options)
-                    system;
+                system = "x86_64-linux";
             
                 modules = [
                     inputs.module
