@@ -11,7 +11,7 @@ in
             module.url = "path:/modules/common";
         };
 
-    outputs = { nixpkgs, ... } @ inputs:
+    outputs = { nixpkgs, ... }@inputs:
         {
             nixosConfigurations.vm = {
                 inherit (options)
