@@ -13,7 +13,7 @@ in
 
     outputs = { nixpkgs, ... } @ inputs:
         {
-            nixosConfigurations = {
+            nixosConfigurations.vm = {
                 inherit (options)
                     system;
             

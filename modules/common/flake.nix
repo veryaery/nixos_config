@@ -1,5 +1,6 @@
 {
-    outputs = {
+    inputs = {};
+    outputs = attrs: {
         nixosModule = { pkgs, ... }:
             {
                 nix = {
