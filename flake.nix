@@ -1,6 +1,6 @@
 {
     inputs = {
-        nixpgs.url = "nixpgs";
+        nixpgs.url = "nixpkgs";
     };
     outputs = { nixpgs, ... }@inputs:
     let
