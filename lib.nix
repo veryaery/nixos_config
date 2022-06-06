@@ -36,7 +36,7 @@ in
             hsc_files = attrNames (readDir hsc_dir_path);
         in
             foldr
-                (nixos_configurations: hsc_file:
+                (hsc_file: nixos_configurations:
                     let
                         hsc_file_path = hsc_dir_path + "/${hsc_file}";
                         modules = modules' // {
