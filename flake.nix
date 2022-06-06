@@ -20,6 +20,6 @@ in
                 modules = [
                     inputs.module
                 ];
-            }
+            };
         };
 }
