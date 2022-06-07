@@ -52,7 +52,7 @@
     # Installing Nix flakes system-wide.
     # https://nixos.wiki/wiki/Flakes
     nix = {
-        package = pgks.nixFlakes;
+        package = pkgs.nixFlakes;
         extraOptions = ''
             experimental-features = nix-command flakes
         '';
