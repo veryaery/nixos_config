@@ -1,16 +1,27 @@
 {
     inputs = {
         nixpkgs.url = "nixpkgs/nixpkgs-unstable";
-        module.url = "path:./modules/common#nixosModule";
     };
 
     outputs = { nixpkgs, ... }@inputs:
+        let
+            localSystem = "x86_64-linux";
+            pkgs = import nixpkgs { inherit localSystem; };
+            lib = nixpkgs.lib;
         {
-            nixosConfigurations.vm = {
-                system = "x86_64-linux";
-            
+            nixosConfigurations.test = lib.nixosSystem {
                 modules = [
-                    inputs.module
+                    {
+                        imports = [
+                            ./configuration.nix
+                        ];
+
+                        # Explicitly setting localSystem and pkgs.
+                        config = {
+                            nixpkgs.localSystem = localSystem;
+                            _module.args.pkgs = pkgs;
+                        }
+                    }
                 ];
             };
         };
