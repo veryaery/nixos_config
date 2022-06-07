@@ -1,4 +1,4 @@
-{ pgks, ... }:
+{ pkgs, ... }:
 
 {
     boot.loader.grub = {
