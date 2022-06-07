@@ -1,7 +1,7 @@
 {
     inputs = {
         nixpkgs.url = "nixpkgs/nixpkgs-unstable";
-        module.url = "path:./modules/common";
+        module.url = "path:./modules/common#nixosModule";
     };
 
     outputs = { nixpkgs, ... }@inputs:
