@@ -4,25 +4,30 @@
     };
 
     outputs = { nixpkgs, ... }@inputs:
-        let
-            localSystem = "x86_64-linux";
-            pkgs = import nixpkgs { inherit localSystem; };
-            lib = nixpkgs.lib;
-        {
-            nixosConfigurations.test = lib.nixosSystem {
-                modules = [
-                    {
-                        imports = [
-                            ./configuration.nix
-                        ];
+    let
+        inherit (nixpkgs.lib)
+            mkForce;
 
-                        # Explicit localSystem and pkgs.
-                        config = {
-                            nixpkgs.localSystem = localSystem;
-                            _module.args.pkgs = pkgs;
-                        }
-                    }
-                ];
-            };
+        system = "x86_64-linux";
+        localSystem = { inherit system; };
+        pkgs = import nixpkgs { inherit localSystem; };
+    in
+    {
+        nixosConfigurations.test = lib.nixosSystem {
+            modules = [
+                {
+                    imports = [
+                        ./configuration.nix
+                        ./nixos-generate-config_output/hardware-configuration.nix
+                    ];
+
+                    # Explicit system and pkgs.
+                    config = {
+                        nixpkgs = { inherit localSystem; };
+                        _module.args.pkgs = mkForce pkgs;
+                    };
+                }
+            ];
         };
+    };
 }
