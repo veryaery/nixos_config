@@ -16,7 +16,7 @@
                             ./configuration.nix
                         ];
 
-                        # Explicitly setting localSystem and pkgs.
+                        # Explicit localSystem and pkgs.
                         config = {
                             nixpkgs.localSystem = localSystem;
                             _module.args.pkgs = pkgs;
