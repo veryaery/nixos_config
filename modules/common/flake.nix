@@ -1,5 +1,7 @@
 {
-    inputs = {};
+    inputs = {
+        nixpkgs.url = "nixpkgs/nixpkgs-unstable";
+    };
     outputs = attrs: {
         nixosModule = { pkgs, ... }:
             {
@@ -9,6 +11,6 @@
                         experimental-features = nix-command flakes
                     '';
                 };
-            }
+            };
     };
 }
