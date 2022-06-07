@@ -6,6 +6,7 @@
     outputs = { nixpkgs, ... }@inputs:
     let
         inherit (nixpkgs.lib)
+            nixosSystem
             mkForce;
 
         system = "x86_64-linux";
@@ -13,7 +14,7 @@
         pkgs = import nixpkgs { inherit localSystem; };
     in
     {
-        nixosConfigurations.test = lib.nixosSystem {
+        nixosConfigurations.test = nixosSystem {
             modules = [
                 {
                     imports = [
