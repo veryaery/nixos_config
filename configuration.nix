@@ -34,7 +34,7 @@
         };
     };
 
-    enviroment.systemPackages = with pkgs; [
+    environment.systemPackages = with pkgs; [
         git
 
         # Fun command line toys.
