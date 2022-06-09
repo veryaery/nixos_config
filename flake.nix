@@ -27,10 +27,10 @@
                 attrsetFromEachOSEachHost
                 osDirPath
                 hostDirPath
-                (host: os:
+                (os: host:
                     let
-                        hostPath = hostDirPath + "/${host}";
                         osPath = osDirPath + "/${os}";
+                        hostPath = hostDirPath + "/${host}";
 
                         inherit (importJSON hostPath + "/host.json")
                             system;
@@ -43,8 +43,8 @@
                                 (commonDirPath + "/common.nix")
                                 (osPath + "/os.nix")
                             ] ++
-                            listWithPathIfPathExists hostPath + "/${host}/host.nix" ++
-                            listWithPathIfPathExists hostPath + "/${host}/hardware-configuration.nix";
+                            (listWithPathIfPathExists (hostPath + "/${host}/host.nix")) ++
+                            (listWithPathIfPathExists (hostPath + "/${host}/hardware-configuration.nix"));
                     in nixosSystem {
                         modules = [{
                             imports = modules;
