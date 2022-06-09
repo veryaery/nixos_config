@@ -23,7 +23,7 @@ let
             in xs ++ x
         )
         []
-        lista;
+        lsta;
 in
 {
     # Return a list containing the path if the path exists.
