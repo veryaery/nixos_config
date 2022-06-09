@@ -21,32 +21,37 @@
         {
             # Make a NixOS configuration for each combination of os and host.
             # The attrset keys are in the form of "<os>.<host>" (As defined by attrsetFromEachOSEachHost).
-            nixosConfigurations = attrsetFromEachOSEachHost osDirPath hostDirPath host: os:
-                let
-                    hostPath = hostDirPath + "/${host}";
-                    osPath = osDirPath + "/${os}";
+            nixosConfigurations =
+                attrsetFromEachOSEachHost
+                osDirPath
+                hostDirPath
+                (host: os:
+                    let
+                        hostPath = hostDirPath + "/${host}";
+                        osPath = osDirPath + "/${os}";
 
-                    inherit (importJSON hostPath + "/host.json")
-                        system;
+                        inherit (importJSON hostPath + "/host.json")
+                            system;
 
-                    localSystem = { inherit system; };
-                    pkgs = import nixpkgs { inherit localSystem; };
-                    
-                    modules =
-                        [
-                            commonDirPath + "/common.nix"
-                            osPath + "/os.nix"
-                        ] ++
-                        listWithPathIfPathExists hostPath + "/${host}/host.nix" ++
-                        listWithPathIfPathExists hostPath + "/${host}/hardware-configuration.nix";
-                in nixosSystem {
-                    modules = [{
-                        imports = modules;
+                        localSystem = { inherit system; };
+                        pkgs = import nixpkgs { inherit localSystem; };
+                        
+                        modules =
+                            [
+                                commonDirPath + "/common.nix"
+                                osPath + "/os.nix"
+                            ] ++
+                            listWithPathIfPathExists hostPath + "/${host}/host.nix" ++
+                            listWithPathIfPathExists hostPath + "/${host}/hardware-configuration.nix";
+                    in nixosSystem {
+                        modules = [{
+                            imports = modules;
 
-                        # Explicitly define localSystem and pkgs.
-                        nixpkgs = { inherit localSystem; };
-                        _module.args.pkgs = mkForce pkgs;
-                    }];
-                };
+                            # Explicitly define localSystem and pkgs.
+                            nixpkgs = { inherit localSystem; };
+                            _module.args.pkgs = mkForce pkgs;
+                        }];
+                    }
+                );
         };
 }
