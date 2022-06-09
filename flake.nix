@@ -43,8 +43,8 @@
                                 (commonDirPath + "/common.nix")
                                 (osPath + "/os.nix")
                             ] ++
-                            (listWithPathIfPathExists (hostPath + "/${host}/host.nix")) ++
-                            (listWithPathIfPathExists (hostPath + "/${host}/hardware-configuration.nix"));
+                            (listWithPathIfPathExists (hostPath + "/host.nix")) ++
+                            (listWithPathIfPathExists (hostPath + "/hardware-configuration.nix"));
                     in nixosSystem {
                         modules = [{
                             imports = modules;
