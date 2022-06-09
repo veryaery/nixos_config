@@ -12,7 +12,7 @@
             
             inherit (import ./lib)
                 attrsetFromEachOSEachHost
-                listWithPathIfExists;
+                listWithPathIfPathExists;
             
             commonDirPath = ./modules/common;
             osDirPath = ./modules/os;
