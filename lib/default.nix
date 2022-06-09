@@ -3,6 +3,7 @@ let
 
     inherit (builtins)
         pathExists
+        attrNames
         readDir
         map
         elemAt;
