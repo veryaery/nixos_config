@@ -1,6 +1,6 @@
-let
-    lib = (import <nixpkgs> {}).lib;
+std:
 
+let
     inherit (builtins)
         pathExists
         attrNames
@@ -8,7 +8,7 @@ let
         map
         elemAt;
     
-    inherit (lib.lists)
+    inherit (std.lists)
         foldr;
 
     # [ a ] -> [ b ] -> [[ a b ]]

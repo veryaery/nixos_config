@@ -5,12 +5,14 @@
 
     outputs = { nixpkgs, ... }@inputs:
         let
-            inherit (nixpkgs.lib)
+            std = nixpkgs.lib;
+
+            inherit (std)
                 importJSON
                 nixosSystem
                 mkForce;
             
-            inherit (import ./lib)
+            inherit (import ./lib std)
                 attrsetFromEachOSEachHost
                 listWithPathIfPathExists;
             
