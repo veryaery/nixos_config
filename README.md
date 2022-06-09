@@ -22,7 +22,7 @@ Files:
 * `host.nix` (Optional) — Contains host-specific NixOS module option definitions.
 * `hardware-configuration.nix` (Optional) — Contains hardware related NixOS module option definitions. Generate this file using `nixos-generate-config` or copy it from your own NixOS configuration.  
 
-**Hosts are expected to define a `boot.loader` and define `system.stateVersion`.**
+**Host-specific configurations are expected to define a `boot.loader` and define `system.stateVersion`.**
 
 ### `host.json` Schema
 
