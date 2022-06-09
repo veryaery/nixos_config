@@ -32,7 +32,7 @@
                         osPath = osDirPath + "/${os}";
                         hostPath = hostDirPath + "/${host}";
 
-                        inherit (importJSON hostPath + "/host.json")
+                        inherit (importJSON (hostPath + "/host.json"))
                             system;
 
                         localSystem = { inherit system; };
