@@ -14,9 +14,9 @@
                 attrsetFromEachHost
                 listWithPathIfExists;
             
-            hostDirPath = ./modules/host;
-            osDirPath = ./modules/os;
             commonDirPath = ./modules/common;
+            osDirPath = ./modules/os;
+            hostDirPath = ./modules/host;
         in
         {
             # Make a NixOS configuration for each combination of os and host.
@@ -38,8 +38,8 @@
                         
                         modules =
                             [
-                                commonDirPath + "/common.nix"
-                                osPath + "/os.nix"
+                                (commonDirPath + "/common.nix")
+                                (osPath + "/os.nix")
                             ] ++
                             listWithPathIfPathExists hostPath + "/${host}/host.nix" ++
                             listWithPathIfPathExists hostPath + "/${host}/hardware-configuration.nix";
