@@ -8,21 +8,21 @@ My NixOS configuration is split up by host and OS.
 nixos-rebuild switch --flake .#<os>.<host>
 ``` 
 
+# Modules
+
 ## OS
 
-Directory in ./modules/os  
-Files:
-* `os.nix` — Contains OS-specific NixOS module option definitions.
+`./modules/os/<os>/`  
+* `os.nix` — OS-specific NixOS module option definitions.
 
 ## Host
 
-Directory in ./modules/host  
-Files:  
+`./modules/host/<host>/`  
 * `host.json`
-* `host.nix` (Optional) — Contains host-specific NixOS module option definitions.
-* `hardware-configuration.nix` (Optional) — Contains hardware related NixOS module option definitions. Generate this file using `nixos-generate-config` or copy it from your own NixOS configuration.  
+* `host.nix` (Optional) — Host-specific NixOS module option definitions.
+* `hardware-configuration.nix` (Optional) — Hardware NixOS module option definitions. Generate this file using `nixos-generate-config` or copy it from your own NixOS configuration.  
 
-**Hosts are expected to define a `boot.loader` and define `system.stateVersion`.**
+**Hosts are expected to define a [`boot.loader`](https://search.nixos.org/options?query=boot.loader) and define [`system.stateVersion`](https://search.nixos.org/options?query=system.stateVersion).**
 
 ### `host.json` Schema
 

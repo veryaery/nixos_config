@@ -1,9 +1,14 @@
 {
     inputs = {
         nixpkgs.url = "nixpkgs/nixpkgs-unstable";
+
+        home-manager = {
+            url = "github:nix-community/home-manager";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
     };
 
-    outputs = { nixpkgs, ... }@inputs:
+    outputs = { nixpkgs, home-manager, ... }@inputs:
         let
             std = nixpkgs.lib;
 
@@ -47,7 +52,19 @@
                             (listWithPathIfPathExists (hostPath + "/hardware-configuration.nix"));
                     in nixosSystem {
                         modules = [{
-                            imports = modules;
+                            imports =
+                                [
+                                    # Import the home-manager NixOS module.
+                                    home-manager.nixosModules.home-manager
+                                    # Define home-manager options.
+                                    {
+                                        home-manager = {
+                                            useGlobalPkgs = true;
+                                            useUserPackages = true;
+                                        };
+                                    }
+                                ] ++
+                                modules;
 
                             # Explicitly define localSystem and pkgs.
                             nixpkgs = { inherit localSystem; };

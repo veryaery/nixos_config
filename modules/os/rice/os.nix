@@ -13,7 +13,7 @@
     environment.systemPackages = with pkgs; [
         git
 
-        # Fun command line toys.
+        # Rice command line utilities.
         neofetch
         figlet
         tty-clock
