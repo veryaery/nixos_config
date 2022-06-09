@@ -14,7 +14,7 @@ let
     # [ a ] -> [ b ] -> [[ a b ]]
     combineWithoutPermutations = lsta: lstb:
         foldr
-        (xs: a:
+        (a: xs:
             let x =
                 map
                 (b:
@@ -43,7 +43,7 @@ in
             combinations = combineWithoutPermutations osList hostList;
         in
             foldr
-            (xs: combination:
+            (combination: xs:
                 let
                     os = elemAt combination 0;
                     host = elemAt combination 1;
