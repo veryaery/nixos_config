@@ -11,7 +11,7 @@
                 mkForce;
             
             inherit (import ./lib)
-                attrsetFromEachHost
+                attrsetFromEachOSEachHost
                 listWithPathIfExists;
             
             commonDirPath = ./modules/common;
