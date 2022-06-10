@@ -10,18 +10,39 @@
         layout = "se";
     };
 
-    environment.systemPackages = with pkgs; [
-        git
+    home-manager.users = {
+        aery = {
+            home = {
+                username = "aery";
+                homeDirectory = "/home/aery";
 
-        # Rice command line utilities.
-        neofetch
-        figlet
-        tty-clock
-        fortune
-        cowsay
-        lolcat
-        cbonsai
-        cmatrix
-        pipes
-    ];
+                packages = with pkgs; [
+                    git
+                    alacritty
+
+                    # Rice command line utilities.
+                    neofetch
+                    figlet
+                    tty-clock
+                    fortune
+                    cowsay
+                    lolcat
+                    cbonsai
+                    cmatrix
+                    pipes
+                ];
+
+                file = {
+                    ".config" = {
+                        source = ../../../dotfiles/.config;
+                        recursive = true;
+                    };
+                };
+            };
+
+            programs = {
+                home-manager.enable = true;
+            };
+        };
+    };
 }

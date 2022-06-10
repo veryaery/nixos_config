@@ -5,7 +5,7 @@
         aery = {
             isNormalUser = true;
 
-            # Explicit home.
+            # Explicitly define home.
             createHome = true;
             home = "/home/aery";
 
