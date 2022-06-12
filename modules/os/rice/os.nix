@@ -5,7 +5,7 @@
         enable = true;
 
         displayManager.gdm.enable = true;
-        desktopManager.gnome.enable = true;
+        desktopManager.xmonad.enable = true;
 
         layout = "se";
     };
@@ -33,11 +33,13 @@
                 ];
 
                 file = {
-                    ".config" = {
-                        source = ../../../dotfiles/.config;
+                    ".config/xmonad" = {
+                        source = ../../../dotfiles/.config/xmonad;
                         recursive = true;
                     };
                 };
+
+                stateVersion = "22.11";
             };
 
             programs = {
