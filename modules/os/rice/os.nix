@@ -5,7 +5,7 @@
         enable = true;
 
         displayManager.gdm.enable = true;
-        desktopManager.xmonad.enable = true;
+        windowManager.xmonad.enable = true;
 
         layout = "se";
     };
