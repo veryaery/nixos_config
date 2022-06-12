@@ -30,7 +30,8 @@
                     alacritty
                     firefox
                     tree
-                    nitrogen
+                    xloadimage
+                    xmobar
 
                     # Rice command line utilities.
                     neofetch

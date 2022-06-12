@@ -1,7 +1,13 @@
 import XMonad
 
+import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.StatusBar
+import XMonad.Hooks.StatusBar.PP
+
 import XMonad.Layout
 import XMonad.Layout.Spacing
+
  
 layout' = spacing' $ tall ||| Full
     where
@@ -28,4 +34,4 @@ config' = def
     }
 
 main :: IO ()
-main = xmonad config'
+main = xmonad . emwhFullscreen . emwh $ config'
