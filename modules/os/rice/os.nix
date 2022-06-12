@@ -49,9 +49,9 @@
                         source = ../../../dotfiles/.xmonad;
                         recursive = true;
                     };
-                    
+
                     ".config/alacritty" = {
-                        source = ../../../dotfiles/.config/alacritty/alacritty.yml;
+                        source = ../../../dotfiles/.config/alacritty;
                         recursive = true;
                     };
                 };
