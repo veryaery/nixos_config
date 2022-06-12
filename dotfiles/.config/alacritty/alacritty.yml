@@ -6,3 +6,4 @@ window:
 cursor:
   style:
     blinking: On
+  blink_interval: 500
