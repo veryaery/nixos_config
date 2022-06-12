@@ -10,6 +10,10 @@
         layout = "se";
     };
 
+    environment.systemPackages = with pkgs; [
+        git
+    ];
+
     home-manager.users = {
         aery = {
             home = {
@@ -17,8 +21,9 @@
                 homeDirectory = "/home/aery";
 
                 packages = with pkgs; [
-                    git
                     alacritty
+
+                    tree
 
                     # Rice command line utilities.
                     neofetch
