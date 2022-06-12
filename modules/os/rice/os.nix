@@ -30,8 +30,7 @@
                     alacritty
                     firefox
                     tree
-                    xwinwrap
-                    mpv
+                    nitrogen
 
                     # Rice command line utilities.
                     neofetch
