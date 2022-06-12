@@ -2,8 +2,9 @@ import XMonad
 
 config :: XConfig
 config = def
-    { terminal = "alacritty"
-    , modMask = mod4Mask
+    {
+        terminal = "alacritty",
+        modMask = mod4Mask
     }
 
 main :: IO ()

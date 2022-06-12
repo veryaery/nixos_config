@@ -29,6 +29,7 @@
                 packages = with pkgs; [
                     alacritty
 
+                    firefox
                     tree
 
                     # Rice command line utilities.
@@ -46,6 +47,11 @@
                 file = {
                     ".xmonad" = {
                         source = ../../../dotfiles/.xmonad;
+                        recursive = true;
+                    };
+                    
+                    ".config/alacritty" = {
+                        source = ../../../dotfiles/.config/alacritty/alacritty.yml;
                         recursive = true;
                     };
                 };
