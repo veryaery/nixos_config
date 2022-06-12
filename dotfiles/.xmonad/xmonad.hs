@@ -1,7 +1,10 @@
 import XMonad
 
-main :: IO ()
-main = xmonad $ def
+config :: XConfig
+config = def
     { terminal = "alacritty"
     , modMask = mod4Mask
     }
+
+main :: IO ()
+main = xmonad config

@@ -5,7 +5,13 @@
         enable = true;
 
         displayManager.gdm.enable = true;
-        windowManager.xmonad.enable = true;
+        windowManager.xmonad = {
+            enable = true;
+            
+            extraPackages = haskellPackages: with haskellPackages; [
+                xmonad-contrib
+            ];
+        };
 
         layout = "se";
     };
