@@ -38,8 +38,8 @@
                 ];
 
                 file = {
-                    ".config/xmonad" = {
-                        source = ../../../dotfiles/.config/xmonad;
+                    ".xmonad" = {
+                        source = ../../../dotfiles/.xmonad;
                         recursive = true;
                     };
                 };
