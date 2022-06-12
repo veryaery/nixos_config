@@ -28,9 +28,10 @@
 
                 packages = with pkgs; [
                     alacritty
-
                     firefox
                     tree
+                    xwinwrap
+                    mpv
 
                     # Rice command line utilities.
                     neofetch

@@ -1,17 +1,21 @@
 import XMonad
 
 import XMonad.Layout
-import XMonad.Layout.SimpleFloat
+import XMonad.Layout.Spacing
  
-layout' = tall ||| Full ||| simpleFloat
+layout' = spacing' $ tall ||| Full
     where
-        nmaster = 1
-        ratio = 1/2
-        delta = 3/100
+        screenBorder = 16
+        windowBorder = 8
+        spacing' =
+            spacingRaw
+            True
+            (Border screenBorder screenBorder screenBorder screenBorder)
+            True
+            (Border windowBorder windowBorder windowBorder windowBorder)
+            True
+        tall = Tall 1 (3 / 100) (1 / 2)
 
-        tall = Tall nmaster delta ratio
-
-config' :: XConfig
 config' = def
     {
         terminal = "alacritty",
