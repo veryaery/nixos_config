@@ -1,14 +1,14 @@
-import XMonad (xmonad, def)
+import XMonad
 
-import XMonad.Config.Prime (mod4Mask)
+import XMonad.Config.Prime
 
-import XMonad.Hooks.EwmhDesktops (ewmh, ewmhFullscreen)
-import XMonad.Hooks.ManageDocks (docks, avoidStruts)
-import XMonad.Hooks.StatusBar (withSB, statusBarProp)
-import XMonad.Hooks.StatusBar.PP (PP, def, xmobarBorder, wrap)
+import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.StatusBar
+import XMonad.Hooks.StatusBar.PP
 
-import XMonad.Layout (Tall, Full)
-import XMonad.Layout.Spacing (Border, spacingRaw)
+import XMonad.Layout
+import XMonad.Layout.Spacing
 
 layout' = avoidStruts . spacing' $ tall ||| Full
     where
