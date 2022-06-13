@@ -34,7 +34,7 @@ config' = def
 
 main :: IO ()
 main = xmonad
-    . emwhFullscreen
-    . emwh
+    . ewmhFullscreen
+    . ewmh
     . xmobarProp
     $ config'
