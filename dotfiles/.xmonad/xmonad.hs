@@ -55,7 +55,7 @@ prettyPrint = def
                 wrapPadding
                 . shorten 32
                 . (\w -> if null w then "[untitled]" else w)
-            logWindows = logTitles 
+            logWindows = logTitles ppFocused ppUnfocused
 
             wrapPadding = wrap " " " "
 
