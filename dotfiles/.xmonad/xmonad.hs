@@ -8,7 +8,7 @@ import XMonad.Hooks.StatusBar.PP
 import XMonad.Layout
 import XMonad.Layout.Spacing
 
- 
+layout' :: Layout
 layout' = spacing' $ tall ||| Full
     where
         screenBorder = 16
@@ -22,6 +22,7 @@ layout' = spacing' $ tall ||| Full
             True
         tall = Tall 1 (3 / 100) (1 / 2)
 
+config' :: XConfig Layout
 config' = def
     {
         terminal = "alacritty",
@@ -34,4 +35,8 @@ config' = def
     }
 
 main :: IO ()
-main = xmonad . emwhFullscreen . emwh $ config'
+main = xmonad
+    . emwhFullscreen
+    . emwh
+    . xmobarProp
+    $ config'
