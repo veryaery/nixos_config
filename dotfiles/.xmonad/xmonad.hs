@@ -48,7 +48,6 @@ main =
     xmonad
     . ewmhFullscreen
     . ewmh
-    . xmobarProp
     . docks
     . withSB statusBarConfig
     $ config'
