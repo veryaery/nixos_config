@@ -53,7 +53,8 @@ main =
     xmonad
     . ewmhFullscreen
     . ewmh
-    . withEasySB statusBarConfig defToggleStrutsKey
+    . docks
+    . withSB statusBarConfig
     $ config'
         where
             statusBarConfig = statusBarProp "xmobar" (pure prettyPrint)
