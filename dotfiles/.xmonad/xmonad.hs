@@ -1,7 +1,6 @@
 import XMonad
 
-import XMonad.Config.Prime
-
+import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.StatusBar
