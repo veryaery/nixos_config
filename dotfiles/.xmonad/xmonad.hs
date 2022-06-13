@@ -42,7 +42,7 @@ prettyPrint = def
         ppHiddenNoWindows = wrapPadding,
         ppWsSep = "",
 
-        ppOrder = \[ workspaces ] -> [ workspaces ],
+        ppOrder = id,
         ppSep = " "
     }
         where

@@ -33,7 +33,7 @@
                     killall
 
                     xmobar
-                    nitrogen
+                    feh
 
                     # Rice command line utilities.
                     neofetch
