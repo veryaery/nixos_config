@@ -1,15 +1,14 @@
-import XMonad
+import XMonad (xmonad, def)
 
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.EwmhDesktops
-import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.StatusBar
-import XMonad.Hooks.StatusBar.PP
+import XMonad.Config.Prime (mod4Mask)
 
-import XMonad.Layout
-import XMonad.Layout.Spacing
+import XMonad.Hooks.EwmhDesktops (ewmh, ewmhFullscreen)
+import XMonad.Hooks.ManageDocks (docks, avoidStruts)
+import XMonad.Hooks.StatusBar (withSB, statusBarProp)
+import XMonad.Hooks.StatusBar.PP (PP, def, xmobarBorder, wrap)
 
-import XMonad.Util.Loggers
+import XMonad.Layout (Tall, Full)
+import XMonad.Layout.Spacing (Border, spacingRaw)
 
 layout' = avoidStruts . spacing' $ tall ||| Full
     where
@@ -37,26 +36,17 @@ config' = def
 prettyPrint :: PP
 prettyPrint = def
     {
-        ppCurrent = xmobarBorder "Top" "#ffffff" 2 . wrapPadding,
+        ppCurrent = xmobarBorder "Bottom" "#ffffff" 2 . wrapPadding,
         ppVisible = wrapPadding,
         ppVisibleNoWindows = Just wrapPadding,
         ppHidden = wrapPadding,
         ppHiddenNoWindows = wrapPadding,
         ppWsSep = "",
 
-        ppExtras = [ logWindows ],
-        ppOrder = \[ workspaces, _, _, windows ] -> [ workspaces, windows ],
+        ppOrder = \[ workspaces ] -> [ workspaces ],
         ppSep = " "
     }
         where
-            ppFocused = xmobarBorder "Top" "#ffffff" 2 . ppWindow
-            ppUnfocused = ppWindow
-            ppWindow =
-                wrapPadding
-                . shorten 32
-                . (\w -> if null w then "[untitled]" else w)
-            logWindows = logTitles ppFocused ppUnfocused
-
             wrapPadding = wrap " " " "
 
 main :: IO ()
