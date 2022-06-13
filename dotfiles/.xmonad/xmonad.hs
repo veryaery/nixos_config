@@ -36,6 +36,8 @@ prettyPrint :: PP
 prettyPrint = def
     {
         ppCurrent = xmobarBorder "Top" "#ffffff" 2,
+        ppVisible = id,
+        ppVisibleNoWindows = Just id,
         ppHidden = id,
         ppHiddenNoWindows = id,
         ppWsSep = " "
