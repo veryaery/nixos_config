@@ -14,8 +14,8 @@
 
             inherit (std)
                 importJSON
-                nixosSystem
-                mkForce;
+                mkForce
+                nixosSystem;
             
             inherit (import ./lib std)
                 attrsetFromEachOSEachHost

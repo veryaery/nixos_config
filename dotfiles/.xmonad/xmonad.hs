@@ -1,25 +1,25 @@
 import XMonad
 
-import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
 
 import XMonad.Layout
 import XMonad.Layout.Spacing
 
-layout' = spacing' $ tall ||| Full
+layout' = avoidStruts . spacing' $ tall ||| Full
     where
+        tall = Tall 1 (3 / 100) (1 / 2)
+
         screenBorder = 16
         windowBorder = 8
         spacing' =
             spacingRaw
-            True
-            (Border screenBorder screenBorder screenBorder screenBorder)
-            True
-            (Border windowBorder windowBorder windowBorder windowBorder)
-            True
-        tall = Tall 1 (3 / 100) (1 / 2)
+            False
+            (Border screenBorder screenBorder screenBorder screenBorder) True
+            (Border windowBorder windowBorder windowBorder windowBorder) True
 
 config' = def
     {
@@ -32,9 +32,23 @@ config' = def
         focusedBorderColor = "#ffffff"
     }
 
+prettyPrint :: PP
+prettyPrint = def
+    {
+        ppCurrent = xmobarBorder "Top" "#ffffff" 2,
+        ppHidden = id,
+        ppHiddenNoWindows = id,
+        ppWsSep = " "
+    }
+
 main :: IO ()
-main = xmonad
+main =
+    xmonad
     . ewmhFullscreen
     . ewmh
     . xmobarProp
+    . docks
+    . withSB statusBarConfig
     $ config'
+        where
+            statusBarConfig = statusBarProp "xmobar" (pure prettyPrint)

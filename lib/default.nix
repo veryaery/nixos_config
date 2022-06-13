@@ -2,11 +2,11 @@ std:
 
 let
     inherit (builtins)
-        pathExists
         attrNames
-        readDir
+        elemAt
         map
-        elemAt;
+        pathExists
+        readDir;
     
     inherit (std.lists)
         foldr;
