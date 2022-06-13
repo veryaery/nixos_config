@@ -30,6 +30,7 @@
                     alacritty
                     firefox
                     tree
+                    killall
 
                     xmobar
                     nitrogen
