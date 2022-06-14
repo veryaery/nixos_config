@@ -152,13 +152,15 @@
             };
         };
     };
-    
+
     system.userActivationScripts = {
         xmonadRecompileRestart.text =
             let xmonad = pkgs.xmonad-with-packages;
             in ''
-                ${xmonad}/bin/xmonad --recompile
-                ${xmonad}/bin/xmonad --restart
+                if pgrep "^xmonad.*" > /dev/null; then
+                    ${xmonad}/bin/xmonad --recompile
+                    ${xmonad}/bin/xmonad --restart
+                fi
             '';
     };
 }
