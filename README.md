@@ -16,7 +16,7 @@ nixos-rebuild switch --flake .#<os>.<theme>.<host>
 ## Host
 
 `./modules/host/<host>/`:  
-* `host.nix` — Host-specific options NixOS module option definitions.
+* `host.nix` — Host options and host-specific NixOS module option definitions.
 * `hardware-configuration.nix` (Optional) — Hardware NixOS module option definitions. Generate this file using `nixos-generate-config` or copy it from your own NixOS configuration.  
 
 **Hosts are expected to define a [`boot.loader`](https://search.nixos.org/options?query=boot.loader) and define [`system.stateVersion`](https://search.nixos.org/options?query=system.stateVersion).**
@@ -44,7 +44,7 @@ nixos-rebuild switch --flake .#<os>.<theme>.<host>
 
 ```nix
 {
-    # Colors are hexadecimal RBG e.g. "#ff0000" "#00ff00" "#0000ff".
+    # Colors are hexadecimal RBG e.g. "#00ff80".
 
     # foreground :: string
     # background :: string

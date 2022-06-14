@@ -128,16 +128,14 @@
                 stateVersion = "22.11";
             };
 
-            programs = {
-                home-manager.enable = true;
+            activation = {
+                xmonadRecompileRestart =
+                    let xmonad = pkgs.xmonad-with-packages;
+                    in ''
+                        ${xmonad}/bin/xmonad --recompile
+                        ${xmonad}/bin/xmonad --restart
+                    '';
             };
         };
     };
-
-    system.userActivationScripts.xmonadRecompileRestart.text =
-        let xmonad = pkgs.xmonad-with-packages;
-        in ''
-            ${xmonad}/bin/xmonad --recompile
-            ${xmonad}/bin/xmonad --restart
-        '';
 }
