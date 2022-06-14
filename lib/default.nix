@@ -11,7 +11,8 @@ let
 
     inherit (std.lists)
         flatten
-        foldr;
+        foldr
+        init;
 
     inherit (std.strings)
         splitString;
