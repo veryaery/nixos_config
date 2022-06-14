@@ -43,7 +43,7 @@
                         
                         themeExpr = import (themeDirPath + "/${theme}.nix");
 
-                        hostExpr = import (hostPath + "/host.nix");
+                        hostExpr = import (hostPath + /host.nix);
                         hostOptions = hostExpr.options;
                         hostModule = hostExpr.module;
 
@@ -59,12 +59,12 @@
                         
                         modules =
                             [
-                                (commonDirPath + "/common.nix")
-                                (osPath + "/os.nix")
+                                (commonDirPath + /common.nix)
+                                (osPath + /os.nix)
                                 hostModule
                             ]
                             # Import hardware-configuration.nix if it exists.
-                            ++ (listWithPathIfPathExists (hostPath + "/hardware-configuration.nix"));
+                            ++ (listWithPathIfPathExists (hostPath + /hardware-configuration.nix));
                     in nixosSystem
                     {
                         modules = [{

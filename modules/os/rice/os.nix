@@ -50,96 +50,102 @@
                     pipes
                 ];
 
-                file = {
-                    ".xmonad/xmonad.hs" = {
-                        source = ../../../dotfiles/.xmonad/xmonad.hs;
-                    };
+                file =
+                    let dotfiles = ../../../dotfiles;
+                    in {
+                        ".xmonad/xmonad.hs" = {
+                            source = dotfiles + /.xmonad/xmonad.hs;
+                        };
 
-                    ".xmonad/lib/Theme.hs" = {
-                        text = ''
-                            module Theme where
+                        ".xmonad/lib/Theme.hs" = {
+                            text = ''
+                                module Theme where
 
-                            themeForeground :: String
-                            themeForeground = "${themeExpr.foreground}"
+                                themeForeground :: String
+                                themeForeground = "${themeExpr.foreground}"
 
-                            themeBackground :: String
-                            themeBackground = "${themeExpr.background}"
+                                themeBackground :: String
+                                themeBackground = "${themeExpr.background}"
 
-                            themePrimary :: String
-                            themePrimary = "${themeExpr.primary}"
-                        '';
-                    };
-
-                    ".config/xmobar/xmobarrc" = {
-                        text = ''
-                            Config {
-                                fgColor = "${themeExpr.foreground}",
-                                bgColor = "${themeExpr.background}",
-
-                                position = TopSize C 40 32,
-                                commands = [
-                                    Run XMonadLog,
-
-                                    Run Cpu [ "-t", "<total>%" ] 10,
-                                    Run Memory [ "-t", "<used>/<total> MB <usedratio>%" ] 10,
-                                    Run Date "%H:%M" "time" 10
-                                ],
-                                template = "%XMonadLog% }{ cpu: %cpu% mem: %memory% %time%"
-                            }
-                        '';
-                    };
-
-                    ".config/alacritty/alacritty.yml" = {
-                        text =
-                            let fish = pkgs.fish;
-                            in ''
-                                colors:
-                                    primary:
-                                        foreground: "${themeExpr.foreground}"
-                                        background: "${themeExpr.background}"
-                                    
-                                    normal:
-                                        black: "${themeExpr.terminalColors.black}"
-                                        blue: "${themeExpr.terminalColors.blue}"
-                                        green: "${themeExpr.terminalColors.green}"
-                                        cyan: "${themeExpr.terminalColors.cyan}"
-                                        red: "${themeExpr.terminalColors.red}"
-                                        magenta: "${themeExpr.terminalColors.magenta}"
-                                        yellow: "${themeExpr.terminalColors.yellow}"
-                                        white: "${themeExpr.terminalColors.white}"
-                                    
-                                    bright:
-                                        black: "${themeExpr.terminalColors.brightBlack}"
-                                        blue: "${themeExpr.terminalColors.brightBlue}"
-                                        green: "${themeExpr.terminalColors.brightGreen}"
-                                        cyan: "${themeExpr.terminalColors.brightCyan}"
-                                        red: "${themeExpr.terminalColors.brightRed}"
-                                        magenta: "${themeExpr.terminalColors.brightMagenta}"
-                                        yellow: "${themeExpr.terminalColors.brightYellow}"
-                                        white: "${themeExpr.terminalColors.brightWhite}"
-
-                                shell:
-                                    program: "${fish}/bin/fish"
-
-                                window:
-                                    padding:
-                                        x: 8
-                                        y: 8
-
-                                    cursor:
-                                        style:
-                                            blinking: On
+                                themePrimary :: String
+                                themePrimary = "${themeExpr.primary}"
                             '';
-                    };
+                        };
 
-                    ".config/fish/config.fish" = {
-                        source = ../../../dotfiles/.config/fish/config.fish;
-                    };
+                        ".config/xmobar/xmobarrc" = {
+                            text = ''
+                                Config {
+                                    fgColor = "${themeExpr.foreground}",
+                                    bgColor = "${themeExpr.background}",
 
-                    ".config/starship.toml" = {
-                        source = ../../../dotfiles/.config/starship.toml;
+                                    position = TopSize C 40 32,
+                                    commands = [
+                                        Run XMonadLog,
+
+                                        Run Cpu [ "-t", "<total>%" ] 10,
+                                        Run Memory [ "-t", "<used>/<total> MB <usedratio>%" ] 10,
+                                        Run Date "%H:%M" "time" 10
+                                    ],
+                                    template = "%XMonadLog% }{ cpu: %cpu% mem: %memory% %time%"
+                                }
+                            '';
+                        };
+
+                        ".config/alacritty/alacritty.yml" = {
+                            text =
+                                let fish = pkgs.fish;
+                                in ''
+                                    colors:
+                                        primary:
+                                            foreground: "${themeExpr.foreground}"
+                                            background: "${themeExpr.background}"
+                                        
+                                        normal:
+                                            black: "${themeExpr.terminalColors.black}"
+                                            blue: "${themeExpr.terminalColors.blue}"
+                                            green: "${themeExpr.terminalColors.green}"
+                                            cyan: "${themeExpr.terminalColors.cyan}"
+                                            red: "${themeExpr.terminalColors.red}"
+                                            magenta: "${themeExpr.terminalColors.magenta}"
+                                            yellow: "${themeExpr.terminalColors.yellow}"
+                                            white: "${themeExpr.terminalColors.white}"
+                                        
+                                        bright:
+                                            black: "${themeExpr.terminalColors.brightBlack}"
+                                            blue: "${themeExpr.terminalColors.brightBlue}"
+                                            green: "${themeExpr.terminalColors.brightGreen}"
+                                            cyan: "${themeExpr.terminalColors.brightCyan}"
+                                            red: "${themeExpr.terminalColors.brightRed}"
+                                            magenta: "${themeExpr.terminalColors.brightMagenta}"
+                                            yellow: "${themeExpr.terminalColors.brightYellow}"
+                                            white: "${themeExpr.terminalColors.brightWhite}"
+
+                                    shell:
+                                        program: "${fish}/bin/fish"
+
+                                    window:
+                                        padding:
+                                            x: 8
+                                            y: 8
+
+                                        cursor:
+                                            style:
+                                                blinking: On
+                                '';
+                        };
+
+                        ".config/fish/config.fish" = {
+                            source = dotfiles + /.config/fish/config.fish;
+                        };
+
+                        ".config/starship.toml" = {
+                            source = dotfiles + /.config/starship.toml;
+                        };
+
+                        ".xinitrc" = {
+                            source = dotfiles + /.xinitrc;
+                        }
                     };
-                };
                 
                 activation = {
                     xmonadRecompileRestart =
