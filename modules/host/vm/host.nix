@@ -1,15 +1,22 @@
 {
-    boot.loader.grub = {
-        enable = true;
-        version = 2;
-        device = "/dev/sda";
+    options = {
+        system = "x86_64-linux";
+        roles = [ "laptop" ];
     };
 
-    networking.interfaces = {
-        enp0s3 = {
-            useDHCP = true;
+    module = {
+        boot.loader.grub = {
+            enable = true;
+            version = 2;
+            device = "/dev/sda";
         };
-    };
 
-    system.stateVersion = "21.11";
+        networking.interfaces = {
+            enp0s3 = {
+                useDHCP = true;
+            };
+        };
+
+        system.stateVersion = "21.11";
+    };
 }

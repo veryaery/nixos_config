@@ -11,7 +11,7 @@ let
     inherit (std.lists)
         foldr;
 
-    # [ a ] -> [ b ] -> [[ a b ]]
+    # combineWithoutPermutations :: [ a ] -> [ b ] -> [[ a b ]]
     combineWithoutPermutations = lsta: lstb:
         foldr
         (a: xs:
@@ -27,28 +27,39 @@ let
         lsta;
 in
 {
-    # Return a list containing the path if the path exists.
-    # Otherwise, returns an empty list.
-    # path -> [ path ]
+    # A list containing the path if the path exists.
+    # Otherwise, an empty list.
+    # listWithPathIfPathExists :: path -> [ path ]
     listWithPathIfPathExists = path: if pathExists path then [ path ] else [];
 
-    # Returns an attrset with an attr for each combination of os and host.
-    # The key is in the form of "<os>.<host>".
-    # The value is the value of f for os and host.
-    # path -> path -> string -> string -> a -> { string = a }
-    attrsetFromEachOSEachHost = osDirPath: hostDirPath: f:
+    # Reads the os, theme, and host directories
+    # then returns an attrset with an attr for each combination of os, theme, and host.
+    # Each attrset key is the form of "<os>.<theme>.<host>".
+    # Each attrset valye is the returned value of f os theme host.
+    # attrsetFromEachOSEachThemeEachHost :: path -> path -> path -> string -> string -> string -> a -> Map string a
+    attrsetFromEachOSEachThemeEachHost = osDirPath: themeDirPath: hostDirPath: f:
         let
-            osList = attrNames (readDir osDirPath);
-            hostList = attrNames (readDir hostDirPath);
-            combinations = combineWithoutPermutations osList hostList;
+            osFiles = attrNames (readDir osDirPath);
+            themeFiles = attrNames (readDir themeDirPath);
+            hostFiles = attrNames (readDir hostDirPath);
+
+            combinations = flatten
+                (
+                    combineWithoutPermutations osFiles
+                    (
+                        combineWithoutPermutations themeFiles hostFiles
+                    )
+                );
         in
             foldr
             (combination: xs:
                 let
                     os = elemAt combination 0;
-                    host = elemAt combination 1;
-                    a = f os host;
-                    x = { "${os}.${host}" = a; };
+                    theme = elemAt combination 1;
+                    host = elemAt combination 2;
+
+                    a = f os theme host;
+                    x = { "${os}.${theme}.${host}" };
                 in xs // x
             )
             {}
