@@ -1,8 +1,8 @@
 # https://github.com/morhetz/gruvbox
 
 let
-    foreground = "#ebdbb2";
-    background = "#282828";
+    foreground = "#ebdbb2"; # bg0
+    background = "#282828"; # fg1
 
     black = "#000000";
     blue = "#458588";
