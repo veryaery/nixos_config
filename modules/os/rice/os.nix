@@ -57,13 +57,13 @@
                             module Theme where
 
                             themeForeground :: String
-                            themeForeground = ${themeExpr.foreground}
+                            themeForeground = "${themeExpr.foreground}"
 
                             themeBackground :: String
-                            themeBackground = ${themeExpr.background}
+                            themeBackground = "${themeExpr.background}"
 
                             themePrimary :: String
-                            themePrimary = ${themeExpr.primary}
+                            themePrimary = "${themeExpr.primary}"
                         '';
                     };
 

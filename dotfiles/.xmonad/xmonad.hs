@@ -31,7 +31,7 @@ config' = def
 
         borderWidth = 2,
         normalBorderColor = themeBackground,
-        focusedBorderColor = themeForeground
+        focusedBorderColor = themePrimary
     }
 
 prettyPrint :: PP
