@@ -27,13 +27,16 @@
                 homeDirectory = "/home/aery";
 
                 packages = with pkgs; [
-                    alacritty
                     firefox
                     tree
                     killall
 
                     xmobar
                     feh
+
+                    alacritty
+                    fish
+                    starship
 
                     # Rice command line utilities.
                     neofetch
@@ -112,20 +115,27 @@
                                     magenta: "${themeExpr.terminalColors.brightMagenta}"
                                     yellow: "${themeExpr.terminalColors.brightYellow}"
                                     white: "${themeExpr.terminalColors.brightWhite}"
-                                
-                                transparent_background_colors: true
+
+                            shell:
+                                program: "/bin/fish"
 
                             window:
                                 padding:
                                     x: 8
                                     y: 8
-                                
-                                opacity: 0.5
 
                                 cursor:
                                     style:
                                         blinking: On
                         '';
+                    };
+
+                    ".config/fish/config.fish" = {
+                        source = ../../../dotfiles/.config/fish/config.fish;
+                    };
+
+                    ".config/starship.toml" = {
+                        source = ../../../dotfiles/.config/starship.toml;
                     };
                 };
                 
