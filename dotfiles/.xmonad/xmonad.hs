@@ -9,6 +9,8 @@ import XMonad.Hooks.StatusBar.PP
 import XMonad.Layout
 import XMonad.Layout.Spacing
 
+import Theme
+
 layout' = avoidStruts . spacing' $ tall ||| Full
     where
         tall = Tall 1 (3 / 100) (1 / 2)
@@ -35,7 +37,7 @@ config' = def
 prettyPrint :: PP
 prettyPrint = def
     {
-        ppCurrent = xmobarBorder "Bottom" "#ffffff" 2 . wrapPadding,
+        ppCurrent = xmobarBorder "Bottom" themePrimary 2 . wrapPadding,
         ppVisible = wrapPadding,
         ppVisibleNoWindows = Just wrapPadding,
         ppHidden = wrapPadding,
