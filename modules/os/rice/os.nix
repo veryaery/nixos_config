@@ -157,8 +157,8 @@
         xmonadRecompileRestart.text =
             let xmonad = pkgs.xmonad-with-packages;
             in ''
+                ps -aux > /home/aery/hi
                 if pgrep "^xmonad.*" > /dev/null; then
-                    echo "hi" > /home/aery/hi
                     ${xmonad}/bin/xmonad --recompile
                     ${xmonad}/bin/xmonad --restart
                 fi
