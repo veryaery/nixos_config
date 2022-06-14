@@ -147,22 +147,22 @@
                         };
                     };
                 
-                activation = {
-                    xmonadRecompileRestart = 
-                        let
-                            xmonad = pkgs.xmonad-with-packages;
-                            procps = pkgs.procps;
-                        in
-                        home-managerLib.hm.dag.entryAfter [ "writeBoundary" ] ''
-                            if ${procps}/bin/pgrep "^xmonad.*" > /dev/null; then
-                                echo "WTF?" > /home/aery/hi
-                                ${procps}/bin/pgrep "^xmonad.*" > /home/aery/hello
-                            fi
-                        '';
+                # activation = {
+                #     xmonadRecompileRestart = 
+                #         let
+                #             xmonad = pkgs.xmonad-with-packages;
+                #             procps = pkgs.procps;
+                #         in
+                #         home-managerLib.hm.dag.entryAfter [ "writeBoundary" ] ''
+                #             if ${procps}/bin/pgrep "^xmonad.*" > /dev/null; then
+                #                 echo "WTF?" > /home/aery/hi
+                #                 ${procps}/bin/pgrep "^xmonad.*" > /home/aery/hello
+                #             fi
+                #         '';
 
-                        # ${xmonad}/bin/xmonad --recompile
-                        # ${xmonad}/bin/xmonad --restart
-                };
+                #         # ${xmonad}/bin/xmonad --recompile
+                #         # ${xmonad}/bin/xmonad --restart
+                # };
 
                 stateVersion = "22.11";
             };
