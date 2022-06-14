@@ -70,10 +70,10 @@
                     ".config/xmobar/xmobarrc" = {
                         text = ''
                             Config {
-                                bgColor = "${themeExpr.background}",
                                 fgColor = "${themeExpr.foreground}",
+                                bgColor = "${themeExpr.background}",
 
-                                position = TopSize C 20 30,
+                                position = TopSize C 25 32,
                                 commands = [
                                     Run XMonadLog,
 
@@ -86,9 +86,42 @@
                         '';
                     };
 
-                    ".config/alacritty" = {
-                        source = ../../../dotfiles/.config/alacritty;
-                        recursive = true;
+                    ".config/alacritty/alacritty.yml" = {
+                        text = ''
+                            colors:
+                                primary:
+                                    foreground: "${themeExpr.foreground}"
+                                    background: "${themeExpr.background}"
+                                
+                                normal:
+                                    black: "${themeExpr.black}"
+                                    blue: "${themeExpr.blue}"
+                                    green: "${themeExpr.green}"
+                                    cyan: "${themeExpr.cyan}"
+                                    red: "${themeExpr.red}"
+                                    magenta: "${themeExpr.magenta}"
+                                    yellow: "${themeExpr.yellow}"
+                                    white: "${themeExpr.white}"
+                                
+                                bright:
+                                    black: "${themeExpr.brightBlack}"
+                                    blue: "${themeExpr.brightBlue}"
+                                    green: "${themeExpr.brightGreen}"
+                                    cyan: "${themeExpr.brightCyan}"
+                                    red: "${themeExpr.brightRed}"
+                                    magenta: "${themeExpr.brightMagenta}"
+                                    yellow: "${themeExpr.brightYellow}"
+                                    white: "${themeExpr.brightWhite}"
+
+                            window:
+                                padding:
+                                    x: 8
+                                    y: 8
+
+                                cursor:
+                                    style:
+                                        blinking: On
+                        '';
                     };
                 };
 
