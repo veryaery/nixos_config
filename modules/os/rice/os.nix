@@ -125,16 +125,16 @@
                     };
                 };
 
-                stateVersion = "22.11";
-            };
+                activation = {
+                    xmonadRecompileRestart =
+                        let xmonad = pkgs.xmonad-with-packages;
+                        in ''
+                            ${xmonad}/bin/xmonad --recompile
+                            ${xmonad}/bin/xmonad --restart
+                        '';
+                };
 
-            activation = {
-                xmonadRecompileRestart =
-                    let xmonad = pkgs.xmonad-with-packages;
-                    in ''
-                        ${xmonad}/bin/xmonad --recompile
-                        ${xmonad}/bin/xmonad --restart
-                    '';
+                stateVersion = "22.11";
             };
         };
     };
