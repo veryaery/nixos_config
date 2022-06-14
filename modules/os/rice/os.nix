@@ -90,8 +90,8 @@
                         text = ''
                             colors:
                                 primary:
-                                    foreground: "${themeExpr.terminalColors.foreground}"
-                                    background: "${themeExpr.terminalColors.background}"
+                                    foreground: "${themeExpr.foreground}"
+                                    background: "${themeExpr.background}"
                                 
                                 normal:
                                     black: "${themeExpr.terminalColors.black}"
