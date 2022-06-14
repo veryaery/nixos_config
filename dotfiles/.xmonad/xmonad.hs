@@ -30,8 +30,8 @@ config' = def
         layoutHook = layout',
 
         borderWidth = 2,
-        normalBorderColor = "#404040",
-        focusedBorderColor = "#ffffff"
+        normalBorderColor = themeBackground,
+        focusedBorderColor = themeForeground
     }
 
 prettyPrint :: PP

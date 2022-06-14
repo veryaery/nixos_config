@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, themeExpr, ... }:
 
 {
     services.xserver = {
@@ -48,9 +48,42 @@
                 ];
 
                 file = {
-                    ".xmonad" = {
-                        source = ../../../dotfiles/.xmonad;
-                        recursive = true;
+                    ".xmonad/xmonad.hs" = {
+                        source = ../../../dotfiles/.xmonad/xmonad.hs;
+                    };
+
+                    ".xmonad/lib/Theme.hs" = {
+                        text = ''
+                            module Theme where
+
+                            themeForeground :: String
+                            themeForeground = ${themeExpr.foreground}
+
+                            themeBackground :: String
+                            themeBackground = ${themeExpr.background}
+
+                            themePrimary :: String
+                            themePrimary = ${themeExpr.primary}
+                        '';
+                    };
+
+                    ".config/xmobar/xmobarrc" = {
+                        text = ''
+                            Config {
+                                bgColor = "${themeExpr.background}",
+                                fgColor = "${themeExpr.foreground}",
+
+                                commands = [
+                                    Run XMonadLog,
+
+                                    Run Cpu [ "-t", "<total>%" ] 10,
+                                    Run Memory [ "-t", "<used>/<total> MB <usedratio>%" ] 10,
+                                    Run Date "%H:%M" "time" 10
+                                ],
+
+                                template = "%XMonadLog% }{ cpu: %cpu% mem: %memory% %time%"
+                            }
+                        '';
                     };
 
                     ".config/alacritty" = {
