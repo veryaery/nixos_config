@@ -26,7 +26,7 @@ in
 
     primary = brightRed;
 
-    consoleColors = {
+    terminalColors = {
         inherit
             black brightBlack
             blue brightBlue

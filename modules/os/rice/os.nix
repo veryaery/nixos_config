@@ -90,28 +90,28 @@
                         text = ''
                             colors:
                                 primary:
-                                    foreground: "${themeExpr.foreground}"
-                                    background: "${themeExpr.background}"
+                                    foreground: "${themeExpr.terminalColors.foreground}"
+                                    background: "${themeExpr.terminalColors.background}"
                                 
                                 normal:
-                                    black: "${themeExpr.black}"
-                                    blue: "${themeExpr.blue}"
-                                    green: "${themeExpr.green}"
-                                    cyan: "${themeExpr.cyan}"
-                                    red: "${themeExpr.red}"
-                                    magenta: "${themeExpr.magenta}"
-                                    yellow: "${themeExpr.yellow}"
-                                    white: "${themeExpr.white}"
+                                    black: "${themeExpr.terminalColors.black}"
+                                    blue: "${themeExpr.terminalColors.blue}"
+                                    green: "${themeExpr.terminalColors.green}"
+                                    cyan: "${themeExpr.terminalColors.cyan}"
+                                    red: "${themeExpr.terminalColors.red}"
+                                    magenta: "${themeExpr.terminalColors.magenta}"
+                                    yellow: "${themeExpr.terminalColors.yellow}"
+                                    white: "${themeExpr.terminalColors.white}"
                                 
                                 bright:
-                                    black: "${themeExpr.brightBlack}"
-                                    blue: "${themeExpr.brightBlue}"
-                                    green: "${themeExpr.brightGreen}"
-                                    cyan: "${themeExpr.brightCyan}"
-                                    red: "${themeExpr.brightRed}"
-                                    magenta: "${themeExpr.brightMagenta}"
-                                    yellow: "${themeExpr.brightYellow}"
-                                    white: "${themeExpr.brightWhite}"
+                                    black: "${themeExpr.terminalColors.brightBlack}"
+                                    blue: "${themeExpr.terminalColors.brightBlue}"
+                                    green: "${themeExpr.terminalColors.brightGreen}"
+                                    cyan: "${themeExpr.terminalColors.brightCyan}"
+                                    red: "${themeExpr.terminalColors.brightRed}"
+                                    magenta: "${themeExpr.terminalColors.brightMagenta}"
+                                    yellow: "${themeExpr.terminalColors.brightYellow}"
+                                    white: "${themeExpr.terminalColors.brightWhite}"
 
                             window:
                                 padding:

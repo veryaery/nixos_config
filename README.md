@@ -51,7 +51,7 @@ nixos-rebuild switch --flake .#<os>.<theme>.<host>
 
     # primary :: string
 
-    consoleColors = {
+    terminalColors = {
         # black :: string
         # blue :: string
         # green :: string
