@@ -3,13 +3,18 @@ std:
 let
     inherit (builtins)
         attrNames
+        concatStringsSep
         elemAt
         map
         pathExists
         readDir;
-    
+
     inherit (std.lists)
+        flatten
         foldr;
+
+    inherit (std.strings)
+        splitString;
 
     # combineWithoutPermutations :: [ a ] -> [ b ] -> [[ a b ]]
     combineWithoutPermutations = lsta: lstb:
@@ -25,6 +30,9 @@ let
         )
         []
         lsta;
+    
+    # withoutFileExtension :: string -> string
+    withoutFileExtension = s: concatStringsSep "." (init (splitString "." s));
 in
 {
     # A list containing the path if the path exists.
@@ -40,7 +48,7 @@ in
     attrsetFromEachOSEachThemeEachHost = osDirPath: themeDirPath: hostDirPath: f:
         let
             osFiles = attrNames (readDir osDirPath);
-            themeFiles = attrNames (readDir themeDirPath);
+            themeFiles = map withoutFileExtension (attrNames (readDir themeDirPath));
             hostFiles = attrNames (readDir hostDirPath);
 
             combinations = flatten
