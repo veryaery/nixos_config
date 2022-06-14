@@ -157,9 +157,9 @@
         xmonadRecompileRestart.text =
             let
                 xmonad = pkgs.xmonad-with-packages;
-                gnugrep = pkgs.gnugrep;
+                procps = pkgs.procps;
             in ''
-                ${gnugrep}/bin/pgrep "^xmonad.*" > /home/aery/hi
+                ${procps}/bin/pgrep "^xmonad.*" > /home/aery/hi
                 if pgrep "^xmonad.*" > /dev/null; then
                     ${xmonad}/bin/xmonad --recompile
                     ${xmonad}/bin/xmonad --restart
