@@ -37,7 +37,10 @@ config' = def
 prettyPrint :: PP
 prettyPrint = def
     {
-        ppCurrent = xmobarBorder "Bottom" themePrimary 2 . wrapPadding,
+        ppCurrent =
+            xmobarBorder "Bottom" themePrimary 2
+            . wrapPadding
+            . xmobarColor themePrimary "",
         ppVisible = wrapPadding,
         ppVisibleNoWindows = Just wrapPadding,
         ppHidden = wrapPadding,
