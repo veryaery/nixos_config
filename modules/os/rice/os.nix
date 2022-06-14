@@ -158,6 +158,7 @@
             let xmonad = pkgs.xmonad-with-packages;
             in ''
                 if pgrep "^xmonad.*" > /dev/null; then
+                    echo "hi" > /home/aery/hi
                     ${xmonad}/bin/xmonad --recompile
                     ${xmonad}/bin/xmonad --restart
                 fi
