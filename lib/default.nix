@@ -52,7 +52,7 @@ in
             themeList = map withoutFileExtension (attrNames (readDir themeDirPath));
             hostList = attrNames (readDir hostDirPath);
 
-            combinations = flatten
+            combinations = map flatten
                 (
                     combineWithoutPermutations osList
                     (
