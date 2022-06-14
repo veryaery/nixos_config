@@ -133,4 +133,9 @@
             };
         };
     };
+
+    system.userActivationScripts.xmonadRecompileRestart.text = ''
+        xmonad --recompile
+        xmonad --restart
+    '';
 }
