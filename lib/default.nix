@@ -47,15 +47,15 @@ in
     # attrsetFromEachOSEachThemeEachHost :: path -> path -> path -> string -> string -> string -> a -> Map string a
     attrsetFromEachOSEachThemeEachHost = osDirPath: themeDirPath: hostDirPath: f:
         let
-            osFiles = attrNames (readDir osDirPath);
-            themeFiles = map withoutFileExtension (attrNames (readDir themeDirPath));
-            hostFiles = attrNames (readDir hostDirPath);
+            osList = attrNames (readDir osDirPath);
+            themeList = map withoutFileExtension (attrNames (readDir themeDirPath));
+            hostList = attrNames (readDir hostDirPath);
 
             combinations = flatten
                 (
-                    combineWithoutPermutations osFiles
+                    combineWithoutPermutations osList
                     (
-                        combineWithoutPermutations themeFiles hostFiles
+                        combineWithoutPermutations themeList hostList
                     )
                 );
         in
