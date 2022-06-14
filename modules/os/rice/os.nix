@@ -112,11 +112,15 @@
                                     magenta: "${themeExpr.terminalColors.brightMagenta}"
                                     yellow: "${themeExpr.terminalColors.brightYellow}"
                                     white: "${themeExpr.terminalColors.brightWhite}"
+                                
+                                transparent_background_colors: true
 
                             window:
                                 padding:
                                     x: 8
                                     y: 8
+                                
+                                opacity: 0.5
 
                                 cursor:
                                     style:
@@ -124,7 +128,7 @@
                         '';
                     };
                 };
-
+                
                 activation = {
                     xmonadRecompileRestart =
                         let xmonad = pkgs.xmonad-with-packages;
