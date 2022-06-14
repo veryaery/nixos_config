@@ -1,5 +1,3 @@
-function fish_greeting
-    fortune -a
-end
+set -e fish_greeting
 
 starship init fish | source
