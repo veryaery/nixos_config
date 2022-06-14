@@ -49,7 +49,7 @@ prettyPrint = def
 
         ppTitle = colorPrimary . shorten 64,
 
-        ppOrder = \(workspaces:_:window:_) -> [ workspaces window ],
+        ppOrder = \(workspaces:_:window:_) -> [ workspaces, window ],
         ppSep = " }{ "
     }
         where
