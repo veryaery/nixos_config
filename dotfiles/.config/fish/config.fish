@@ -1,4 +1,4 @@
 # Remove greeting.
-function fish_greeting end
+set -U fish_greeting
 
 starship init fish | source
