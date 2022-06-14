@@ -7,7 +7,6 @@
         displayManager.gdm.enable = true;
         windowManager.xmonad = {
             enable = true;
-            xmonadCliArgs = [ "--replace" ];
             
             extraPackages = haskellPackages: with haskellPackages; [
                 xmonad-contrib
