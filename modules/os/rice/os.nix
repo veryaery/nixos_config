@@ -144,7 +144,7 @@
 
                         ".xinitrc" = {
                             source = dotfiles + /.xinitrc;
-                        }
+                        };
                     };
                 
                 activation = {
