@@ -90,44 +90,46 @@
                     };
 
                     ".config/alacritty/alacritty.yml" = {
-                        text = ''
-                            colors:
-                                primary:
-                                    foreground: "${themeExpr.foreground}"
-                                    background: "${themeExpr.background}"
-                                
-                                normal:
-                                    black: "${themeExpr.terminalColors.black}"
-                                    blue: "${themeExpr.terminalColors.blue}"
-                                    green: "${themeExpr.terminalColors.green}"
-                                    cyan: "${themeExpr.terminalColors.cyan}"
-                                    red: "${themeExpr.terminalColors.red}"
-                                    magenta: "${themeExpr.terminalColors.magenta}"
-                                    yellow: "${themeExpr.terminalColors.yellow}"
-                                    white: "${themeExpr.terminalColors.white}"
-                                
-                                bright:
-                                    black: "${themeExpr.terminalColors.brightBlack}"
-                                    blue: "${themeExpr.terminalColors.brightBlue}"
-                                    green: "${themeExpr.terminalColors.brightGreen}"
-                                    cyan: "${themeExpr.terminalColors.brightCyan}"
-                                    red: "${themeExpr.terminalColors.brightRed}"
-                                    magenta: "${themeExpr.terminalColors.brightMagenta}"
-                                    yellow: "${themeExpr.terminalColors.brightYellow}"
-                                    white: "${themeExpr.terminalColors.brightWhite}"
+                        text =
+                            let fish = pkgs.fish;
+                            in ''
+                                colors:
+                                    primary:
+                                        foreground: "${themeExpr.foreground}"
+                                        background: "${themeExpr.background}"
+                                    
+                                    normal:
+                                        black: "${themeExpr.terminalColors.black}"
+                                        blue: "${themeExpr.terminalColors.blue}"
+                                        green: "${themeExpr.terminalColors.green}"
+                                        cyan: "${themeExpr.terminalColors.cyan}"
+                                        red: "${themeExpr.terminalColors.red}"
+                                        magenta: "${themeExpr.terminalColors.magenta}"
+                                        yellow: "${themeExpr.terminalColors.yellow}"
+                                        white: "${themeExpr.terminalColors.white}"
+                                    
+                                    bright:
+                                        black: "${themeExpr.terminalColors.brightBlack}"
+                                        blue: "${themeExpr.terminalColors.brightBlue}"
+                                        green: "${themeExpr.terminalColors.brightGreen}"
+                                        cyan: "${themeExpr.terminalColors.brightCyan}"
+                                        red: "${themeExpr.terminalColors.brightRed}"
+                                        magenta: "${themeExpr.terminalColors.brightMagenta}"
+                                        yellow: "${themeExpr.terminalColors.brightYellow}"
+                                        white: "${themeExpr.terminalColors.brightWhite}"
 
-                            shell:
-                                program: "/bin/fish"
+                                shell:
+                                    program: "${fish}/bin/fish"
 
-                            window:
-                                padding:
-                                    x: 8
-                                    y: 8
+                                window:
+                                    padding:
+                                        x: 8
+                                        y: 8
 
-                                cursor:
-                                    style:
-                                        blinking: On
-                        '';
+                                    cursor:
+                                        style:
+                                            blinking: On
+                            '';
                     };
 
                     ".config/fish/config.fish" = {
