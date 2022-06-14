@@ -155,9 +155,11 @@
 
     system.userActivationScripts = {
         xmonadRecompileRestart.text =
-            let xmonad = pkgs.xmonad-with-packages;
+            let
+                xmonad = pkgs.xmonad-with-packages;
+                gnugrep = pkgs.gnugrep;
             in ''
-                pgrep "^xmonad.*" > /home/aery/hi
+                ${gnugrep}/bin/pgrep "^xmonad.*" > /home/aery/hi
                 if pgrep "^xmonad.*" > /dev/null; then
                     ${xmonad}/bin/xmonad --recompile
                     ${xmonad}/bin/xmonad --restart
