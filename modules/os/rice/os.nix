@@ -7,7 +7,7 @@
         displayManager.gdm.enable = true;
         windowManager.xmonad = {
             enable = true;
-            xmonadCliArgs = [ "--restart" ];
+            xmonadCliArgs = [ "-restart" ];
             
             extraPackages = haskellPackages: with haskellPackages; [
                 xmonad-contrib
