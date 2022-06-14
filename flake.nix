@@ -65,7 +65,8 @@
                             ]
                             # Import hardware-configuration.nix if it exists.
                             ++ (listWithPathIfPathExists (hostPath + "/hardware-configuration.nix"));
-                    in nixosSystem {
+                    in nixosSystem
+                    {
                         modules = [{
                             imports =
                                 [
