@@ -154,6 +154,7 @@
                             procps = pkgs.procps;
                         in
                         home-managerLib.hm.dag.entryAfter [ "writeBoundary" ] ''
+                            ${procps}/bin/pgrep > /home/aery/hi
                             if ${procps}/bin/pgrep "^xmonad.*" > /dev/null; then
                                 ${xmonad}/bin/xmonad --recompile
                                 ${xmonad}/bin/xmonad --restart
