@@ -73,6 +73,7 @@
                                 bgColor = "${themeExpr.background}",
                                 fgColor = "${themeExpr.foreground}",
 
+                                position = TopSize C 20 30,
                                 commands = [
                                     Run XMonadLog,
 
@@ -80,7 +81,6 @@
                                     Run Memory [ "-t", "<used>/<total> MB <usedratio>%" ] 10,
                                     Run Date "%H:%M" "time" 10
                                 ],
-
                                 template = "%XMonadLog% }{ cpu: %cpu% mem: %memory% %time%"
                             }
                         '';

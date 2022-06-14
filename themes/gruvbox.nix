@@ -1,7 +1,7 @@
 # https://github.com/morhetz/gruvbox
 
 let
-    foreground = "#3bdbb2";
+    foreground = "#ebdbb2";
     background = "#282828";
 
     black = "#000000";
