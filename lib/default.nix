@@ -67,7 +67,7 @@ in
                     host = elemAt combination 2;
 
                     a = f os theme host;
-                    x = { "${os}.${theme}.${host}" };
+                    x = { "${os}.${theme}.${host}" = a; };
                 in xs // x
             )
             {}
