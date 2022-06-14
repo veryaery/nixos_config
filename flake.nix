@@ -11,6 +11,7 @@
     outputs = { nixpkgs, home-manager, ... }@inputs:
         let
             std = nixpkgs.lib;
+            home-managerLib = home-manager.lib;
 
             inherit (std)
                 importJSON
@@ -91,7 +92,8 @@
 
                                 inherit
                                     os theme host
-                                    hostOptions themeExpr;
+                                    hostOptions themeExpr
+                                    home-managerLib;
                             };
                         }];
                     }

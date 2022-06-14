@@ -1,4 +1,4 @@
-{ pkgs, lib, themeExpr, ... }:
+{ pkgs, home-managerLib, themeExpr, ... }:
 
 {
     services.xserver = {
@@ -153,7 +153,7 @@
                             xmonad = pkgs.xmonad-with-packages;
                             procps = pkgs.procps;
                         in
-                        lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+                        home-managerLib.hm.dag.entryAfter [ "writeBoundary" ] ''
                             if ${procps}/bin/pgrep "^xmonad.*" > /dev/null; then
                                 ${xmonad}/bin/xmonad --recompile
                                 ${xmonad}/bin/xmonad --restart
