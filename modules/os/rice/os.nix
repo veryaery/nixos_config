@@ -1,4 +1,4 @@
-{ pkgs, themeExpr, ... }:
+{ pkgs, lib, themeExpr, ... }:
 
 {
     services.xserver = {
@@ -147,23 +147,22 @@
                         };
                     };
                 
+                activation = {
+                    xmonadRecompileRestart = 
+                        let
+                            xmonad = pkgs.xmonad-with-packages;
+                            procps = pkgs.procps;
+                        in
+                        lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+                            if ${procps}/bin/pgrep "^xmonad.*" > /dev/null; then
+                                ${xmonad}/bin/xmonad --recompile
+                                ${xmonad}/bin/xmonad --restart
+                            fi
+                        '';
+                };
 
                 stateVersion = "22.11";
             };
         };
-    };
-
-    system.userActivationScripts = {
-        xmonadRecompileRestart.text =
-            let
-                xmonad = pkgs.xmonad-with-packages;
-                procps = pkgs.procps;
-            in ''
-                ${procps}/bin/pgrep "^xmonad.*" > /home/aery/hi
-                if ${procps}/bin/pgrep "^xmonad.*" > /dev/null; then
-                    ${xmonad}/bin/xmonad --recompile
-                    ${xmonad}/bin/xmonad --restart
-                fi
-            '';
     };
 }
