@@ -36,6 +36,7 @@
 
                 windowManager.xmonad = {
                     enable = true;
+                    config = dotfiles + /.xmonad/xmonad.hs;
                     extraPackages = haskellPackages: with haskellPackages; [
                         xmonad-contrib
                     ];
@@ -73,10 +74,6 @@
                 file =
                     let dotfiles = ../../../dotfiles;
                     in {
-                        ".xmonad/xmonad.hs" = {
-                            source = dotfiles + /.xmonad/xmonad.hs;
-                        };
-
                         ".xmonad/lib/Theme.hs" = {
                             text = ''
                                 module Theme where
