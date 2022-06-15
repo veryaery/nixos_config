@@ -3,7 +3,8 @@
 {
     services.xserver = {
         enable = true;
-        displayManager.lightdm.enable = true;
+        displayManager.autoLogin.enable = true;
+        displayManager.autoLogin.user = "aery";
         layout = "se";
     };
 
@@ -142,10 +143,6 @@
 
                         ".config/starship.toml" = {
                             source = dotfiles + /.config/starship.toml;
-                        };
-
-                        ".xinitrc" = {
-                            source = dotfiles + /.xinitrc;
                         };
                     };
 
