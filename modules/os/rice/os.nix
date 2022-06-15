@@ -39,7 +39,22 @@ in
 
                 windowManager.xmonad = {
                     enable = true;
+
                     config = dotfiles + /.xmonad/xmonad.hs;
+                    libFiles = {
+                        "Theme.hs" = pkgs.writeText "Theme.hs" ''
+                            module Theme where
+
+                            themeForeground :: String
+                            themeForeground = "${themeExpr.foreground}"
+
+                            themeBackground :: String
+                            themeBackground = "${themeExpr.background}"
+
+                            themePrimary :: String
+                            themePrimary = "${themeExpr.primary}"
+                        '';
+                    };
                     extraPackages = haskellPackages: with haskellPackages; [
                         xmonad-contrib
                     ];
@@ -75,21 +90,6 @@ in
                 ];
 
                 file = {
-                    ".xmonad/lib/Theme.hs" = {
-                        text = ''
-                            module Theme where
-
-                            themeForeground :: String
-                            themeForeground = "${themeExpr.foreground}"
-
-                            themeBackground :: String
-                            themeBackground = "${themeExpr.background}"
-
-                            themePrimary :: String
-                            themePrimary = "${themeExpr.primary}"
-                        '';
-                    };
-
                     ".config/xmobar/xmobarrc" = {
                         text = ''
                             Config {
