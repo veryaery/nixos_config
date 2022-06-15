@@ -8,8 +8,7 @@
             session = [{
                 name = "home-manager";
                 start = ''
-                    #!${pkgs.runtimeShell}
-                    $HOME/.xsession &
+                    ${pkgs.runtimeShell} $HOME/.xsession &
                     waitPID=$!
                 '';
             }];
