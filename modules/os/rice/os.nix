@@ -22,7 +22,7 @@
                         xmonad-contrib
                     ];
                 };
-            }
+            };
 
             home = {
                 username = "aery";
