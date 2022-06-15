@@ -3,8 +3,25 @@
 {
     services.xserver = {
         enable = true;
-        displayManager.autoLogin.enable = true;
-        displayManager.autoLogin.user = "aery";
+
+        displayManager = {
+            session = [{
+                name = "home-manager";
+                start = ''
+                    #!${pkgs.runtimeShell}
+                    $HOME/.xsession &
+                    waitPID=$!
+                '';
+            }];
+
+            defaultSession = "home-manager";
+
+            autoLogin = {
+                enable = true;
+                user = "aery";
+            };
+        };
+
         layout = "se";
     };
 
