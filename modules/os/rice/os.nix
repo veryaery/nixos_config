@@ -6,6 +6,7 @@
 
         displayManager = {
             session = [{
+                manage = "desktop";
                 name = "home-manager";
                 start = ''
                     ${pkgs.runtimeShell} $HOME/.xsession &
