@@ -13,12 +13,16 @@
 
     home-manager.users = {
         aery = {
-            xsession.windowManager.xmonad = {
+            xsession = {
                 enable = true;
-                extraPackages = haskellPackages: with haskellPackages; [
-                    xmonad-contrib
-                ];
-            };
+
+                windowManager.xmonad = {
+                    enable = true;
+                    extraPackages = haskellPackages: with haskellPackages; [
+                        xmonad-contrib
+                    ];
+                };
+            }
 
             home = {
                 username = "aery";
