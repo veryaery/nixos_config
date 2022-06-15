@@ -1,18 +1,9 @@
-{ pkgs, home-managerLib, themeExpr, ... }:
+{ pkgs, themeExpr, ... }:
 
 {
     services.xserver = {
         enable = true;
-
         displayManager.gdm.enable = true;
-        windowManager.xmonad = {
-            enable = true;
-            
-            extraPackages = haskellPackages: with haskellPackages; [
-                xmonad-contrib
-            ];
-        };
-
         layout = "se";
     };
 
@@ -22,6 +13,13 @@
 
     home-manager.users = {
         aery = {
+            xsession.windowManager.xmonad = {
+                enable = true;
+                extraPackages = haskellPackages: with haskellPackages; [
+                    xmonad-contrib
+                ];
+            };
+
             home = {
                 username = "aery";
                 homeDirectory = "/home/aery";
@@ -146,23 +144,6 @@
                             source = dotfiles + /.xinitrc;
                         };
                     };
-                
-                # activation = {
-                #     xmonadRecompileRestart = 
-                #         let
-                #             xmonad = pkgs.xmonad-with-packages;
-                #             procps = pkgs.procps;
-                #         in
-                #         home-managerLib.hm.dag.entryAfter [ "writeBoundary" ] ''
-                #             if ${procps}/bin/pgrep "^xmonad.*" > /dev/null; then
-                #                 echo "WTF?" > /home/aery/hi
-                #                 ${procps}/bin/pgrep "^xmonad.*" > /home/aery/hello
-                #             fi
-                #         '';
-
-                #         # ${xmonad}/bin/xmonad --recompile
-                #         # ${xmonad}/bin/xmonad --restart
-                # };
 
                 stateVersion = "22.11";
             };
