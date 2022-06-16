@@ -108,11 +108,13 @@ in
                             function fish_prompt
                                 printf "\n"
                                 printf "%s\n" (prompt_pwd)
-                                printf "%sλ " (set_color ${fishTerminalColor themeExpr.primaryTerminalColor})
+                                printf "%sλ%s " \
+                                    (set_color ${fishTerminalColor themeExpr.primaryTerminalColor}) \
+                                    (set_color normal)
                             end
 
                             function fish_right_prompt
-                                printf $CMD_DURATION
+                                printf "$status ($CMD_DURATION ms)"
                             end
                         '';
                     };
