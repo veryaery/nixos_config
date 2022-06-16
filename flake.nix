@@ -11,6 +11,7 @@
     outputs = { nixpkgs, home-manager, ... }@inputs:
         let
             std = nixpkgs.lib;
+            lib = import ./lib std;
             home-managerLib = home-manager.lib;
 
             inherit (std)
@@ -18,7 +19,7 @@
                 mkForce
                 nixosSystem;
             
-            inherit (import ./lib std)
+            inherit (lib)
                 attrsetFromEachOSEachThemeEachHost
                 listWithPathIfPathExists;
             

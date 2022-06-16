@@ -1,7 +1,13 @@
-{ pkgs, themeExpr, ... }:
+{ pkgs, themeExpr, ... }@args:
 
 let
-    dotfiles = ../../../dotfiles;
+    flakeRoot = ../../..;
+    dotfiles = flakeRoot + /dotfiles;
+    std = args.lib;
+    lib = import (flakeRoot + /lib) std;
+
+    inherit (lib)
+        fishTerminalColor;
 in
 {
     services.xserver = {
@@ -36,6 +42,11 @@ in
         aery = {
             xsession = {
                 enable = true;
+                
+                # Restore feh wallpaper
+                initExtra = ''
+                    ${pkgs.runtimeShell} $HOME/.fehbg &
+                '';
 
                 windowManager.xmonad = {
                     enable = true;
@@ -75,7 +86,6 @@ in
 
                     alacritty
                     fish
-                    starship
 
                     # Rice command line utilities.
                     neofetch
@@ -90,6 +100,17 @@ in
                 ];
 
                 file = {
+                    ".config/fish/config.fish" = {
+                        text = ''
+                            # Remove greeting.
+                            set -U fish_greeting
+
+                            function fish_prompt
+                                printf "%sλ " (set_color ${fishTerminalColor themeExpr.primaryTerminalColor})
+                            end
+                        '';
+                    };
+
                     ".config/xmobar/xmobarrc" = {
                         text = ''
                             Config {

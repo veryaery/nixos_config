@@ -44,12 +44,14 @@ nixos-rebuild switch --flake .#<os>.<theme>.<host>
 
 ```nix
 {
-    # Colors are hexadecimal RBG e.g. "#00ff80".
+    # Colors should be 6 digit hexadecimal RGB prefixed with "#".
 
     # foreground :: string
     # background :: string
 
     # primary :: string
+    # Should be a key of terminalColors.
+    # primaryTerminalColor :: string
 
     terminalColors = {
         # black :: string

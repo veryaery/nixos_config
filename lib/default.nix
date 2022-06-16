@@ -8,6 +8,8 @@ let
         map
         pathExists
         readDir;
+        substring
+        stringLength
 
     inherit (std.lists)
         flatten
@@ -16,22 +18,24 @@ let
 
     inherit (std.strings)
         splitString;
+        hasPrefix
+        toLower
 
-    # combineWithoutPermutations :: [ a ] -> [ b ] -> [[ a b ]]
-    combineWithoutPermutations = lsta: lstb:
+    # cartesianProduct :: [ a ] -> [ b ] -> [[ a b ]]
+    cartesianProduct = lsta: lstb:
         foldr
-        (a: xs:
+        (a: z:
             let x =
                 map
                 (b:
                     [ a b ]
                 )
                 lstb;
-            in xs ++ x
+            in z ++ x
         )
         []
         lsta;
-    
+
     # withoutFileExtension :: string -> string
     withoutFileExtension = s: concatStringsSep "." (init (splitString "." s));
 in
@@ -53,15 +57,12 @@ in
             hostList = attrNames (readDir hostDirPath);
 
             combinations = map flatten
-                (
-                    combineWithoutPermutations osList
-                    (
-                        combineWithoutPermutations themeList hostList
-                    )
+                (cartesianProduct osList
+                    (cartesianProduct themeList hostList)
                 );
         in
             foldr
-            (combination: xs:
+            (combination: z:
                 let
                     os = elemAt combination 0;
                     theme = elemAt combination 1;
@@ -69,8 +70,16 @@ in
 
                     a = f os theme host;
                     x = { "${os}.${theme}.${host}" = a; };
-                in xs // x
+                in z // x
             )
             {}
             combinations;
+    
+    # The corresponding fish terminal color for theme terminal color.
+    # fishTerminalColor :: string -> string
+    fishTerminalColor = color:
+        if hasPrefix "bright" color then
+            "br" + toLower (substring 6 (stringLength color) color)
+        else
+            color;
 }
