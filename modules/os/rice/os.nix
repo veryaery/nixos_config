@@ -114,7 +114,24 @@ in
                             end
 
                             function fish_right_prompt
-                                printf "$status ($CMD_DURATION ms)"
+                                set -l s (math "floor($CMD_DURATION / 1000)")
+                                set -l ms (math "$CMD_DURATION % 1000")
+
+                                printf $status
+
+                                [ $s -gt 0 ]
+                                    or [ $ms -gt 0 ]
+                                set -l hasDuration $status
+
+                                [ $hasDuration = 0 ]; and printf " ("
+                                if [ $s -gt 0 ]
+                                    printf "%s$s s%s" \
+                                        (set_color ${fishTerminalColor themeExpr.primaryTerminalColor}) \
+                                        (set_color normal)
+                                    [ $ms -gt 0 ]; and printf " "
+                                end
+                                [ $ms -gt 0 ]; and printf "$ms ms"
+                                [ $hasDuration = 0 ]; and printf ")"
                             end
                         '';
                     };
