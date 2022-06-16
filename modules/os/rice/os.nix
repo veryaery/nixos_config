@@ -106,7 +106,13 @@ in
                             set -U fish_greeting
 
                             function fish_prompt
+                                printf "\n"
+                                printf "%s\n" (prompt_pwd)
                                 printf "%sλ " (set_color ${fishTerminalColor themeExpr.primaryTerminalColor})
+                            end
+
+                            function fish_right_prompt
+                                printf $CMD_DURATION
                             end
                         '';
                     };
