@@ -172,14 +172,6 @@ in
                                             blinking: On
                             '';
                     };
-
-                    ".config/fish/config.fish" = {
-                        source = dotfiles + /.config/fish/config.fish;
-                    };
-
-                    ".config/starship.toml" = {
-                        source = dotfiles + /.config/starship.toml;
-                    };
                 };
 
                 stateVersion = "22.11";
