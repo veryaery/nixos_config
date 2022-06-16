@@ -7,9 +7,9 @@ let
         elemAt
         map
         pathExists
-        readDir;
-        substring
+        readDir
         stringLength
+        substring;
 
     inherit (std.lists)
         flatten
@@ -17,9 +17,9 @@ let
         init;
 
     inherit (std.strings)
-        splitString;
         hasPrefix
-        toLower
+        splitString
+        toLower;
 
     # cartesianProduct :: [ a ] -> [ b ] -> [[ a b ]]
     cartesianProduct = lsta: lstb:
