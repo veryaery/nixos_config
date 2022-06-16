@@ -114,10 +114,10 @@ in
                             end
 
                             function fish_right_prompt
+                                printf $status
+
                                 set -l s (math "floor($CMD_DURATION / 1000)")
                                 set -l ms (math "$CMD_DURATION % 1000")
-
-                                printf $status
 
                                 [ $s -gt 0 ]
                                     or [ $ms -gt 0 ]

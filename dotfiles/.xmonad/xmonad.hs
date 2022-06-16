@@ -19,7 +19,7 @@ layout' = avoidStruts . spacing' $ tall ||| Full
         windowBorder = 8
         spacing' =
             spacingRaw
-            False
+            True
             (Border screenBorder screenBorder screenBorder screenBorder) True
             (Border windowBorder windowBorder windowBorder windowBorder) True
 
