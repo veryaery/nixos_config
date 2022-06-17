@@ -4,22 +4,22 @@ let
     foreground = "#d8dee9"; # nord4
     background = "#2e3440"; # nord0
 
+    white = "#e5e9f0"; # nord5
     black = "#000000";
-    blue = "#81a1c1";
-    green = "#a3be8c";
-    cyan = "#88c0d0";
     red = "#bf616a";
-    magenta = "#b48ead";
+    green = "#a3be8c";
+    blue = "#81a1c1";
     yellow = "#ebcb8b";
-    white = foreground;
+    cyan = "#88c0d0";
+    magenta = "#b48ead";
+    brightWhite = "#eceff4"; # nord6
     brightBlack = "#4c566a"; # nord3
-    brightBlue = "#81a1c1"; 
-    brightGreen = "#a3be8c";
-    brightCyan = "#8fbcbb";
     brightRed = "#bf616a";
-    brightMagenta = "#b48ead";
+    brightGreen = "#a3be8c";
+    brightBlue = "#81a1c1"; 
     brightYellow = "#ebcb8b";
-    brightWhite = foreground;
+    brightCyan = "#8fbcbb";
+    brightMagenta = "#b48ead";
 in
 {
     inherit foreground background;
