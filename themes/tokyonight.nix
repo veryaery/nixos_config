@@ -25,7 +25,7 @@ in
 {
     inherit foreground background;
 
-    primary = foreground;
+    primary = magenta;
     primaryTerminalColor = "magenta";
 
     terminalColors = {
