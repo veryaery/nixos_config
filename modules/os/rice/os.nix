@@ -8,6 +8,8 @@ let
 
     inherit (lib)
         fishTerminalColor;
+    
+    font = "Fira Code";
 in
 {
     services.xserver = {
@@ -199,7 +201,14 @@ in
                                     program: "${fish}/bin/fish"
                                 
                                 font:
-                                    family: "Fira Code"
+                                    normal:
+                                        family: "${font}"
+                                    bold:
+                                        family: "${font}"
+                                    italic:
+                                        family: "${font}"
+                                    bold_italic:
+                                        family: "${font}"
 
                                 window:
                                     padding:
