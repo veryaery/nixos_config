@@ -155,7 +155,7 @@ in
                                 fgColor = "${themeExpr.foreground}",
                                 bgColor = "${themeExpr.background}",
 
-                                position = TopSize C 40 32,
+                                position = TopP 16 16,
                                 commands = [
                                     Run XMonadLog,
 
