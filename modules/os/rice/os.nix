@@ -101,6 +101,7 @@ in
                     pipes
 
                     # Fonts
+                    font-awesome
                     (fira-code-with-features { features = [
                         "cv01"
                         "cv02"
@@ -121,7 +122,7 @@ in
                                 printf "\n"
                                 printf "%s\n" (prompt_pwd)
                                 printf "%sλ%s " \
-                                    (set_color ${fishTerminalColor themeExpr.primaryTerminalColor}) \
+                                    (set_color -o ${fishTerminalColor themeExpr.primaryTerminalColor}) \
                                     (set_color normal)
                             end
 

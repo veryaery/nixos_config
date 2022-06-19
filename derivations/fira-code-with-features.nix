@@ -8,15 +8,18 @@ let
 	inherit (builtins)
 		concatStringsSep;
 
+	version = "6.2";
 	features' = concatStringsSep "," features;
 in
 pkgs.fetchurl {
+	name = "fira-code-${version}";
+
 	nativeBuildInputs = with pkgs; [
 		unzip
 		opentype-feature-freezer
 	];
 
-	url = "https://github.com/tonsky/FiraCode/releases/download/6.2/Fira_Code_v6.2.zip";
+	url = "https://github.com/tonsky/FiraCode/releases/download/${version}/Fira_Code_v${version}.zip";
 	downloadToTemp = true;
 	recursiveHash = true;
 	sha256 = "sha256-+reVUJRXsu6QkiDJyxmT/lfZEgio+FIU3NEsxp+541I=";
