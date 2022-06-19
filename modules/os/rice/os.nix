@@ -88,7 +88,6 @@ in
 
                     alacritty
                     fish
-                    starship
 
                     # Rice command line utilities.
                     neofetch
@@ -121,36 +120,34 @@ in
 
                             alias .. "cd .."
 
-                            # function fish_prompt
-                            #     printf "\n"
-                            #     printf "%s\n" (prompt_pwd)
-                            #     printf "%sλ%s " \
-                            #         (set_color -o ${fishTerminalColor themeExpr.primaryTerminalColor}) \
-                            #         (set_color normal)
-                            # end
+                            function fish_prompt
+                                printf "\n"
+                                printf "%s\n" (prompt_pwd -d 0)
+                                printf "%sλ%s " \
+                                    (set_color -o ${fishTerminalColor themeExpr.primaryTerminalColor}) \
+                                    (set_color normal)
+                            end
 
-                            # function fish_right_prompt
-                            #     printf $status
+                            function fish_right_prompt
+                                printf $status
 
-                            #     set -l s (math "floor($CMD_DURATION / 1000)")
-                            #     set -l ms (math "$CMD_DURATION % 1000")
+                                set -l s (math "floor($CMD_DURATION / 1000)")
+                                set -l ms (math "$CMD_DURATION % 1000")
 
-                            #     [ $s -gt 0 ]
-                            #         or [ $ms -gt 0 ]
-                            #     set -l hasDuration $status
+                                [ $s -gt 0 ]
+                                    or [ $ms -gt 0 ]
+                                set -l hasDuration $status
 
-                            #     [ $hasDuration = 0 ]; and printf " ("
-                            #     if [ $s -gt 0 ]
-                            #         printf "%s$s s%s" \
-                            #             (set_color ${fishTerminalColor themeExpr.primaryTerminalColor}) \
-                            #             (set_color normal)
-                            #         [ $ms -gt 0 ]; and printf " "
-                            #     end
-                            #     [ $ms -gt 0 ]; and printf "$ms ms"
-                            #     [ $hasDuration = 0 ]; and printf ")"
-                            # end
-
-                            starship init fish | source
+                                [ $hasDuration = 0 ]; and printf " ("
+                                if [ $s -gt 0 ]
+                                    printf "%s$s s%s" \
+                                        (set_color ${fishTerminalColor themeExpr.primaryTerminalColor}) \
+                                        (set_color normal)
+                                    [ $ms -gt 0 ]; and printf " "
+                                end
+                                [ $ms -gt 0 ]; and printf "$ms ms"
+                                [ $hasDuration = 0 ]; and printf ")"
+                            end
                         '';
                     };
 
@@ -231,15 +228,6 @@ in
                                         style:
                                             blinking: On
                             '';
-                    };
-
-                    ".config/starship.toml" = {
-                        text = ''
-                            format = "$dur ~>"
-
-                            [custom.dur]
-                            command = "echo $CMD_DURATION"
-                        '';
                     };
                 };
 
