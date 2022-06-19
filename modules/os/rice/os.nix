@@ -235,10 +235,10 @@ in
 
                     ".config/starship.toml" = {
                         text = ''
-                            format = "$custom.dur "
+                            format = "$dur ~>"
 
                             [custom.dur]
-                            commamd = "echo $CMD_DURATION"
+                            command = "echo $CMD_DURATION"
                         '';
                     };
                 };
