@@ -149,6 +149,7 @@ in
                     ".config/xmobar/xmobarrc" = {
                         text = ''
                             Config {
+                                font = "Fira Code",
                                 fgColor = "${themeExpr.foreground}",
                                 bgColor = "${themeExpr.background}",
 
@@ -196,6 +197,9 @@ in
 
                                 shell:
                                     program: "${fish}/bin/fish"
+                                
+                                font:
+                                    family: "Fira Code"
 
                                 window:
                                     padding:
