@@ -153,6 +153,9 @@ in
                         text = ''
                             Config {
                                 font = "xft:${font}:pixelsize=12",
+                                additionalFonts = [
+                                    "xft:Font Awesome 6 Free Solid:pixelsize=12"
+                                ],
                                 fgColor = "${themeExpr.foreground}",
                                 bgColor = "${themeExpr.background}",
 
@@ -160,11 +163,11 @@ in
                                 commands = [
                                     Run XMonadLog,
 
-                                    Run Cpu [ "-t", "<total>%" ] 10,
-                                    Run Memory [ "-t", "<used>/<total> MB <usedratio>%" ] 10,
-                                    Run Date "%H:%M" "time" 10
+                                    Run Cpu [ "-t", " <total>%" ] 10,
+                                    Run Memory [ "-t", " <used>/<total> MB <usedratio>%" ] 10,
+                                    Run Date " %H:%M" "time" 10
                                 ],
-                                template = "%XMonadLog% }{ cpu: %cpu% mem: %memory% %time%"
+                                template = "%XMonadLog% }{ %cpu% %memory% %time%"
                             }
                         '';
                     };
