@@ -119,7 +119,7 @@ in
                             # Remove greeting.
                             set -U fish_greeting
 
-                            alias .. cd ..
+                            alias .. "cd .."
 
                             # function fish_prompt
                             #     printf "\n"
@@ -235,7 +235,7 @@ in
 
                     ".config/starship.toml" = {
                         text = ''
-                            format = "$test "
+                            format = "$dur "
 
                             [custom.dur]
                             commamd = "echo $CMD_DURATION"
