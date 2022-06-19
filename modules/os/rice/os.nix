@@ -150,26 +150,29 @@ in
                     };
 
                     ".config/xmobar/xmobarrc" = {
-                        text = ''
-                            Config {
-                                font = "xft:${font}:pixelsize=12",
-                                additionalFonts = [
-                                    "xft:Font Awesome 6 Free Solid:pixelsize=12"
-                                ],
-                                fgColor = "${themeExpr.foreground}",
-                                bgColor = "${themeExpr.background}",
+                        text =
+                            let
+                                primaryBox = s: "<box type=Bottom width=2 color=${themeExpr.primary}>${s}</box>";
+                                primary = s: "<fc=${themeExpr.primary}>${s}</fc>";
+                            in ''
+                                Config {
+                                    font = "xft:${font}:pixelsize=12",
+                                    additionalFonts = [
+                                        "xft:Font Awesome 6 Free Solid:pixelsize=12"
+                                    ],
+                                    fgColor = "${themeExpr.foreground}",
+                                    bgColor = "${themeExpr.background}",
 
-                                position = TopH 24,
-                                commands = [
-                                    Run XMonadLog,
+                                    position = TopH 24,
+                                    commands = [
+                                        Run XMonadLog,
 
-                                    Run Cpu [ "-t", "<fn=1></fn> <total>%" ] 10,
-                                    Run Memory [ "-t", "<fn=1></fn> <used>/<total> MB <usedratio>%" ] 10,
-                                    Run Date "<fn=1></fn> %Y-%m-%d <fn=1></fn> %H:%M" "time" 10
-                                ],
-                                template = "%XMonadLog% }{ %cpu% %memory% %time%"
-                            }
-                        '';
+                                        Run Cpu [ "-t", "${primaryBox "${primary "<fn=1></fn>"} <total>%"}" ] 10,
+                                        Run Memory [ "-t", "${primaryBox "${primary "<fn=1></fn>"} <used>/<total> MB <usedratio>%"}" ] 10
+                                    ],
+                                    template = "%XMonadLog% }{ %cpu% %memory%"
+                                }
+                            '';
                     };
 
                     ".config/alacritty/alacritty.yml" = {
