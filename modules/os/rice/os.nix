@@ -163,9 +163,9 @@ in
                                 commands = [
                                     Run XMonadLog,
 
-                                    Run Cpu [ "-t", " <total>%" ] 10,
-                                    Run Memory [ "-t", " <used>/<total> MB <usedratio>%" ] 10,
-                                    Run Date " %H:%M" "time" 10
+                                    Run Cpu [ "-t", "<fn=1></fn> <total>%" ] 10,
+                                    Run Memory [ "-t", "<fn=1></fn> <used>/<total> MB <usedratio>%" ] 10,
+                                    Run Date "<fn=1></fn> %Y-%m-%d <fn=1></fn> %H:%M" "time" 10
                                 ],
                                 template = "%XMonadLog% }{ %cpu% %memory% %time%"
                             }
