@@ -151,11 +151,11 @@ in
                     ".config/xmobar/xmobarrc" = {
                         text = ''
                             Config {
-                                font = "xft:${font}",
+                                font = "xft:${font}:pixelsize=12",
                                 fgColor = "${themeExpr.foreground}",
                                 bgColor = "${themeExpr.background}",
 
-                                position = TopP 16 16,
+                                position = TopH 24,
                                 commands = [
                                     Run XMonadLog,
 
