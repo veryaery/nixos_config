@@ -23,6 +23,23 @@
                 attrsetFromEachOSEachThemeEachHost
                 listWithPathIfPathExists;
             
+            derivationsDirPath = ./derivations;
+            overlays = [
+                (self: super:
+                    {
+                        opentype-feature-freezer =
+                            import (derivationsDirPath + /opentype-feature-freezer.nix) self;
+                    }
+                )
+
+                (self: super:
+                    {
+                        fira-code-with-features =
+                            import (derivationsDirPath + /fira-code-with-features.nix) super;
+                    }
+                )
+            ];
+
             commonDirPath = ./modules/common;
             osDirPath = ./modules/os;
             themeDirPath = ./themes;
@@ -52,7 +69,7 @@
                         localSystem = { inherit (hostOptions) system; };
                         pkgs = import nixpkgs
                             {
-                                inherit localSystem;
+                                inherit overlays localSystem;
 
                                 config = {
                                     allowUnfree = true;
@@ -67,8 +84,8 @@
                             ]
                             # Import hardware-configuration.nix if it exists.
                             ++ (listWithPathIfPathExists (hostPath + /hardware-configuration.nix));
-                    in nixosSystem
-                    {
+                    in
+                    nixosSystem {
                         modules = [{
                             imports =
                                 [

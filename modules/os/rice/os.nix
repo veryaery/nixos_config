@@ -97,6 +97,18 @@ in
                     cbonsai
                     cmatrix
                     pipes
+
+                    # Fonts
+                    fira-code-with-features {
+                        features = [
+                            "cv01"
+                          	"cv02"
+                         	"cv06"
+                         	"cv11"
+                         	"ss05"
+                        	"ss03"
+                        ];
+                    }
                 ];
 
                 file = {
@@ -201,6 +213,8 @@ in
 
                 stateVersion = "22.11";
             };
+
+            fonts.fontconfig.enable = true;
         };
     };
 }
