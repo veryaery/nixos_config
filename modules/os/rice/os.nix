@@ -151,7 +151,7 @@ in
                     ".config/xmobar/xmobarrc" = {
                         text = ''
                             Config {
-                                font = "xft:Fira Code:regular:pixelsize=12:antialias=true:hinting=true",
+                                font = "xft:${font}",
                                 fgColor = "${themeExpr.foreground}",
                                 bgColor = "${themeExpr.background}",
 
