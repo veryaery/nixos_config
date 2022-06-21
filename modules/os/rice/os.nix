@@ -110,6 +110,9 @@ in
                         "ss05"
                         "ss03"
                     ]; })
+
+                    # Neovim plugins.
+                    vimPlugins.vim-nix
                 ];
 
                 file = {
@@ -228,6 +231,14 @@ in
                                         style:
                                             blinking: On
                             '';
+                    };
+
+                    ".config/nvim/init.lua" = {
+                        source = dotfiles + /.config/nvim/init.lua;
+                    };
+
+                    ".local/share/nvim/site/pack/vim-nix" = {
+                        source = config.lib.file.mkOutOfStoreSymlink pkgs.vimPlugins.vim-nix;
                     };
                 };
 
