@@ -1,4 +1,4 @@
-{ pkgs, themeExpr, ... }@args:
+{ pkgs, themeExpr, home-managerLib, ... }@args:
 
 let
     flakeRoot = ../../..;
@@ -238,7 +238,7 @@ in
                     };
 
                     ".local/share/nvim/site/pack/vim-nix" = {
-                        source = config.lib.file.mkOutOfStoreSymlink pkgs.vimPlugins.vim-nix;
+                        source = home-managerLib.file.mkOutOfStoreSymlink pkgs.vimPlugins.vim-nix;
                     };
                 };
 
