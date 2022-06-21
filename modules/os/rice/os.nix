@@ -233,16 +233,24 @@ in
                             '';
                     };
 
-                    ".config/nvim/init.lua" = {
-                        source = dotfiles + /.config/nvim/init.lua;
-                    };
+                    # ".config/nvim/init.lua" = {
+                    #     source = dotfiles + /.config/nvim/init.lua;
+                    # };
 
-                    ".local/share/nvim/site/pack/all/start/vim-nix" = {
-                        source = home-managerArgs.config.lib.file.mkOutOfStoreSymlink pkgs.vimPlugins.vim-nix;
-                    };
+                    # ".local/share/nvim/site/pack/all/start/vim-nix" = {
+                    #     source = home-managerArgs.config.lib.file.mkOutOfStoreSymlink pkgs.vimPlugins.vim-nix;
+                    # };
                 };
 
                 stateVersion = "22.11";
+            };
+
+            programs.neovim = {
+                enable = true;
+
+                plugins = with pkgs.vimPlugins; [
+                    vim-nix
+                ];
             };
 
             fonts.fontconfig.enable = true;
