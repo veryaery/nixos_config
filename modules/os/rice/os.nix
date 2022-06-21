@@ -1,4 +1,4 @@
-{ config, pkgs, themeExpr, ... }@args:
+{ pkgs, themeExpr, ... }@args:
 
 let
     flakeRoot = ../../..;
@@ -41,7 +41,7 @@ in
     ];
 
     home-manager.users = {
-        aery = {
+        aery = home-managerArgs: {
             xsession = {
                 enable = true;
                 
@@ -238,7 +238,7 @@ in
                     };
 
                     ".local/share/nvim/site/pack/vim-nix" = {
-                        source = config.lib.file.mkOutOfStoreSymlink pkgs.vimPlugins.vim-nix;
+                        source = home-managerArgs.config.lib.file.mkOutOfStoreSymlink pkgs.vimPlugins.vim-nix;
                     };
                 };
 
