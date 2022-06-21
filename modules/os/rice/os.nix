@@ -237,7 +237,7 @@ in
                         source = dotfiles + /.config/nvim/init.lua;
                     };
 
-                    ".local/share/nvim/site/pack/vim-nix" = {
+                    ".local/share/nvim/site/pack/all/start/vim-nix" = {
                         source = home-managerArgs.config.lib.file.mkOutOfStoreSymlink pkgs.vimPlugins.vim-nix;
                     };
                 };
