@@ -121,7 +121,7 @@ in
 
                 file = {
                     ".gitconfig" = {
-                        spurce = dotfiles + /.gitconfig;
+                        source = dotfiles + /.gitconfig;
                     };
                     
                     ".config/fish/config.fish" = {
