@@ -38,7 +38,48 @@ in
 
     environment.systemPackages = with pkgs; [
         git
+        tree
+        killall
+        firefox
+        xmobar
+        feh
+        alacritty
+        fish
     ];
+
+    fonts.fonts = with pkgs; [
+        font-awesome
+        (fira-code-with-features { features = [
+            "cv01"
+            "cv02"
+            "cv06"
+            "cv11"
+            "ss05"
+            "ss03"
+        ]; })
+    ];
+
+    programs = {
+        ssh = {
+            startAgent = true;
+        };
+    };
+
+    users.users = {
+        aery = {
+            packages = with pkgs; [
+                neofetch
+                figlet
+                tty-clock
+                fortune
+                cowsay
+                lolcat
+                cbonsai
+                cmatrix
+                pipes
+            ];
+        };
+    };
 
     home-manager.users = {
         aery = home-managerArgs: {
@@ -78,44 +119,11 @@ in
                 username = "aery";
                 homeDirectory = "/home/aery";
 
-                packages = with pkgs; [
-                    firefox
-                    tree
-                    killall
-
-                    xmobar
-                    feh
-
-                    alacritty
-                    fish
-
-                    # Rice command line utilities.
-                    neofetch
-                    figlet
-                    tty-clock
-                    fortune
-                    cowsay
-                    lolcat
-                    cbonsai
-                    cmatrix
-                    pipes
-
-                    # Fonts
-                    font-awesome
-                    (fira-code-with-features { features = [
-                        "cv01"
-                        "cv02"
-                        "cv06"
-                        "cv11"
-                        "ss05"
-                        "ss03"
-                    ]; })
-
-                    # Neovim plugins.
-                    vimPlugins.vim-nix
-                ];
-
                 file = {
+                    ".gitconfig" = {
+                        spurce = dotfiles + /.gitconfig;
+                    };
+                    
                     ".config/fish/config.fish" = {
                         text = ''
                             # Remove greeting.
@@ -232,25 +240,9 @@ in
                                             blinking: On
                             '';
                     };
-
-                    # ".config/nvim/init.lua" = {
-                    #     source = dotfiles + /.config/nvim/init.lua;
-                    # };
-
-                    # ".local/share/nvim/site/pack/all/start/vim-nix" = {
-                    #     source = home-managerArgs.config.lib.file.mkOutOfStoreSymlink pkgs.vimPlugins.vim-nix;
-                    # };
                 };
 
                 stateVersion = "22.11";
-            };
-
-            programs.neovim = {
-                enable = true;
-
-                plugins = with pkgs.vimPlugins; [
-                    vim-nix
-                ];
             };
 
             fonts.fontconfig.enable = true;

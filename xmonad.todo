@@ -1,0 +1,4 @@
+create store for configs
+compile xmonad binary with config store
+set windowManager command to xmonad
+add activation script to restart xmonad if display server is running+
