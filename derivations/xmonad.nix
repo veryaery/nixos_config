@@ -18,6 +18,7 @@ pkgs.stdenv.mkDerivation {
     buildInputs = [
         ghc
         pkgs.haskellPackages.xmonad
+        pkgs.makeWrapper
     ];
     preferLocalBuild = true;
     allowSubstitutes = false;
@@ -36,9 +37,9 @@ pkgs.stdenv.mkDerivation {
     '';
 
     installPhase = ''
-        install -D -t $out/bin xmonad
         install -D \
             -t $out/share/man/man1 \
             ${pkgs.haskellPackages.xmonad}/share/man/man1/xmonad.1.gz
+        makeWrapper xmonad $out/bin/xmonad
     '';
 }
