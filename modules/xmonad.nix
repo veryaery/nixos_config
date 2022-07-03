@@ -45,7 +45,7 @@ in
                 manage = "window";
                 name = "xmonad";
                 start = ''
-                    ${xmonad}/bin/xmonad &
+                    ${xmonad}/bin/xmonad | systemd-cat -t xmonad &
                     waitPID=$!
                 '';
             }
