@@ -31,7 +31,11 @@ in
 
     config = mkIf cfg.enable (
     let
-        xmonad = import (flakeRoot + /derivations/xmonad.nix) pkgs cfg.theme;
+        xmonad = import (flakeRoot + /derivations/xmonad.nix) pkgs {
+            inherit dotfiles;
+
+            theme = cfg.theme;
+        };
     in
     {
         environment.systemPackages = [ xmonad ];

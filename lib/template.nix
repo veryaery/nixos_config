@@ -27,7 +27,7 @@ let
             in z // x
         )
         {}
-        attrNames attrset;
+        (attrNames attrset);
 
     flattenAttrset = flattenAttrset' null;
 
@@ -44,10 +44,10 @@ let
             names = [];
             values = [];
         }
-        attrNames attrset;
+        (attrNames attrset);
 in
 {
-    replace = attrset: s:
+    replace = attrset:
         let
             x = attrNamesValues attrset;
             names = map (name: "<${name}>") x.names;
