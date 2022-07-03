@@ -104,38 +104,6 @@ in
 
     home-manager.users = {
         aery = home-managerArgs: {
-            xsession = {
-                enable = true;
-                
-                # Restore feh wallpaper
-                initExtra = ''
-                    ${pkgs.runtimeShell} $HOME/.fehbg &
-                '';
-
-                windowManager.xmonad = {
-                    enable = true;
-
-                    config = dotfiles + /.xmonad/xmonad.hs;
-                    libFiles = {
-                        "Theme.hs" = pkgs.writeText "Theme.hs" ''
-                            module Theme where
-
-                            themeForeground :: String
-                            themeForeground = "${themeExpr.foreground}"
-
-                            themeBackground :: String
-                            themeBackground = "${themeExpr.background}"
-
-                            themePrimary :: String
-                            themePrimary = "${themeExpr.primary}"
-                        '';
-                    };
-                    extraPackages = haskellPackages: with haskellPackages; [
-                        xmonad-contrib
-                    ];
-                };
-            };
-
             home = {
                 username = "aery";
                 homeDirectory = "/home/aery";
