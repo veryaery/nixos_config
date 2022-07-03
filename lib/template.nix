@@ -49,7 +49,7 @@ in
 {
     replace = attrset:
         let
-            x = attrNamesValues attrset;
+            x = attrNamesValues (flattenAttrset attrset);
             names = map (name: "<${name}>") x.names;
         in replaceStrings names x.values;
 }
