@@ -25,7 +25,8 @@ pkgs.stdenv.mkDerivation {
 
     buildPhase = ''
         # Replace Theme.hs in the lib directory.
-        install -D ${theme} -t lib
+        mkdir lib
+        cat ${theme} > lib/Theme.hs
 
         ghc xmonad.hs
     '';

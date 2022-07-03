@@ -58,7 +58,6 @@ in
                         ${xmonad}/bin/xmonad --restart
                     fi
                 '';
-                deps = [ "display-manager.service" ];
             };
         };
     }
