@@ -17,24 +17,33 @@ pkgs.stdenv.mkDerivation {
     src = dotfiles + /.xmonad; 
     buildInputs = [
         ghc
-        theme
+        pkgs.tree
         pkgs.haskellPackages.xmonad
     ];
     preferLocalBuild = true;
     allowSubstitutes = false;
 
+    unpackPhase = ''
+        ${pkgs.tree}/bin/tree $src
+        for file in $(find $src -type f ! -path "*/lib/Theme.hs"); do
+            echo "install -D -T $file ''${file#$src/}"
+            install -D -T $file ''${file#$src/}
+        done
+    '';
+
     buildPhase = ''
         # Replace Theme.hs in the lib directory.
-        mkdir lib
+        mkdir -p lib
         cat ${theme} > lib/Theme.hs
+        ${pkgs.tree}/bin/tree        
 
-        ghc xmonad.hs
+        ghc xmonad.hs -v -ilib
     '';
 
     installPhase = ''
-        install -D xmonad -t $out/bin
+        install -D -t $out/bin xmonad
         install -D \
-            ${pkgs.haskellPackages.xmonad}/share/man/man1/xmonad.1.gz \
-            -t $out/share/man/man1
+            -t $out/share/man/man1 \
+            ${pkgs.haskellPackages.xmonad}/share/man/man1/xmonad.1.gz
     '';
 }
