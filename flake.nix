@@ -107,7 +107,7 @@
                                 pkgs = mkForce pkgs;
 
                                 inherit
-                                    os theme host
+                                    theme host
                                     flakeRoot dotfiles
                                     hostOptions themeExpr
                                     home-managerLib;

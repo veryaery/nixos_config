@@ -10,8 +10,12 @@ let
     std = args.lib;
     lib = import (flakeRoot + /lib) std;
 
+    inherit (builtins)
+        readFile;
+
     inherit (lib)
-        fishTerminalColor;
+        fishTerminalColor
+        replace;
     
     font = "Fira Code";
 in

@@ -63,8 +63,8 @@ in
                     theme = elemAt combination 0;
                     host = elemAt combination 1;
 
-                    a = f os theme host;
-                    x = { "${os}.${theme}.${host}" = a; };
+                    a = f theme host;
+                    x = { "${theme}.${host}" = a; };
                 in z // x
             )
             {}

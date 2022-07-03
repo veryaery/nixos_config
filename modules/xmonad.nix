@@ -1,5 +1,6 @@
 {
     pkgs,
+    config,
     flakeRoot,
     dotfiles,
     themeExpr,
@@ -10,18 +11,12 @@ let
     std = args.lib;
     lib = import (flakeRoot + /lib) std;
 
-    inherit (buildtins)
-        readFile;
-
     inherit (std)
         mkEnableOption
         mkIf
         mkOption;
-    
-    inherit (lib)
-        replace;
 
-    cfg = config.serives.xserver.windowManager._xmonad;
+    cfg = config.services.xserver.windowManager._xmonad;
 in
 {
     options.services.xserver.windowManager._xmonad = {
