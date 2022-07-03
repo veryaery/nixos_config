@@ -28,12 +28,7 @@ in
         enable = true;
 
         displayManager = {
-            defaultSession = "none+xmonad";
-
-            autoLogin = {
-                enable = true;
-                user = "aery";
-            };
+            gdm.enable = true;
         };
 
         layout = "se";
