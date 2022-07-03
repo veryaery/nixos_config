@@ -25,11 +25,11 @@ pkgs.fetchurl {
 	sha256 = "sha256-+reVUJRXsu6QkiDJyxmT/lfZEgio+FIU3NEsxp+541I=";
 	
 	postFetch = ''
-		fontDir=$out/share/fonts/truetype
+		outFontDirPath=$out/share/fonts/truetype
 
 		unzip -j $downloadedFile variable_ttf/FiraCode-VF.ttf
 
-		mkdir -p $fontDir
-		pyftfeatfreeze -f "${features'}" FiraCode-VF.ttf $fontDir/FiraCode-Features-VF.ttf
+		mkdir -p $outFontDirPath
+		pyftfeatfreeze -f "${features'}" FiraCode-VF.ttf $outFontDirPath/FiraCode-Features-VF.ttf
 	'';
 }

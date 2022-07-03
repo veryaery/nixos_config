@@ -20,8 +20,8 @@
                 nixosSystem;
             
             inherit (lib)
-                attrsetFromEachOSEachThemeEachHost
-                listWithPathIfPathExists;
+                attrsetFromEachThemeEachHost
+                optionalPath;
             
             derivationsDirPath = ./derivations;
             overlays = [
@@ -40,24 +40,23 @@
                 )
             ];
 
-            commonDirPath = ./modules/common;
-            osDirPath = ./modules/os;
             themeDirPath = ./themes;
             hostDirPath = ./modules/host;
+            flakeRoot = ./.;
+            dotfiles = flakeRoot + /dotfiles;
         in
         {
-            # Make a NixOS configuration for each combination of os, theme, and host
+            # Make a NixOS configuration for each combination of theme and host
             # so that the appropriate combination may be selected from nixos-rebuild
-            # e.g. nixos-rebuild --flake .#<os>.<theme>.<host>
+            # e.g. nixos-rebuild --flake .#<theme>.<host>
             #
-            # This is possible becuase the attrset keys are in the form of "<os>.<theme>.<host>"
-            # as defined by attrsetFromEachOSEachThemeEachHost.
-            nixosConfigurations = attrsetFromEachOSEachThemeEachHost osDirPath themeDirPath hostDirPath
-                # This function is evaluated for each combination of os, theme, and host.
+            # This is possible becuase the attrset keys are in the form of "<theme>.<host>"
+            # as defined by attrsetFromEachThemeEachHost.
+            nixosConfigurations = attrsetFromEachThemeEachHost themeDirPath hostDirPath
+                # This function is evaluated for each combination of theme and host.
                 # The function will return an appropriate NixOS configuration for that combination.
-                (os: theme: host:
+                (theme: host:
                     let
-                        osPath = osDirPath + "/${os}";
                         hostPath = hostDirPath + "/${host}";
                         
                         themeExpr = import (themeDirPath + "/${theme}.nix");
@@ -78,12 +77,11 @@
                         
                         modules =
                             [
-                                (commonDirPath + /common.nix)
-                                (osPath + /os.nix)
+                                ./modules/configuration.nix
                                 hostModule
                             ]
                             # Import hardware-configuration.nix if it exists.
-                            ++ (listWithPathIfPathExists (hostPath + /hardware-configuration.nix));
+                            ++ (optionalPath (hostPath + /hardware-configuration.nix));
                     in
                     nixosSystem {
                         modules = [{
@@ -110,6 +108,7 @@
 
                                 inherit
                                     os theme host
+                                    flakeRoot dotfiles
                                     hostOptions themeExpr
                                     home-managerLib;
                             };
