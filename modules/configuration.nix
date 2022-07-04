@@ -29,6 +29,9 @@ in
     services.xserver = {
         enable = true;
         layout = "se";
+        displayManager = {
+            gdm.enable = true;
+        };
         windowManager._xmonad = {
             enable = true;
 
