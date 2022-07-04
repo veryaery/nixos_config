@@ -43,6 +43,11 @@ in
         ]; })
     ];
 
+    console = {
+        font = "Fira Code";
+        keyMap = "sv";
+    };
+
     programs = {
         hyprland = {
             enable = true;
