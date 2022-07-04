@@ -91,7 +91,6 @@
                 nixosSystem {
                     modules = [
                         home-manager.nixosModules.home-manager
-                        import ./modules/xmonad.nix
                         {
                             inherit imports;
 

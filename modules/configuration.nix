@@ -20,6 +20,10 @@ let
     font = "Fira Code";
 in
 {
+    imports = [
+        import ./xmonad.nix
+    ];
+
     console.keyMap = "sv-latin1";
 
     services.xserver = {
