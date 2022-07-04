@@ -126,6 +126,10 @@ in
                         '';
                     };
 
+                    ".config/hypr/hyprland.conf" = {
+                        source = dotfiles + /.config/hypr/hyprland.conf;
+                    };
+
                     ".config/xmobar/xmobarrc" = {
                         text =
                             let
