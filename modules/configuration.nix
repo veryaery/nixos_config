@@ -21,7 +21,7 @@ let
 in
 {
     imports = [
-        import ./xmonad.nix
+        ./xmonad.nix
     ];
 
     console.keyMap = "sv-latin1";
