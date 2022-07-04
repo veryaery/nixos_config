@@ -82,7 +82,6 @@
                     
                     imports =
                         [
-                            ./modules/xmonad.nix
                             ./modules/configuration.nix
                             hostModule
                         ]

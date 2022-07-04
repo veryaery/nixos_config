@@ -3,6 +3,7 @@
     flakeRoot,
     dotfiles,
     themeExpr,
+    hostOptions,
     ...
 }@args:
 
@@ -20,6 +21,11 @@ let
     font = "Fira Code";
 in
 {
+    imports = [
+        ./xmonad.nix
+        ./laptop.nix
+    ];
+
     console.keyMap = "sv-latin1";
 
     services.xserver = {
@@ -88,7 +94,10 @@ in
                 pipes
             ];
 
-            extraGroups = [ "wheel" ];
+            extraGroups = [
+                "wheel"
+                "networkmanager"
+            ];
         };
     };
 
@@ -139,10 +148,6 @@ in
                                 [ $hasDuration = 0 ]; and printf ")"
                             end
                         '';
-                    };
-
-                    ".config/hypr/hyprland.conf" = {
-                        source = dotfiles + /.config/hypr/hyprland.conf;
                     };
 
                     ".config/xmobar/xmobarrc" = {
