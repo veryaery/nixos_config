@@ -45,7 +45,7 @@ in
 
     console = {
         font = "Fira Code";
-        keyMap = "sv";
+        keyMap = "sv-latin1";
     };
 
     programs = {
