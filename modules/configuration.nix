@@ -20,30 +20,6 @@ let
     font = "Fira Code";
 in
 {
-    imports = [
-        ./xmonad.nix
-    ];
-
-    services.xserver = {
-        enable = true;
-
-        displayManager = {
-            gdm.enable = true;
-        };
-
-        layout = "se";
-
-        windowManager._xmonad = {
-            enable = true;
-
-            theme =
-                let
-                    text' = readFile (dotfiles + /.xmonad/lib/Theme.hs);
-                    text = replace themeExpr text';
-                in pkgs.writeText "Theme.hs" text;
-        };
-    };
-
     environment.systemPackages = with pkgs; [
         git
         tree
@@ -68,6 +44,10 @@ in
     ];
 
     programs = {
+        hyprland = {
+            enable = true;
+        };
+
         ssh = {
             startAgent = true;
         };

@@ -6,13 +6,18 @@
             url = "github:nix-community/home-manager";
             inputs.nixpkgs.follows = "nixpkgs";
         };
+
+        hyprland = {
+            url = "github:hyperwm/hyprland";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
     };
 
     outputs = { nixpkgs, home-manager, ... }@inputs:
         let
             std = nixpkgs.lib;
             lib = import ./lib std;
-            home-managerLib = home-manager.lib;
+            hmlib= home-manager.lib;
 
             inherit (std)
                 importJSON
@@ -75,7 +80,7 @@
                                 };
                             };
                         
-                        modules =
+                        imports =
                             [
                                 ./modules/configuration.nix
                                 hostModule
@@ -84,35 +89,33 @@
                             ++ (optionalPath (hostPath + /hardware-configuration.nix));
                     in
                     nixosSystem {
-                        modules = [{
-                            imports =
-                                [
-                                    # Import the home-manager NixOS module.
-                                    home-manager.nixosModules.home-manager
-                                    # Define home-manager options.
-                                    {
-                                        home-manager = {
-                                            useGlobalPkgs = true;
-                                            useUserPackages = true;
-                                        };
-                                    }
-                                ] ++
-                                modules;
+                        modules = [
+                            home-manager.nixosModules.home-manager
+                            hyprland.nixosModules.default
+                            {
+                                inherit imports;
 
-                            # Explicitly define localSystem.
-                            nixpkgs = { inherit localSystem; };
+                                # Explicitly define localSystem.
+                                nixpkgs = { inherit localSystem; };
 
-                            _module.args = {
-                                # Explicitly define pkgs.
-                                pkgs = mkForce pkgs;
+                                # Define home-manager options.
+                                home-manager = {
+                                    useGlobalPkgs = true;
+                                    useUserPackages = true;
+                                };
 
-                                inherit
-                                    theme host
-                                    flakeRoot dotfiles
-                                    hostOptions themeExpr
-                                    home-managerLib;
-                            };
-                        }];
+                                _module.args = {
+                                    # Explicitly define pkgs.
+                                    pkgs = mkForce pkgs;
+
+                                    inherit
+                                        theme host
+                                        flakeRoot dotfiles
+                                        hostOptions themeExpr
+                                        hmlib;
+                                };
+                            }
+                        ];
                     }
                 );
         };

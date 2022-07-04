@@ -45,7 +45,6 @@ in
                 manage = "window";
                 name = "xmonad";
                 start = ''
-                    echo "XMONAD STORE PATH: ${xmonad}" | systemd-cat -t xmonad
                     systemd-cat -t xmonad -- ${xmonad}/bin/xmonad &
                     waitPID=$!
                 '';
