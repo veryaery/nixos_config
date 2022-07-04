@@ -19,6 +19,7 @@ pkgs.stdenv.mkDerivation {
         ghc
         pkgs.haskellPackages.xmonad
         pkgs.makeWrapper
+        pkgs.tree
     ];
     preferLocalBuild = true;
     allowSubstitutes = false;
@@ -32,7 +33,7 @@ pkgs.stdenv.mkDerivation {
     buildPhase = ''
         mkdir -p lib
         cat ${theme} > lib/Theme.hs
-
+        
         ghc xmonad.hs -i:lib
     '';
 
@@ -40,6 +41,6 @@ pkgs.stdenv.mkDerivation {
         install -D \
             -t $out/share/man/man1 \
             ${pkgs.haskellPackages.xmonad}/share/man/man1/xmonad.1.gz
-        makeWrapper xmonad $out/bin/xmonad
+        install -D -t $out/bin xmonad
     '';
 }
