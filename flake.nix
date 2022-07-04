@@ -6,18 +6,12 @@
             url = "github:nix-community/home-manager";
             inputs.nixpkgs.follows = "nixpkgs";
         };
-
-        hyprland = {
-            url = "github:hyprwm/hyprland";
-            inputs.nixpkgs.follows = "nixpkgs";
-        };
     };
 
     outputs =
     {
         nixpkgs,
         home-manager,
-        hyprland,
         ...
     }@inputs:
     let
@@ -97,7 +91,7 @@
                 nixosSystem {
                     modules = [
                         home-manager.nixosModules.home-manager
-                        hyprland.nixosModules.default
+                        import ./modules/xmonad.nix
                         {
                             inherit imports;
 

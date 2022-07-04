@@ -20,6 +20,22 @@ let
     font = "Fira Code";
 in
 {
+    console.keyMap = "sv-latin1";
+
+    services.xserver = {
+        enable = true;
+        layout = "se";
+        windowManager._xmonad = {
+            enable = true;
+
+            theme =
+                let
+                    text' = readFile (dotfiles + /.xmonad/lib/Theme.hs);
+                    text = replace themeExpr text';
+                in pkgs.writeText "Theme.hs" text;
+        };
+    };
+
     environment.systemPackages = with pkgs; [
         git
         tree
@@ -43,16 +59,7 @@ in
         ]; })
     ];
 
-    console = {
-        font = "Fira Code";
-        keyMap = "sv-latin1";
-    };
-
     programs = {
-        hyprland = {
-            enable = true;
-        };
-
         ssh = {
             startAgent = true;
         };
