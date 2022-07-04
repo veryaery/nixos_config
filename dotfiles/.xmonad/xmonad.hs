@@ -34,35 +34,35 @@ config' = def
         focusedBorderColor = themePrimary
     }
 
--- prettyPrint :: PP
--- prettyPrint = def
---     {
---         ppCurrent =
---             xmobarBorder "Bottom" themePrimary 2
---             . wrapPadding
---             . colorPrimary,
---         ppVisible = wrapPadding,
---         ppVisibleNoWindows = Just wrapPadding,
---         ppHidden = wrapPadding,
---         ppHiddenNoWindows = wrapPadding,
---         ppWsSep = "",
+prettyPrint :: PP
+prettyPrint = def
+    {
+        ppCurrent =
+            xmobarBorder "Bottom" themePrimary 2
+            . wrapPadding
+            . colorPrimary,
+        ppVisible = wrapPadding,
+        ppVisibleNoWindows = Just wrapPadding,
+        ppHidden = wrapPadding,
+        ppHiddenNoWindows = wrapPadding,
+        ppWsSep = "",
 
---         ppTitle = colorPrimary . shorten 64,
+        ppTitle = colorPrimary . shorten 64,
 
---         ppOrder = \(workspaces:_:window:_) -> [ workspaces, window ],
---         ppSep = " "
---     }
---         where
---             wrapPadding = wrap " " " "
---             colorPrimary = xmobarColor themePrimary ""
+        ppOrder = \(workspaces:_:window:_) -> [ workspaces, window ],
+        ppSep = " "
+    }
+        where
+            wrapPadding = wrap " " " "
+            colorPrimary = xmobarColor themePrimary ""
 
 main :: IO ()
 main =
     xmonad
     . ewmhFullscreen
     . ewmh
---     . docks
---     . withSB statusBarConfig
+    . docks
+    . withSB statusBarConfig
     $ config'
---         where
---             statusBarConfig = statusBarProp "xmobar" (pure prettyPrint)
+        where
+            statusBarConfig = statusBarProp "xmobar" (pure prettyPrint)
