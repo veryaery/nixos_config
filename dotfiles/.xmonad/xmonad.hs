@@ -15,8 +15,8 @@ layout' = avoidStruts . spacing' $ tall ||| Full
     where
         tall = Tall 1 (3 / 100) (1 / 2)
 
-        screenBorder = 16
-        windowBorder = 8
+        screenBorder = 32
+        windowBorder = 16
         spacing' =
             spacingRaw
             True

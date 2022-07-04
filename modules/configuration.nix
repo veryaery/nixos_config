@@ -209,6 +209,7 @@ in
                                     program: "${fish}/bin/fish"
                                 
                                 font:
+                                    size: 6
                                     normal:
                                         family: "${font}"
                                     bold:
