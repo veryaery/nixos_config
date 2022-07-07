@@ -20,7 +20,12 @@ let
     
     commands =
         mapAttrsToList
-        (path: sub: "sed -i ${sedScript sub} ${path}")
+        (path: sub:
+            ''
+                mkdir -p $(dirname $tmp/${path})
+                sed ${sedScript sub} ${path} > $tmp/${path}
+            ''
+        )
         subs;
 in
 pkgs.stdenv.mkDerivation {
@@ -40,6 +45,7 @@ pkgs.stdenv.mkDerivation {
     buildPhase = ''
         ${pkgs.tree}/bin/tree -a
         ${concatStringsSep "\n" commands}
+        ${pkgs.tree}/bin/tree -a $tmp
     '';
 
     installPhase = ''
