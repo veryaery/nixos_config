@@ -42,7 +42,8 @@ pkgs.runCommandLocal
     ${concatStringsSep "\n" commands}
 
     mkdir -p $out
-
+    echo ${escapeBREScript}
+    echo ${escapeSEDScript}
     escapeSrc=$(echo $src | sed ${escapeBREScript} | sed ${escapeSEDScript})
     for srcPath in $(find $src -type f); do
         outPath=$out/$(echo $srcPath | sed 's/^'$escapeSrc'\///')
