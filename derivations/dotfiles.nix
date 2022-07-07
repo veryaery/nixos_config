@@ -34,17 +34,17 @@ pkgs.stdenv.mkDerivation {
     allowSubstitutes = false;
 
     unpackPhase = ''
-        cp -r -t . $src
+        cp -r $src/. .
     '';
 
     buildPhase = ''
-        ${pkgs.tree}/bin/tree
+        ${pkgs.tree}/bin/tree -a
         ${concatStringsSep "\n" commands}
     '';
 
     installPhase = ''
         mkdir -p $out
-        cp -r -t $out .
-        ${pkgs.tree}/bin/tree $out
+        cp -r . $out
+        ${pkgs.tree}/bin/tree $out -a
     '';
 }
