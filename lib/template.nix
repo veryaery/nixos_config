@@ -39,6 +39,8 @@ let
     
     sedEscape = replaceStrings [ "/" ] [ "\\/" ];
 
+    bashEscape = replaceStrings [ "'" ] [ "'\\''" ];
+
     fishEscape =
         replaceStrings
         # \"         "      \$      $     \
@@ -70,7 +72,7 @@ in
             froms = map (name: "<${name}>") flatNamesValues.names;
         in replaceStrings froms flatNamesValues.values;
     
-    sedCommand = attrset:
+    sedScript = attrset:
         let
             flat = flattenAttrset attrset;
             commands =
@@ -83,5 +85,5 @@ in
                 )
                 flat;
             script = concatStringsSep " ; " commands;
-        in "sed ${fishString script}";
+        in bashEscape script;
 }

@@ -16,11 +16,11 @@ let
         mapAttrsToList;
 
     inherit (lib)
-        sedCommand;
+        sedScript;
     
     commands =
         mapAttrsToList
-        (path: sub: "${sedCommand sub} -i ${path} > $out/${path}")
+        (path: sub: "sed -i ${sedScript sub} ${path}")
         subs;
 in
 pkgs.stdenv.mkDerivation {
@@ -34,11 +34,10 @@ pkgs.stdenv.mkDerivation {
         cp -r -t . $src
     '';
 
-    buildPhase = ''
-        mkdir -p $out
-        cp -r -t $out $src
-        ${concatStringsSep "\n" commands}
-    '';
+    buildPhase = concatStringsSep "\n" commands;
 
-    installPhase = "";
+    installPhase = ''
+        mkdir -p $out
+        cp -r -t $out .
+    '';
 }
