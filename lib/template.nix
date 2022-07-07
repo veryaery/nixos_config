@@ -48,7 +48,7 @@ let
     
     fishString = s: "\"${fishEscape s}\"";
 
-    sedCommand = attrset: file:
+    sedCommand = attrset:
         let
             flat = flattenAttrset attrset;
             commands =
