@@ -14,6 +14,11 @@ let
     inherit (std.lists)
         foldr;
 
+    inherit (import ./escape.nix std)
+        bashString
+        breEscape
+        sedEscape;
+
     flattenAttrset' = path: attrset:
         foldr
         (name: z:
@@ -30,27 +35,6 @@ let
         (attrNames attrset);
 
     flattenAttrset = flattenAttrset' null;
-
-    # https://unix.stackexchange.com/questions/32907/what-characters-do-i-need-to-escape-when-using-sed-in-a-sh-script
-    breEscape = 
-        replaceStrings
-        [ "$"   "."   "*"   "^"   "["   "\\"   ]
-        [ "\\$" "\\." "\\*" "\\^" "\\[" "\\\\" ];
-    
-    sedEscape = replaceStrings [ "/" ] [ "\\/" ];
-
-    bashEscape = replaceStrings [ "'" ] [ "'\\''" ];
-
-    bashString = s: "'${bashEscape s}'";
-
-    fishEscape =
-        replaceStrings
-        # \"         "      \$      $     \
-        # \\\"       \"     \\$     \$    \\
-        [ "\\\""     "\""   "\\$"   "$"   "\\"   ]
-        [ "\\\\\\\"" "\\\"" "\\\\$" "\\$" "\\\\" ];
-    
-    fishString = s: "\"${fishEscape s}\"";
 
     attrNamesValues = attrset:
         foldr

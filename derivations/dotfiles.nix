@@ -10,51 +10,45 @@ let
     std = pkgs.lib;
 
     inherit (builtins)
-        concatStringsSep;
+        concatStringsSep
+        toString;
 
     inherit (std.attrsets)
         mapAttrsToList;
 
     inherit (lib)
+        breEscape
+        sedEscape
         sedScript;
     
+    escapeSrc = sedEscape (breEscape (toString dirPath));
     commands =
         mapAttrsToList
         (path: sub:
             ''
-                mkdir -p $(dirname sed/${path})
-                sed ${sedScript sub} dotfiles/${path} > sed/${path}
+                srcPath=$src/${path}
+                outPath=$out/${path}
+                mkdir -p $(dirname $outPath)
+                sed ${sedScript sub} $srcPath > $outPath
             ''
         )
         subs;
 in
-pkgs.stdenv.mkDerivation {
-    name = "dotfiles";
-
+pkgs.runCommandLocal
+"dotfiles"
+{
     src = dirPath;
-    buildInputs = with pkgs; [
-        tree
-    ];
-    preferLocalBuild = true;
-    allowSubstitutes = false;
-
-    unpackPhase = ''
-        mkdir dotfiles 
-        cp -r $src/. dotfiles
-    '';
-
-    buildPhase = concatStringsSep "\n" commands;
-
-    installPhase = ''
-        mkdir -p $out
-        cp -r sed/. $out
-        for path in $(find dotfiles -type f); do
-            shortPath=$(echo $path | sed "s/^dotfiles\///")
-            outPath=$out/$shortPath
-            if [ ! -e $outPath ]; then
-                mkdir -p $(dirname outPath)
-                cp $path $outPath
-            fi
-        done
-    '';
 }
+''
+    ${concatStringsSep "\n" commands}
+
+    mkdir -p $out
+
+    for srcPath in $(find $src -type f); do
+        outPath=$out/$(echo $srcPath | sed "s/^${escapeSrc}\///")
+        if [ ! -e $outPath ]; then
+            mkdir -p $(dirname outPath)
+            cp $srcPath $outPath
+        fi
+    done
+''

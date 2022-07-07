@@ -6,3 +6,10 @@ create script that creates symlinks
 }
 ^ each theme-reactive file is already in here
 create symlink for each of these files
+
+remove all files in .prevtheme
+remove parent directories if they are empty
+create symlinks for all files in dotfiles store
+
+create .prevtheme
+add all file paths to .prevtheme

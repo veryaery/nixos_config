@@ -1,16 +1,20 @@
 std:
 
-let
-    lib = import ./lib.nix std;
-    template = import ./template.nix std;
-in
 {
-    inherit (lib)
+    inherit (import ./lib.nix std)
         attrsetFromEachThemeEachHost
         fishTerminalColor
         optionalPath;
 
-    inherit (template)
+    inherit (import ./escape.nix std)
+        bashEscape
+        bashString
+        breEscape
+        fishEscape
+        fishString
+        sedEscape;
+
+    inherit (import ./template.nix std)
         replace
         sedScript;
 }
