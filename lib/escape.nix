@@ -33,9 +33,9 @@ in
 
     escapeBREScript =
         let
-            commands = map (s: "s/\\${s}/\\\\${s}/g") [
+            commands = (map (s: "s/\\${s}/\\\\${s}/g") [
                 "$" "." "*" "^" "["
-            ] + [ "s/\\\\/\\\\\\\\/g" ];
+            ]) + [ "s/\\\\/\\\\\\\\/g" ];
         in bashString (concatStringsSep " ; " commands);
 
     sedEscape = replaceStrings [ "/" ] [ "\\/" ];
