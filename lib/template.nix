@@ -31,6 +31,38 @@ let
 
     flattenAttrset = flattenAttrset' null;
 
+    # https://unix.stackexchange.com/questions/32907/what-characters-do-i-need-to-escape-when-using-sed-in-a-sh-script
+    breEscape = 
+        replaceStrings
+        [ "$"   "."   "*"   "^"   "["   "\\"   ]
+        [ "\\$" "\\." "\\*" "\\^" "\\[" "\\\\" ];
+    
+    sedEscape = replaceStrings [ "/" ] [ "\\/" ];
+
+    fishEscape =
+        replaceStrings
+        # \"         "      \$      $     \
+        # \\\"       \"     \\$     \$    \\
+        [ "\\\""     "\""   "\\$"   "$"   "\\"   ]
+        [ "\\\\\\\"" "\\\"" "\\\\$" "\\$" "\\\\" ];
+    
+    fishString = s: "\"${fishEscape s}\"";
+
+    sedCommand = attrset: file:
+        let
+            flat = flattenAttrset attrset;
+            commands =
+                mapAttrsToList
+                (from: to:
+                    let
+                        escapeFrom = sedEscape (breEscape "<${from}>");
+                        escapeTo = sedEscape to;
+                    in "s/${escapeFrom}/${escapeTo}/g"
+                )
+                flat;
+            script = concatStringsSep " ; " commands;
+        in "sed ${fishString script}";
+
     attrNamesValues = attrset:
         foldr
         (name: z:
@@ -47,9 +79,11 @@ let
         (attrNames attrset);
 in
 {
+    inherit breEscape sedEscape fishEscape fishString sedCommand;
+
     replace = attrset:
         let
-            x = attrNamesValues (flattenAttrset attrset);
-            names = map (name: "<${name}>") x.names;
-        in replaceStrings names x.values;
+            flatNamesValues = attrNamesValues (flattenAttrset attrset);
+            froms = map (name: "<${name}>") flatNamesValues.names;
+        in replaceStrings froms flatNamesValues.values;
 }

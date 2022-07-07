@@ -1,0 +1,8 @@
+generate store paths for each theme
+create script that creates symlinks
+
+{
+    ".xmonad/lib/Theme.hs" = themeExpr;
+}
+^ each theme-reactive file is already in here
+create symlink for each of these files
