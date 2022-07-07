@@ -17,11 +17,10 @@ let
         mapAttrsToList;
 
     inherit (lib)
-        breEscape
-        sedEscape
+        escapeBREScript
+        escapeSEDScript
         sedScript;
     
-    escapeSrc = sedEscape (breEscape (toString dirPath));
     commands =
         mapAttrsToList
         (path: sub:
@@ -44,8 +43,9 @@ pkgs.runCommandLocal
 
     mkdir -p $out
 
+    escapeSrc=$(echo $src | sed ${escapeBREScript} | sed ${escapeSEDScript})
     for srcPath in $(find $src -type f); do
-        outPath=$out/$(echo $srcPath | sed "s/^${escapeSrc}\///")
+        outPath=$out/$(echo $srcPath | sed 's/^'$escapeSrc'\///')
         if [ ! -e $outPath ]; then
             mkdir -p $(dirname outPath)
             cp $srcPath $outPath

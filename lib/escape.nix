@@ -2,6 +2,8 @@ std:
 
 let
     inherit (builtins)
+        concatStringsSep
+        map
         replaceStrings;
 
     bashEscape = replaceStrings [ "'" ] [ "'\\''" ];
@@ -12,11 +14,16 @@ let
         # \\\"       \"     \\$     \$    \\
         [ "\\\""     "\""   "\\$"   "$"   "\\"   ]
         [ "\\\\\\\"" "\\\"" "\\\\$" "\\$" "\\\\" ];
+
+    bashString = s: "'${bashEscape s}'";
+    fishString = s: "\"${fishEscape s}\"";
 in
 {
     inherit
         bashEscape
-        fishEscape;
+        bashString
+        fishEscape
+        fishString;
 
     # https://unix.stackexchange.com/questions/32907/what-characters-do-i-need-to-escape-when-using-sed-in-a-sh-script
     breEscape = 
@@ -24,8 +31,14 @@ in
         [ "$"   "."   "*"   "^"   "["   "\\"   ]
         [ "\\$" "\\." "\\*" "\\^" "\\[" "\\\\" ];
 
+    escapeBREScript =
+        let
+            commands = map (s: "s/\\${s}/\\${s}/g") [
+                "$" "." "*" "^" "[" "\\"
+            ];
+        in bashString (concatStringsSep " ; " commands);
+
     sedEscape = replaceStrings [ "/" ] [ "\\/" ];
 
-    bashString = s: "'${bashEscape s}'";
-    fishString = s: "\"${fishEscape s}\"";
+    escapeSEDScript = bashString "s/\\//\\//g";
 }
