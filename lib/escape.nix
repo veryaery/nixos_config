@@ -33,12 +33,12 @@ in
 
     escapeBREScript =
         let
-            commands = map (s: "s/\\${s}/\\${s}/g") [
+            commands = map (s: "s/\\${s}/\\\\${s}/g") [
                 "$" "." "*" "^" "[" "\\"
             ];
         in bashString (concatStringsSep " ; " commands);
 
     sedEscape = replaceStrings [ "/" ] [ "\\/" ];
 
-    escapeSEDScript = bashString "s/\\//\\//g";
+    escapeSEDScript = bashString "s/\\//\\\\//g";
 }
