@@ -48,21 +48,6 @@ let
     
     fishString = s: "\"${fishEscape s}\"";
 
-    sedCommand = attrset:
-        let
-            flat = flattenAttrset attrset;
-            commands =
-                mapAttrsToList
-                (from: to:
-                    let
-                        escapeFrom = sedEscape (breEscape "<${from}>");
-                        escapeTo = sedEscape to;
-                    in "s/${escapeFrom}/${escapeTo}/g"
-                )
-                flat;
-            script = concatStringsSep " ; " commands;
-        in "sed ${fishString script}";
-
     attrNamesValues = attrset:
         foldr
         (name: z:
@@ -79,11 +64,24 @@ let
         (attrNames attrset);
 in
 {
-    inherit breEscape sedEscape fishEscape fishString sedCommand;
-
     replace = attrset:
         let
             flatNamesValues = attrNamesValues (flattenAttrset attrset);
             froms = map (name: "<${name}>") flatNamesValues.names;
         in replaceStrings froms flatNamesValues.values;
+    
+    sedCommand = attrset:
+        let
+            flat = flattenAttrset attrset;
+            commands =
+                mapAttrsToList
+                (from: to:
+                    let
+                        escapeFrom = sedEscape (breEscape "<${from}>");
+                        escapeTo = sedEscape to;
+                    in "s/${escapeFrom}/${escapeTo}/g"
+                )
+                flat;
+            script = concatStringsSep " ; " commands;
+        in "sed ${fishString script}";
 }
