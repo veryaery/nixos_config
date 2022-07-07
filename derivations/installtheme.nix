@@ -6,33 +6,22 @@ pkgs:
 }:
 
 let
-    std = pkgs.lib;
-
-    inherit (builtins)
-        concatStringsSep;
-
-    inherit (std.attrsets)
-        mapAttrsToList;
-    
     inherit (lib)
         escapeBREScriptFish
         escapeSEDScriptFish;
-
-    commands =
-        mapAttrsToList
-        (theme: dotfiles: "set -l __theme_${theme} ${dotfiles}")
-        themes;
 in
 pkgs.writeScriptBin
 "installtheme"
 ''
     #!${pkgs.fish}/bin/fish
 
-    ${concatStringsSep "\n" commands}
-
     set -l theme $argv[1]
-    set -l var __theme_$theme
-    set -l dotfiles $$var
+    set -l file ${themes}/$theme
+    if [ ! -e $file ]
+        echo $theme: Invalid theme.
+        return 1
+    end
+    set -l dotfiles $(cat $file)
 
     set -l files $(find $dotfiles -type f)
     set -l escapeDotfiles $(echo $dotfiles | sed ${escapeBREScriptFish} | sed ${escapeSEDScriptFish})
