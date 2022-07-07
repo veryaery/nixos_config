@@ -46,6 +46,9 @@ pkgs.runCommandLocal
     escapeSrc=$(echo $src | sed ${escapeBREScript} | sed ${escapeSEDScript})
     for srcPath in $(find $src -type f); do
         outPath=$out/$(echo $srcPath | sed 's/^'$escapeSrc'\///')
+        echo srcPath = $srcPath
+        echo outPath = $outPath
+        echo sed 's/^'$escapeSrc'\///'
         if [ ! -e $outPath ]; then
             mkdir -p $(dirname outPath)
             cp $srcPath $outPath
