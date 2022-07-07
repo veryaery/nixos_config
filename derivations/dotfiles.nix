@@ -17,8 +17,8 @@ let
         mapAttrsToList;
 
     inherit (lib)
-        escapeBREScript
-        escapeSEDScript
+        escapeBREScriptBash
+        escapeSEDScriptBash
         sedScript;
     
     commands =
@@ -42,14 +42,10 @@ pkgs.runCommandLocal
     ${concatStringsSep "\n" commands}
 
     mkdir -p $out
-    echo ${escapeBREScript}
-    echo ${escapeSEDScript}
-    escapeSrc=$(echo $src | sed ${escapeBREScript} | sed ${escapeSEDScript})
+
+    escapeSrc=$(echo $src | sed ${escapeBREScriptBash} | sed ${escapeSEDScriptBash})
     for srcPath in $(find $src -type f); do
         outPath=$out/$(echo $srcPath | sed "s/^$escapeSrc\///")
-        echo srcPath = $srcPath
-        echo outPath = $outPath
-        echo sed 's/^'$escapeSrc'\///'
         if [ ! -e $outPath ]; then
             mkdir -p $(dirname outPath)
             cp $srcPath $outPath

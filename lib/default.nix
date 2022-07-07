@@ -10,8 +10,10 @@ std:
         bashEscape
         bashString
         breEscape
-        escapeBREScript
-        escapeSEDScript
+        escapeBREScriptBash
+        escapeBREScriptFish
+        escapeSEDScriptBash
+        escapeSEDScriptFish
         fishEscape
         fishString
         sedEscape;

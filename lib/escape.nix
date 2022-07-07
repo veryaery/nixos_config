@@ -17,6 +17,15 @@ let
 
     bashString = s: "'${bashEscape s}'";
     fishString = s: "\"${fishEscape s}\"";
+
+    escapeBREScript =
+        let
+            commands = (map (s: "s/\\${s}/\\\\${s}/g") [
+                "$" "." "*" "^" "["
+            ]) ++ [ "s/\\\\/\\\\\\\\/g" ];
+        in concatStringsSep " ; " commands;
+
+    escapeSEDScript = "s/\\//\\\\\\//g";
 in
 {
     inherit
@@ -31,14 +40,11 @@ in
         [ "$"   "."   "*"   "^"   "["   "\\"   ]
         [ "\\$" "\\." "\\*" "\\^" "\\[" "\\\\" ];
 
-    escapeBREScript =
-        let
-            commands = (map (s: "s/\\${s}/\\\\${s}/g") [
-                "$" "." "*" "^" "["
-            ]) ++ [ "s/\\\\/\\\\\\\\/g" ];
-        in bashString (concatStringsSep " ; " commands);
-
     sedEscape = replaceStrings [ "/" ] [ "\\/" ];
 
-    escapeSEDScript = bashString "s/\\//\\\\\\//g";
+    escapeBREScriptBash = bashString escapeBREScript;
+    escapeBREScriptFish = fishString escapeBREScript;
+
+    escapeSEDScriptBash = bashString escapeSEDScript;
+    escapeSEDScriptFish = fishString escapeSEDScript;
 }
