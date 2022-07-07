@@ -41,6 +41,8 @@ let
 
     bashEscape = replaceStrings [ "'" ] [ "'\\''" ];
 
+    bashString = s: "'${bashEscape s}'";
+
     fishEscape =
         replaceStrings
         # \"         "      \$      $     \
@@ -85,5 +87,5 @@ in
                 )
                 flat;
             script = concatStringsSep " ; " commands;
-        in bashEscape script;
+        in bashString script;
 }
