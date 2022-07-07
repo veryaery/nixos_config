@@ -26,7 +26,10 @@ in
 pkgs.stdenv.mkDerivation {
     name = "dotfiles";
 
-    src = dirPath; 
+    src = dirPath;
+    buildInputs = with pkgs; [
+        tree
+    ];
     preferLocalBuild = true;
     allowSubstitutes = false;
 
@@ -34,10 +37,14 @@ pkgs.stdenv.mkDerivation {
         cp -r -t . $src
     '';
 
-    buildPhase = concatStringsSep "\n" commands;
+    buildPhase = ''
+        ${pkgs.tree}/bin/tree
+        ${concatStringsSep "\n" commands}
+    '';
 
     installPhase = ''
         mkdir -p $out
         cp -r -t $out .
+        ${pkgs.tree}/bin/tree $out
     '';
 }
