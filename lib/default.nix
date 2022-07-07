@@ -11,5 +11,6 @@ in
         optionalPath;
 
     inherit (template)
-        replace;
+        replace
+        sedScript;
 }
