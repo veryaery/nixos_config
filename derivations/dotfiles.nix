@@ -22,8 +22,8 @@ let
         mapAttrsToList
         (path: sub:
             ''
-                mkdir -p $(dirname out/${path})
-                sed ${sedScript sub} dotfiles/${path} > out/${path}
+                mkdir -p $(dirname sed/${path})
+                sed ${sedScript sub} dotfiles/${path} > sed/${path}
             ''
         )
         subs;
@@ -43,22 +43,18 @@ pkgs.stdenv.mkDerivation {
         cp -r $src/. dotfiles
     '';
 
-    buildPhase = ''
-        ${concatStringsSep "\n" commands}
-        ${pkgs.tree}/bin/tree -a
-    '';
+    buildPhase = concatStringsSep "\n" commands;
 
     installPhase = ''
         mkdir -p $out
-        cp -r out/. $out
-        for path in $(find -type f ./dotfiles); do
-            shortPath=$(echo $path | sed "s/^\.\/dotfiles\///")
+        cp -r sed/. $out
+        for path in $(find dotfiles -type f); do
+            shortPath=$(echo $path | sed "s/^dotfiles\///")
             outPath=$out/$shortPath
             if [ ! -e $outPath ]; then
                 mkdir -p $(dirname outPath)
                 cp $path $outPath
             fi
         done
-        ${pkgs.tree}/bin/tree $out -a
     '';
 }
