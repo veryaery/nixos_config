@@ -4,7 +4,8 @@ std:
     inherit (import ./lib.nix std)
         attrsetFromEachThemeEachHost
         fishTerminalColor
-        optionalPath;
+        optionalPath
+        readThemes;
 
     inherit (import ./escape.nix std)
         bashEscape

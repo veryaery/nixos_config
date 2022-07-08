@@ -27,6 +27,7 @@
         inherit (lib)
             attrsetFromEachThemeEachHost
             optionalPath;
+            readThemes;
         
         derivationsDirPath = ./derivations;
         overlays = [
@@ -39,16 +40,24 @@
 
             (self: super:
                 {
+                    xmonad =
+                        import (derivationsDirPath + /xmonad.nix) super;
+                    dotfiles =
+                        import (derivationsDirPath + /dotfiles.nix) super;
+                    themes =
+                        import (derivationsDirPath + /themes.nix) super;
+                    installtheme =
+                        import (derivationsDirPath + /installtheme.nix) super;
                     fira-code-with-features =
                         import (derivationsDirPath + /fira-code-with-features.nix) super;
                 }
             )
         ];
 
-        themeDirPath = ./themes;
         hostDirPath = ./modules/host;
         flakeRoot = ./.;
-        dotfiles = flakeRoot + /dotfiles;
+
+        themes = readThemes ./themes;
     in
     {
         # Make a NixOS configuration for each combination of theme and host
@@ -57,14 +66,14 @@
         #
         # This is possible becuase the attrset keys are in the form of "<theme>.<host>"
         # as defined by attrsetFromEachThemeEachHost.
-        nixosConfigurations = attrsetFromEachThemeEachHost themeDirPath hostDirPath
+        nixosConfigurations = attrsetFromEachThemeEachHost themes hostDirPath
             # This function is evaluated for each combination of theme and host.
             # The function will return an appropriate NixOS configuration for that combination.
             (theme: host:
                 let
                     hostPath = hostDirPath + "/${host}";
                     
-                    themeExpr = import (themeDirPath + "/${theme}.nix");
+                    themeExpr = themes."${theme}";
 
                     hostExpr = import (hostPath + /host.nix);
                     hostOptions = hostExpr.options;
@@ -108,9 +117,10 @@
                                 pkgs = mkForce pkgs;
 
                                 inherit
-                                    theme host
-                                    flakeRoot dotfiles
-                                    hostOptions themeExpr
+                                    themes theme themeExpr
+                                    host
+                                    flakeRoot
+                                    hostOptions
                                     hmlib;
                             };
                         }

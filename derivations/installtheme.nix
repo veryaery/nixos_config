@@ -22,12 +22,30 @@ pkgs.writeScriptBin
         return 1
     end
     set -l dotfiles $(cat $file)
-
-    set -l files $(find $dotfiles -type f)
     set -l escapeDotfiles $(echo $dotfiles | sed ${escapeBREScriptFish} | sed ${escapeSEDScriptFish})
 
+    if [ -e ~/.prevtheme ]
+        set -l prevFiles $(cat ~/.prevtheme)
+        for file in $prevFiles
+            set -l dir $(dirname $file)
+            rm $file
+            echo Remobed regular file $file
+            if [ $dir = ~ && -z "$(ls -A $dir)" ]
+                rm -r $dir
+                echo Removed directory $dir
+            end
+        end
+
+        truncate -s 0 ~/.prevtheme
+    end
+
+    set -l files $(find $dotfiles -type f)
     for file in $files
         set -l shortPath $(echo $file | sed "s/^$escapeDotfiles\///")
+        ln -s $file ~/$shortPath
+        echo $shortPath >> ~/.prevtheme
         echo $shortPath
     end
+
+    echo $theme: Theme installed.
 ''

@@ -3,6 +3,7 @@ std:
 let
     inherit (builtins)
         attrNames
+        baseNameOf
         concatStringsSep
         elemAt
         map
@@ -36,8 +37,9 @@ let
         []
         lsta;
 
-    # withoutFileExtension :: string -> string
-    withoutFileExtension = s: concatStringsSep "." (init (splitString "." s));
+    # basenameWithoutExtention :: string -> string 
+    basenameWithoutExtention = s:
+        concatStringsSep "." (init (splitString "." (baseNameOf s)));
 in
 {
     # A list containing the path if the path exists.
@@ -45,14 +47,14 @@ in
     # optionalPath :: path -> [ path ]
     optionalPath = path: if pathExists path then [ path ] else [];
 
-    # Reads the theme and host directories
+    # Reads the host directory
     # then returns an attrset with an attr for each combination of theme and host.
     # Each attrset key is the form of "<theme>.<host>".
     # Each attrset valye is the returned value of f theme host.
-    # attrsetFromEachThemeEachHost :: path -> path -> string -> string -> a -> Map string a
-    attrsetFromEachThemeEachHost = themeDirPath: hostDirPath: f:
+    # attrsetFromEachThemeEachHost :: attrset -> path -> string -> string -> a -> Map string a
+    attrsetFromEachThemeEachHost = themes: hostDirPath: f:
         let
-            themeList = map withoutFileExtension (attrNames (readDir themeDirPath));
+            themeList = attrNames themes;
             hostList = attrNames (readDir hostDirPath);
 
             combinations = cartesianProduct themeList hostList;
@@ -77,4 +79,21 @@ in
             "br" + toLower (substring 6 (stringLength color) color)
         else
             color;
+
+    # readThemes :: path -> Map string attrset
+    readThemes = themeDirPath:
+        let
+            files = readDir themeDirPath;
+        in
+            foldr
+            (file: z:
+                let
+                    theme = basenameWithoutExtention file;
+                    themeExpr = import (themeDirPath + file);
+
+                    x = { "${theme}" = themeExpr; };
+                in z // x
+            )
+            {}
+            files;
 }
