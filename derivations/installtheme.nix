@@ -27,10 +27,10 @@ pkgs.writeScriptBin
     if [ -e ~/.prevtheme ]
         set -l prevFiles $(cat ~/.prevtheme)
         for file in $prevFiles
-            set -l dir $(dirname $file)
-            rm $file
-            echo Remobed regular file $file
-            if [ $dir = ~ && -z "$(ls -A $dir)" ]
+            set -l dir $(dirname ~/$file)
+            rm ~/$file
+            echo Removed regular file $file
+            if [ $dir != ~ ] && [ -z "$(ls -A $dir)" ]
                 rm -r $dir
                 echo Removed directory $dir
             end
@@ -42,9 +42,10 @@ pkgs.writeScriptBin
     set -l files $(find $dotfiles -type f)
     for file in $files
         set -l shortPath $(echo $file | sed "s/^$escapeDotfiles\///")
+        mkdir -p $(dirname ~/$shortPath)
         ln -s $file ~/$shortPath
         echo $shortPath >> ~/.prevtheme
-        echo $shortPath
+        echo Made symlink $shortPath
     end
 
     echo $theme: Theme installed.

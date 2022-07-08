@@ -1,7 +1,7 @@
 {
     pkgs,
     theme,
-    poopthemes,
+    themes,
     flakeRoot,
     ...
 }@args:
@@ -47,8 +47,8 @@ let
         {
             themes =
                 mapAttrs
-                (name: value: themeDotfiles value)
-                poopthemes;
+                (_: themeDotfiles)
+                themes;
         };
     
     installtheme =

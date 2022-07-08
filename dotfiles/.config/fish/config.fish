@@ -1,5 +1,3 @@
-set -l theme_primary "<primary>"
-
 # Remove greeting.
 set -U fish_greeting
 
@@ -9,7 +7,7 @@ function fish_prompt
     printf "\n"
     printf "%s\n" (prompt_pwd -d 0)
     printf "%sλ%s " \
-        (set_color -o $theme_primary) \
+        (set_color -o "<primary>") \
         (set_color normal)
 end
 
@@ -25,9 +23,7 @@ function fish_right_prompt
 
     [ $hasDuration = 0 ]; and printf " ("
     if [ $s -gt 0 ]
-        printf "%s$s s%s" \
-            (set_color $theme_primary) \
-            (set_color normal)
+        printf "$s s"
         [ $ms -gt 0 ]; and printf " "
     end
     [ $ms -gt 0 ]; and printf "$ms ms"
