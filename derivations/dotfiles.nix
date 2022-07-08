@@ -47,7 +47,7 @@ pkgs.runCommandLocal
     for srcPath in $(find $src -type f); do
         outPath=$out/$(echo $srcPath | sed "s/^$escapeSrc\///")
         if [ ! -e $outPath ]; then
-            mkdir -p $(dirname outPath)
+            mkdir -p $(dirname $outPath)
             cp $srcPath $outPath
         fi
     done

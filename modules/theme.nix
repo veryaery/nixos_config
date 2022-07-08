@@ -1,7 +1,7 @@
 {
     pkgs,
-    themes,
     theme,
+    poopthemes,
     flakeRoot,
     ...
 }@args:
@@ -11,7 +11,8 @@ let
     lib = import (flakeRoot + /lib) std;
 
     inherit (builtins)
-        mapAttrs;
+        mapAttrs
+        toString;
 
     inherit (lib)
         fishTerminalColor;
@@ -24,7 +25,7 @@ let
                 themeExpr //
                 {
                     inherit font; 
-                    fish = pkgs.fish;
+                    fish = toString pkgs.fish;
                 };
             ".config/fish/config.fish" = {
                 primary = fishTerminalColor themeExpr.primaryTerminalColor;
@@ -46,8 +47,8 @@ let
         {
             themes =
                 mapAttrs
-                (_: themeDotfiles)
-                themes;
+                (name: value: themeDotfiles value)
+                poopthemes;
         };
     
     installtheme =

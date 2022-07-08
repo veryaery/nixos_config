@@ -26,7 +26,7 @@
         
         inherit (lib)
             attrsetFromEachThemeEachHost
-            optionalPath;
+            optionalPath
             readThemes;
         
         derivationsDirPath = ./derivations;
@@ -115,7 +115,7 @@
                             _module.args = {
                                 # Explicitly define pkgs.
                                 pkgs = mkForce pkgs;
-
+                                poopthemes = themes;
                                 inherit
                                     themes theme themeExpr
                                     host

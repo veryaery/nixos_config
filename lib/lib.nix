@@ -83,13 +83,13 @@ in
     # readThemes :: path -> Map string attrset
     readThemes = themeDirPath:
         let
-            files = readDir themeDirPath;
+            files = attrNames (readDir themeDirPath);
         in
             foldr
             (file: z:
                 let
                     theme = basenameWithoutExtention file;
-                    themeExpr = import (themeDirPath + file);
+                    themeExpr = import (themeDirPath + "/${file}");
 
                     x = { "${theme}" = themeExpr; };
                 in z // x
