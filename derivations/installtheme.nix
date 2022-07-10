@@ -72,7 +72,7 @@ pkgs.writeScriptBin
 
     set -l files $(find $dotfiles -type f)
     for dotfile in $files
-        set -l file $(string split -n -m1 $dotfiles $dotfile)
+        set -l file $(string split -n -m1 $dotfiles/ $dotfile)
         set -l homefile ~/$file
 
         set -l segments $(string split / $(dirname $file))
@@ -105,6 +105,8 @@ pkgs.writeScriptBin
             cat $dotfile >> $homefile
             echo Created regular file $file
         end
+
+        echo $file >> $prevtheme
     end
 
     echo $theme: Theme installed.
