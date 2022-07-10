@@ -40,8 +40,6 @@
 
             (self: super:
                 {
-                    xmonad =
-                        import (derivationsDirPath + /xmonad.nix) super;
                     dotfiles =
                         import (derivationsDirPath + /dotfiles.nix) super;
                     themes =
