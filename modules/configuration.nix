@@ -102,7 +102,7 @@ in
                 pkgs.neovim-pack
                 {
                     start = with pkgs.vimPlugins; [
-                        vim-nix
+                        vim-addon-nix
                     ];
                 };
         in
