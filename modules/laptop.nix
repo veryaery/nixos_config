@@ -23,5 +23,11 @@ in
                 wifi.backend = "iwd";
             };
         };
+
+        services.xserver.libinput = {
+            enable = true;
+
+            touchpad.naturalScrolling = true;
+        };
     };
 }

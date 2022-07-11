@@ -47,6 +47,7 @@ in
 
     environment.systemPackages = with pkgs; [
         git
+        gcc
         tree
         killall
         neovim
