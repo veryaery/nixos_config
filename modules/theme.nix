@@ -1,5 +1,6 @@
 {
     pkgs,
+    config,
     theme,
     themes,
     flakeRoot,
@@ -13,6 +14,9 @@ let
     inherit (builtins)
         mapAttrs
         toString;
+
+    inherit (std)
+        mkOption;
 
     inherit (lib)
         fishTerminalColor;
@@ -51,17 +55,37 @@ let
                 themes;
         };
     
+    postinstall =
+        pkgs.postinstall
+        {
+            scripts = cfg.postInstallScripts;
+        };
+    
     installtheme =
         pkgs.installtheme
         {
-            inherit lib;
+            inherit lib postinstall;
             themes = _themes;
         };
+    
+    cfg = config.theme;
 in
 {
-    environment.systemPackages = [ installtheme ];
+    options.theme = {
+        postInstallScripts = mkOption {
+            default = {};
+            description = ''
+                Attrset of scripts to run after theme installation.
+            '';
+            type = types.attrsOf types.lines;
+        };
+    };
 
-    system.userActivationScripts.theme.text = ''
-        ${installtheme}/bin/installtheme ${theme}
-    '';
+    config = {
+        environment.systemPackages = [ installtheme ];
+
+        system.userActivationScripts.theme.text = ''
+            ${installtheme}/bin/installtheme ${theme}
+        '';
+    };
 }

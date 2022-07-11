@@ -25,19 +25,30 @@ in
         enable = mkEnableOption "xmonad";
     };
 
-    config = mkIf cfg.enable ( {
-        environment.systemPackages = [ xmonad ];
+    config = mkIf cfg.enable
+    (
+        {
+            environment.systemPackages = [ xmonad ];
 
-        services.xserver.windowManager.session = [
-            {
-                manage = "window";
-                name = "xmonad";
-                start = ''
-                    systemd-cat -t xmonad -- ${xmonad}/bin/xmonad &
-                    waitPID=$!
+            services.xserver.windowManager.session = [
+                {
+                    manage = "window";
+                    name = "xmonad";
+                    start = ''
+                        systemd-cat -t xmonad -- ${xmonad}/bin/xmonad &
+                        waitPID=$!
+                    '';
+                }
+            ];
+
+            theme.postInstallScripts = {
+                xmonad = ''
+                    echo Recompiling xmonad
+                    ${xmonad}/bin/xmonad --recompile
+                    echo Restarting xmonad
+                    ${xmonad}/bin/xmonad --restart
                 '';
-            }
-        ];
-    }
+            };
+        }
     );
 }

@@ -23,12 +23,12 @@ let
     
     commands =
         mapAttrsToList
-        (path: sub:
+        (file: sub:
             ''
-                srcPath=$src/${path}
-                outPath=$out/${path}
-                mkdir -p $(dirname $outPath)
-                sed ${sedScript sub} $srcPath > $outPath
+                srcfile=$src/${file}
+                outfile=$out/${file}
+                mkdir -p $(dirname $outfile)
+                sed ${sedScript sub} $srcfile > $outfile
             ''
         )
         subs;
@@ -43,12 +43,13 @@ pkgs.runCommandLocal
 
     mkdir -p $out
 
-    escapeSrc=$(echo $src | sed ${escapeBREScriptBash} | sed ${escapeSEDScriptBash})
-    for srcPath in $(find $src -type f); do
-        outPath=$out/$(echo $srcPath | sed "s/^$escapeSrc\///")
-        if [ ! -e $outPath ]; then
-            mkdir -p $(dirname $outPath)
-            cp $srcPath $outPath
+    files=$(find $src -type f)
+    for srcfile in $files; do
+        file=${srcfile#$src/}
+        outfile=$out/$file
+        if [ ! -e $outfile ]; then
+            mkdir -p $(dirname $outfile)
+            cp $srcfile $outfile
         fi
     done
 ''

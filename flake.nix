@@ -46,6 +46,8 @@
                         import (derivationsDirPath + /themes.nix) super;
                     installtheme =
                         import (derivationsDirPath + /installtheme.nix) super;
+                    postinstall =
+                        import (derivationsDirPath + /postinstall.nix) super;
                     fira-code-with-features =
                         import (derivationsDirPath + /fira-code-with-features.nix) super;
                 }

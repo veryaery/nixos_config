@@ -12,20 +12,28 @@ function fish_prompt
 end
 
 function fish_right_prompt
-    printf $status
+    if [ $status = 0 ]
+        printf "%s✓%s" \
+            (set_color -o brgreen) \
+            (set_color normal)
+    else
+        printf "%s$status%s" \
+            (set_color -o brred) \
+            (set_color normal)
+    end
 
     set -l s (math "floor($CMD_DURATION / 1000)")
     set -l ms (math "$CMD_DURATION % 1000")
 
     [ $s -gt 0 ]
         or [ $ms -gt 0 ]
-    set -l hasDuration $status
+    set -l had_duration $status
 
-    [ $hasDuration = 0 ]; and printf " ("
+    [ $had_duration = 0 ]; and printf " ("
     if [ $s -gt 0 ]
         printf "$s s"
         [ $ms -gt 0 ]; and printf " "
     end
     [ $ms -gt 0 ]; and printf "$ms ms"
-    [ $hasDuration = 0 ]; and printf ")"
+    [ $had_duration = 0 ]; and printf ")"
 end
