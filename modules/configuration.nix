@@ -114,7 +114,7 @@ in
                     fish = toString pkgs.fish;
                 };
 
-            ".config/fish/config.fish" = _:
+            ".config/fish/config.fish" = themeExpr:
                 { primary = fishTerminalColor themeExpr.primaryTerminalColor; };
 
             ".xmonad/lib/Theme.hs" = id;
