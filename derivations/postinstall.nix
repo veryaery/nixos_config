@@ -17,6 +17,7 @@ let
         (name: script:
             ''
                 # ${name}
+                echo Post install ${name}
                 ${script}
             ''    
         )

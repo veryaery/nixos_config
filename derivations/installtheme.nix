@@ -98,7 +98,6 @@ for dotfile in $files
 
 end
 
-echo Post install.
 ${postinstall}
 
 echo $theme: Theme installed

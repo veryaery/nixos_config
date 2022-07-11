@@ -16,7 +16,8 @@ let
         toString;
 
     inherit (std)
-        mkOption;
+        mkOption
+        types;
 
     inherit (lib)
         fishTerminalColor;
