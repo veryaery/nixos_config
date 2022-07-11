@@ -74,7 +74,7 @@ let
         ''
             #!${pkgs.fish}/bin/fish
 
-            ls -1 ${themes}
+            ls -1 ${_themes}
         '';
     
     cfg = config.theme;
