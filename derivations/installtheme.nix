@@ -1,18 +1,11 @@
 pkgs:
 
 {
-    lib,
     themes,
     postinstall
 }:
 
-let
-    inherit (lib)
-        escapeBREScriptFish
-        escapeSEDScriptFish;
-in
 pkgs.writeScriptBin "installtheme"
-
 ''
 #!${pkgs.fish}/bin/fish
 

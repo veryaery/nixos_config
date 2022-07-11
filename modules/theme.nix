@@ -65,9 +65,17 @@ let
     installtheme =
         pkgs.installtheme
         {
-            inherit lib postinstall;
+            inherit postinstall;
             themes = _themes;
         };
+    
+    lstheme =
+        pkgs.writeScriptBin "lstheme"
+        ''
+            #!${pkgs.fish}/bin/fish
+
+            ls -1 ${themes}
+        '';
     
     cfg = config.theme;
 in
@@ -83,7 +91,10 @@ in
     };
 
     config = {
-        environment.systemPackages = [ installtheme ];
+        environment.systemPackages = [
+            lstheme
+            installtheme
+        ];
 
         system.userActivationScripts.theme.text = ''
             ${installtheme}/bin/installtheme ${theme}
