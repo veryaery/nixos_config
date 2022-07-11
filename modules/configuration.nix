@@ -122,7 +122,7 @@ in
             ".config/xmobar/.xmobarrc" = id;
 
             ".config/nvim/init.lua" = _:
-                { runtimepath = toString neovim-pack; };
+                { packpath = toString neovim-pack; };
         };
 
     # Installing Nix flakes system-wide.
