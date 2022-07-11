@@ -1,1 +1,1 @@
-vim.cmd([[ set runtimepath += <runtimepath> ]])
+vim.cmd([[ set runtimepath+=<runtimepath> ]])
