@@ -45,7 +45,7 @@ pkgs.runCommandLocal
 
     files=$(find $src -type f)
     for srcfile in $files; do
-        file=${srcfile#$src/}
+        file=''${srcfile#$src/}
         outfile=$out/$file
         if [ ! -e $outfile ]; then
             mkdir -p $(dirname $outfile)
