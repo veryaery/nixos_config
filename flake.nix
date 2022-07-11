@@ -48,6 +48,10 @@
                         import (derivationsDirPath + /installtheme.nix) super;
                     postinstall =
                         import (derivationsDirPath + /postinstall.nix) super;
+                    lstheme =
+                        import (derivationsDirPath + /lstheme.nix) super;
+                    neovim-pack =
+                        import (derivationsDirPath + /neovim-pack.nix) super;
                     fira-code-with-features =
                         import (derivationsDirPath + /fira-code-with-features.nix) super;
                 }
@@ -72,8 +76,6 @@
             (theme: host:
                 let
                     hostPath = hostDirPath + "/${host}";
-                    
-                    themeExpr = themes."${theme}";
 
                     hostExpr = import (hostPath + /host.nix);
                     hostOptions = hostExpr.options;
@@ -117,7 +119,7 @@
                                 pkgs = mkForce pkgs;
 
                                 inherit
-                                    themes theme themeExpr
+                                    themes theme
                                     host
                                     flakeRoot
                                     hostOptions

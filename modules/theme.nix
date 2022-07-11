@@ -12,39 +12,23 @@ let
     lib = import (flakeRoot + /lib) std;
 
     inherit (builtins)
-        mapAttrs
-        toString;
+        mapAttrs;
 
     inherit (std)
         mkOption
         types;
 
-    inherit (lib)
-        fishTerminalColor;
-
-    font = "Fira Code";
-
-    themeSubs = themeExpr:
-        {
-            ".config/alacritty/alacritty.yml" =
-                themeExpr //
-                {
-                    inherit font; 
-                    fish = toString pkgs.fish;
-                };
-            ".config/fish/config.fish" = {
-                primary = fishTerminalColor themeExpr.primaryTerminalColor;
-            };
-            ".xmonad/lib/Theme.hs" = themeExpr;
-            ".config/xmobar/.xmobarrc" = themeExpr;
-        };
+    evalSubs = themeExpr:
+        mapAttrs
+        (_: subFn: subFn themeExpr)
+        cfg.subs;
     
-    themeDotfiles = themeExpr:
+    evalDotfiles = themeExpr:
         pkgs.dotfiles
         {
             inherit lib;
             dirPath = flakeRoot + /dotfiles;
-            subs = themeSubs themeExpr;
+            subs = evalSubs themeExpr;
         };
     
     _themes =
@@ -52,15 +36,13 @@ let
         {
             themes =
                 mapAttrs
-                (_: themeDotfiles)
+                (_: evalDotfiles)
                 themes;
         };
     
     postinstall =
         pkgs.postinstall
-        {
-            scripts = cfg.postInstallScripts;
-        };
+        { scripts = cfg.postInstallScripts; };
     
     installtheme =
         pkgs.installtheme
@@ -70,17 +52,21 @@ let
         };
     
     lstheme =
-        pkgs.writeScriptBin "lstheme"
-        ''
-            #!${pkgs.fish}/bin/fish
-
-            ls -1 ${_themes}
-        '';
+        pkgs.lstheme
+        { themes = _themes; };
     
     cfg = config.theme;
 in
 {
     options.theme = {
+        subs = mkOption {
+            default = {};
+            description = ''
+                Attrset of string substitutions.
+            '';
+            type = types.attrsOf (types.functionTo types.attrs);
+        };
+
         postInstallScripts = mkOption {
             default = {};
             description = ''

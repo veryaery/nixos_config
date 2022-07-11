@@ -42,6 +42,10 @@ let
         concatStringsSep "." (init (splitString "." (baseNameOf s)));
 in
 {
+    # Identity function.
+    # id :: a -> a
+    id = a: a;
+
     # A list containing the path if the path exists.
     # Otherwise, an empty list.
     # optionalPath :: path -> [ path ]

@@ -4,6 +4,7 @@ std:
     inherit (import ./lib.nix std)
         attrsetFromEachThemeEachHost
         fishTerminalColor
+        id
         optionalPath
         readThemes;
 

@@ -1,0 +1,1 @@
+vim.opt.runtimepath = vim.opt.runtimepath .. "<runtimepath>"

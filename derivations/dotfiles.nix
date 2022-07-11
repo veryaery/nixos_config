@@ -39,17 +39,17 @@ pkgs.runCommandLocal
     src = dirPath;
 }
 ''
-    ${concatStringsSep "\n" commands}
+${concatStringsSep "\n" commands}
 
-    mkdir -p $out
+mkdir -p $out
 
-    files=$(find $src -type f)
-    for srcfile in $files; do
-        file=''${srcfile#$src/}
-        outfile=$out/$file
-        if [ ! -e $outfile ]; then
-            mkdir -p $(dirname $outfile)
-            cp $srcfile $outfile
-        fi
-    done
+files=$(find $src -type f)
+for srcfile in $files; do
+    file=''${srcfile#$src/}
+    outfile=$out/$file
+    if [ ! -e $outfile ]; then
+        mkdir -p $(dirname $outfile)
+        cp $srcfile $outfile
+    fi
+done
 ''
