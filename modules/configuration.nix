@@ -1,7 +1,6 @@
 {
     pkgs,
     flakeRoot,
-    themeExpr,
     hostOptions,
     ...
 }@args:
