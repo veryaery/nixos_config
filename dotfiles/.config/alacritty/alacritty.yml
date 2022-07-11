@@ -27,7 +27,7 @@ shell:
     program: "<fish>/bin/fish"
 
 font:
-    size: 11
+    size: <size>
     normal:
         family: "<font>"
     bold:

@@ -10,6 +10,7 @@ let
     lib = import (flakeRoot + /lib) std;
 
     inherit (builtins)
+        elem
         toString
         readFile;
 
@@ -28,6 +29,11 @@ in
     ];
 
     console.keyMap = "sv-latin1";
+
+    security = {
+        sudo.enable = false;
+        doas.enable = true;
+    };
 
     services.xserver = {
         enable = true;
@@ -108,11 +114,18 @@ in
         in
         {
             ".config/alacritty/alacritty.yml" = themeExpr:
-                themeExpr //
-                {
-                    inherit font; 
-                    fish = toString pkgs.fish;
-                };
+                let
+                    size =
+                        if (elem "laptop" hostOptions.roles)
+                        then 6
+                        else 11;
+                in
+                    themeExpr //
+                    {
+                        inherit font; 
+                        fish = toString pkgs.fish;
+                        size = toString size;
+                    };
 
             ".config/fish/config.fish" = themeExpr:
                 { primary = fishTerminalColor themeExpr.primaryTerminalColor; };
