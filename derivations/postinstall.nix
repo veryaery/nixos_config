@@ -16,9 +16,11 @@ let
     _scripts = mapAttrsToList
         (name: script:
             ''
-                # ${name}
-                echo Post install ${name}
+                # --- Post install ${name} ---
+                echo --- Post install ${name} ---
                 ${script}
+                echo ---
+                # ---
             ''    
         )
         scripts;

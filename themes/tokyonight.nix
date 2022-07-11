@@ -5,7 +5,7 @@ let
     foreground = "#a9b1d6";
     background = "#24283b";
 
-    white = "#a9b1d6";
+    white = foreground;
     black = "#414868";
     red = "#f7768e";
     green = "#9ece6a";

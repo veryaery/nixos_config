@@ -4,8 +4,8 @@ let
     foreground = "#d8dee9"; # nord4
     background = "#2e3440"; # nord0
 
-    white = "#e5e9f0"; # nord5
-    black = "#000000";
+    white = foreground;
+    black = background;
     red = "#bf616a";
     green = "#a3be8c";
     blue = "#81a1c1";

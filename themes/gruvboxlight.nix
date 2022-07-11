@@ -1,18 +1,18 @@
 # https://github.com/morhetz/gruvbox
 
 let
-    foreground = "#ebdbb2"; # fg1
-    background = "#282828"; # bg0
+    foreground = "#3c3836"; # fg1
+    background = "#fbf1c7"; # bg0
 
     white = foreground;
     black = background;
-    red = "#cc241d";
-    green = "#98971a";
-    blue = "#458588";
-    yellow = "#d79921";
-    cyan = "#689d6a";
-    magenta = "#b16286";
-    brightWhite = "#a89984";
+    red = "#9d0006";
+    green = "#79740e";
+    blue = "#076678";
+    yellow = "#b57614";
+    cyan = "#427b58";
+    magenta = "#8f3f71";
+    brightWhite =  "#7c6f64";
     brightBlack = "#928374";
     brightRed = "#fb4934";
     brightGreen = "#b8bb26";
