@@ -12,7 +12,7 @@ let
     yellow = "#005f87"; # 6
     cyan = "#5f8700"; # 3
     magenta = "#878787"; # 5
-    brightWhite = foreground;
+    brightWhite = "005f87"; # 15
     brightBlack = "#bcbcbc"; # 8
     brightRed = "#d75f00"; # 12
     brightGreen = "#d70087"; # 10
