@@ -21,6 +21,12 @@ if not ok then
     return
 end
 
+local ok, indentblankline = pcall(require, "indent_blankline")
+if not ok then
+    print "Require error indent_blankline"
+    return
+end
+
 treesitter.setup {
     ensure_installed = "all",
     sync_install = false,
@@ -41,3 +47,5 @@ treesitter.setup {
 }
 
 autopairs.setup {}
+
+indentblankline.setup {}

@@ -120,6 +120,7 @@ in
                         nvim-treesitter
                         nvim-ts-rainbow
                         nvim-autopairs
+                        indent-blankline-nvim
                     ];
                 };
         in
