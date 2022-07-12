@@ -15,9 +15,6 @@ let
         mkIf
         mkOption;
 
-    xmonad = pkgs.xmonad-with-packages.override {
-        packages = haskellPackages: with haskellPackages; [ xmonad-contrib ];
-    };
     cfg = config.services.xserver.windowManager._xmonad;
 in
 {
@@ -28,14 +25,14 @@ in
     config = mkIf cfg.enable
     (
         {
-            environment.systemPackages = [ xmonad ];
+            environment.systemPackages = with pkgs; [ xmonad ];
 
             services.xserver.windowManager.session = [
                 {
                     manage = "window";
                     name = "xmonad";
                     start = ''
-                        systemd-cat -t xmonad -- ${xmonad}/bin/xmonad &
+                        systemd-cat -t xmonad -- ${pkgs.xmonad}/bin/xmonad &
                         waitPID=$!
                     '';
                 }
@@ -44,9 +41,9 @@ in
             theme.postInstallScripts = {
                 xmonad = ''
                     echo Recompiling xmonad
-                    ${xmonad}/bin/xmonad --recompile
+                    ${pkgs.xmonad}/bin/xmonad --recompile
                     echo Restarting xmonad
-                    ${xmonad}/bin/xmonad --restart
+                    ${pkgs.xmonad}/bin/xmonad --restart
                 '';
             };
         }

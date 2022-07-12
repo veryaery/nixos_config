@@ -34,7 +34,9 @@
             (self: super:
                 {
                     opentype-feature-freezer =
-                        import (derivationsDirPath + /opentype-feature-freezer.nix) self;
+                        import (derivationsDirPath + /opentype-feature-freezer.nix) super;
+                    xmobar =
+                        import (derivationsDirPath + /xmobar.nix) super;
                 }
             )
 
@@ -56,6 +58,8 @@
                         import (derivationsDirPath + /fira-code-with-features.nix) super;
                     neovim =
                         import (derivationsDirPath + /neovim.nix) super;
+                    xmonad =
+                        import (derivationsDirPath + /xmonad.nix) super;
                 }
             )
         ];

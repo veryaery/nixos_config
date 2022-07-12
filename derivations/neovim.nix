@@ -13,6 +13,6 @@ pkgs.runCommand
     buildInputs = with pkgs; [ makeWrapper ];
 }
 ''
-    makeWrapper ${pkgs.neovim}/bin/nvim $out/bin/nvim \
-        --set PATH ${path} 
+makeWrapper ${pkgs.neovim}/bin/nvim $out/bin/nvim \
+    --set PATH ${path} 
 ''
