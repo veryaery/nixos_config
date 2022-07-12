@@ -1,0 +1,4 @@
+{
+    srcs # files which will be copied over BEFORE subs
+    subs
+}
