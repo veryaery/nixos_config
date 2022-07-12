@@ -1,7 +1,7 @@
 {
     options = {
         system = "x86_64-linux";
-        roles = [ "laptop" ];
+        roles = [];
     };
 
     module = {
