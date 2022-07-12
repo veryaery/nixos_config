@@ -42,9 +42,35 @@ let
             end
         '';
 
+    bars =
+        pkgs.writeScriptBin "bars"
+        ''
+            #!${pkgs.fish}/bin/fish
+
+            while true
+                set -l signal $( \
+                    nmcli -f IN-USE,SIGNAL device wifi | \
+                    awk "/^\*/ { print \$2 }" \
+                )
+                
+                if [ $signal -ge 90 ]
+                    echo ▂▄▆█
+                else if [ $signal -ge 55 ]
+                    echo ▂▄▆
+                else if [ $signal -ge 30 ]
+                    echo ▂▄
+                else
+                    echo ▂
+                end
+
+                sleep 1
+            end
+        '';
+
     path = pkgs.lib.makeBinPath [ 
         batcap
         batico
+        bars
     ];
 in
 pkgs.runCommand "xmobar"
