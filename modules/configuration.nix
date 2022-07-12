@@ -50,12 +50,18 @@ in
         gcc
         tree
         killall
-        neovim
         firefox
         xmobar
         feh
         alacritty
         fish
+        (neovim { bin = with pkgs; [
+            # nvim-tresitter dependencies
+            gnutar
+            curl
+            git
+            gcc
+        ]; })
     ];
 
     fonts.fonts = with pkgs; [

@@ -54,6 +54,8 @@
                         import (derivationsDirPath + /neovim-pack.nix) super;
                     fira-code-with-features =
                         import (derivationsDirPath + /fira-code-with-features.nix) super;
+                    neovim =
+                        import (derivationsDirPath + /neovim.nix) super;
                 }
             )
         ];
