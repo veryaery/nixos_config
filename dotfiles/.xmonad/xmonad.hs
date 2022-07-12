@@ -8,10 +8,12 @@ import XMonad.Hooks.StatusBar.PP
 
 import XMonad.Layout
 import XMonad.Layout.Spacing
+import XMonad.Layout.Grid
+import XMonad.Layout.Tabbed
 
 import Theme
 
-layout' = avoidStruts . spacing' $ tall ||| Full
+layout' = avoidStruts . spacing' $ tall ||| Grid ||| simpleTabbed
     where
         tall = Tall 1 (3 / 100) (1 / 2)
 
@@ -38,23 +40,26 @@ prettyPrint :: PP
 prettyPrint = def
     {
         ppCurrent =
-            xmobarBorder "Bottom" themePrimary 2
+            fontStandard
+            . xmobarBorder "Bottom" themePrimary 2
             . wrapPadding
             . colorPrimary,
-        ppVisible = wrapPadding,
-        ppVisibleNoWindows = Just wrapPadding,
-        ppHidden = wrapPadding,
-        ppHiddenNoWindows = wrapPadding,
+        ppVisible = fontStandard . wrapPadding,
+        ppVisibleNoWindows = Just $ fontStandard . wrapPadding,
+        ppHidden = fontStandard . wrapPadding,
+        ppHiddenNoWindows = fontStandard . wrapPadding,
         ppWsSep = "",
 
-        ppTitle = colorPrimary . shorten 64,
+        ppLayout = fontStandard . colorPrimary,
+        ppTitle = fontStandard . colorPrimary . shorten 64,
 
-        ppOrder = \(workspaces:_:window:_) -> [ workspaces, window ],
+        ppOrder = \(_:layout:_:_) -> [ layout ],
         ppSep = " "
     }
         where
             wrapPadding = wrap " " " "
             colorPrimary = xmobarColor themePrimary ""
+            fontStandard = xmobarFont 0
 
 main :: IO ()
 main =

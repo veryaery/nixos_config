@@ -1,5 +1,5 @@
 Config {
-    font = "xft:${font}:pixelsize=12",
+    font = "xft:<font>:pixelsize=12",
     additionalFonts = [
         "xft:Font Awesome 6 Free Solid:pixelsize=12"
     ],

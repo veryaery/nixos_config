@@ -144,7 +144,9 @@ in
 
             ".xmonad/lib/Theme.hs" = id;
 
-            ".config/xmobar/.xmobarrc" = id;
+            ".config/xmobar/.xmobarrc" = themeExpr:
+                themeExpr //
+                { inherit font; };
 
             ".config/nvim/init.lua" = _:
                 { packpath = toString neovim-pack; };
