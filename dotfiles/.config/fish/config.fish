@@ -1,7 +1,10 @@
 # Remove greeting.
 set -U fish_greeting
 
+set -x EDITOR "nvim"
+
 alias .. "cd .."
+alias commit "git add --all; git commit"
 
 function fish_prompt
     printf "\n"
