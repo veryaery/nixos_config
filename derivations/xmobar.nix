@@ -67,10 +67,81 @@ let
             end
         '';
 
+    temp' =
+        pkgs.writeScript "tempprime"
+        ''
+            #!${pkgs.fish}/bin/fish
+
+            set -l max_temp
+            set -l min_max
+
+            for i in $(seq 2 5)
+                set -l mtemp $(cat /sys/bus/platform/devices/coretemp.0/hwmon/hwmon4/temp$(echo $i)_input)
+                set -l temp $(math $mtemp / 1000)
+                set -l mmax $(cat /sys/bus/platform/devices/coretemp.0/hwmon/hwmon4/temp$(echo $i)_max)
+                set -l max $(math $mmax / 1000)
+
+                if [ -z $max_temp ] || [ $temp -gt $max_temp ]
+                    set max_temp $temp
+                end
+
+                if [ -z $min_max ] || [ $max -lt $min_max ]
+                    set min_max $max
+                end
+            end
+
+            echo $max_temp
+            echo $min_max
+        '';
+
+    temp =
+        pkgs.writeScriptBin "temp"
+        ''
+            #!${pkgs.fish}/bin/fish
+
+            while true
+                set -l res $(${temp'}) 
+                set -l temp $res[1]
+                
+                echo $temp °C
+
+                sleep 1
+            end
+        '';
+
+    tempico =
+        pkgs.writeScriptBin "tempico"
+        ''
+            #!${pkgs.fish}/bin/fish
+
+            while true
+                set -l res $(${temp'})
+                set -l temp $res[1]
+                set -l max $res[2]
+                set -l percent $(math round $temp / $max \* 100)
+
+                if [ $percent -ge 80 ]
+                    echo 
+                else if [ $percent -ge 60 ]
+                    echo 
+                else if [ $percent -ge 40 ]
+                    echo 
+                else if [ $percent -ge 20 ]
+                    echo 
+                else
+                    echo 
+                end
+
+                sleep 1
+            end
+        '';
+
     path = pkgs.lib.makeBinPath [ 
         batcap
         batico
         bars
+        temp
+        tempico
     ];
 in
 pkgs.runCommand "xmobar"
