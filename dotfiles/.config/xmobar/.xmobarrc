@@ -11,7 +11,9 @@ Config {
         Run XMonadLog,
 
         Run Cpu [ "-t", "<box type=Bottom width=2 color=<primary>><fc=<primary>><fn=1></fn></fc> <total>%</box>" ] 10,
-        Run Memory [ "-t", "<box type=Bottom width=2 color=<primary>><fc=<primary>><fn=1></fn></fc> <used>/<total> MB <usedratio>%</box>" ] 10
+        Run Memory [ "-t", "<box type=Bottom width=2 color=<primary>><fc=<primary>><fn=1></fn></fc> <used>/<total> MB <usedratio>%</box>" ] 10,
+        Run CommandReader "batico" "batico",
+        Run CommandReader "batcap" "batcap"
     ],
-    template = "%XMonadLog% }{ %cpu% %memory%"
+    template = "%XMonadLog% }{ <box type=Bottom width=2 color=<primary>><fc=<primary>><fn=1>%batico%</fn></fc> %batcap%</box> %cpu% %memory%"
 }

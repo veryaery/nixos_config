@@ -40,18 +40,17 @@ prettyPrint :: PP
 prettyPrint = def
     {
         ppCurrent =
-            fontStandard
-            . xmobarBorder "Bottom" themePrimary 2
+            xmobarBorder "Bottom" themePrimary 2
             . wrapPadding
             . colorPrimary,
-        ppVisible = fontStandard . wrapPadding,
-        ppVisibleNoWindows = Just $ fontStandard . wrapPadding,
-        ppHidden = fontStandard . wrapPadding,
-        ppHiddenNoWindows = fontStandard . wrapPadding,
+        ppVisible = wrapPadding,
+        ppVisibleNoWindows = Just wrapPadding,
+        ppHidden = wrapPadding,
+        ppHiddenNoWindows = wrapPadding,
         ppWsSep = "",
 
-        ppLayout = fontStandard . colorPrimary,
-        ppTitle = fontStandard . colorPrimary . shorten 64,
+        ppLayout = colorPrimary,
+        ppTitle = colorPrimary . shorten 64,
 
         ppOrder = \(_:layout:_:_) -> [ layout ],
         ppSep = " "
@@ -59,7 +58,6 @@ prettyPrint = def
         where
             wrapPadding = wrap " " " "
             colorPrimary = xmobarColor themePrimary ""
-            fontStandard = xmobarFont 0
 
 main :: IO ()
 main =

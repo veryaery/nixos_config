@@ -51,7 +51,6 @@ in
         tree
         killall
         firefox
-        xmobar
         feh
         alacritty
         fish

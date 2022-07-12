@@ -11,5 +11,5 @@ pkgs.runCommand "xmonad"
 { buildInputs = with pkgs; [ makeWrapper ]; }
 ''
 makeWrapper ${xmonad}/bin/xmonad $out/bin/xmonad \
-    --prefix PATH ${path}
+    --prefix PATH : ${path}
 ''
