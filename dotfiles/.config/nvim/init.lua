@@ -22,13 +22,18 @@ if not ok then
 end
 
 treesitter.setup {
-    ensure_installed = "all"
-    auto_install = true
+    ensure_installed = "all",
+    sync_install = false,
+    auto_install = true,
 
     highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = false,
+    },
+
+    indent = {
         enable = true
-        additional_vim_regex_highlighting = false
-    }
+    },
 
     rainbow = {
         enable = true

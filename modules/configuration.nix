@@ -57,7 +57,9 @@ in
         fish
         (neovim { bin = with pkgs; [
             # nvim-tresitter dependencies
+            coreutils
             gnutar
+            gzip
             curl
             git
             gcc
@@ -116,6 +118,7 @@ in
                 {
                     start = with pkgs.vimPlugins; [
                         nvim-treesitter
+                        nvim-ts-rainbow
                         nvim-autopairs
                     ];
                 };
