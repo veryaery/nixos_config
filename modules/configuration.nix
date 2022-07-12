@@ -109,7 +109,8 @@ in
                 pkgs.neovim-pack
                 {
                     start = with pkgs.vimPlugins; [
-                        vim-nix
+                        nvim-treesitter
+                        nvim-autopairs
                     ];
                 };
         in
