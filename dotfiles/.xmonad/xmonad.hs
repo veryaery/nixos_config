@@ -49,11 +49,13 @@ config'' = def
     {
         terminal = "alacritty",
         modMask = mod4Mask,
-        layoutHook = layout',
 
         borderWidth = 2,
         normalBorderColor = themeBackground,
-        focusedBorderColor = themePrimary
+        focusedBorderColor = themePrimary,
+
+        layoutHook = layout',
+        startupHook = spawn "~/.fehbg"
     }
 
 keys' XConfig { modMask = modMask' } =
