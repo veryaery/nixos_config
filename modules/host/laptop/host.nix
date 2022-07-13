@@ -1,7 +1,11 @@
 {
     options = {
         system = "x86_64-linux";
-        roles = [ "laptop" ];
+        roles = [
+            "laptop"
+            "nvidia"
+            "bluetooth"
+        ];
     };
 
     module = {

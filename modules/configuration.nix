@@ -24,8 +24,11 @@ in
 {
     imports = [
         ./xmonad.nix
-        ./laptop.nix
         ./theme.nix
+
+        # Roles.
+        ./laptop.nix
+        ./bluetooth.nix
     ];
 
     console.keyMap = "sv-latin1";
@@ -35,13 +38,21 @@ in
         doas.enable = true;
     };
 
-    services.xserver = {
-        enable = true;
-        
-        layout = "se";
-
-        windowManager._xmonad = {
+    services = {
+        xserver = {
             enable = true;
+            
+            layout = "se";
+
+            windowManager._xmonad = {
+                enable = true;
+            };
+        };
+
+        pipewire = {
+            enable = true;
+            alsa.enable = true;
+            pulse.enable = true;
         };
     };
 
@@ -50,10 +61,12 @@ in
         gcc
         tree
         killall
+        bat
         firefox
         feh
         alacritty
         fish
+        pavucontrol
         (neovim { bin = with pkgs; [
             # nvim-tresitter dependencies
             coreutils
