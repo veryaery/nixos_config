@@ -11,16 +11,17 @@ Config {
         Run XMonadLog,
 
         Run Cpu [ "-t", "<box type=Bottom width=2 color=<primary>><fc=<primary>><fn=1></fn></fc> <total>%</box>" ] 10,
-        Run Memory [ "-t", "<box type=Bottom width=2 color=<primary>><fc=<primary>><fn=1></fn></fc> <used>/<total> MB <usedratio>%</box>" ] 10,
+        Run Memory [ "-t", "<box type=Bottom width=2 color=<primary>><fc=<primary>><fn=1></fn></fc> <used> M</box>" ] 10,
         Run Date "<box type=Bottom width=2 color=<primary>><fc=<primary>><fn=1></fn></fc> %Y-%m-%d</box>" "date" 600,
         Run Date "<box type=Bottom width=2 color=<primary>><fc=<primary>><fn=1></fn></fc> %H:%M</box>" "time" 10,
         Run CommandReader "batico" "batico",
         Run CommandReader "batcap" "batcap",
-        Run CommandReader "bars" "bars",
+        Run CommandReader "sig" "sig",
+        Run CommandReader "sigico" "sigico",
         Run CommandReader "temp" "temp",
         Run CommandReader "tempico" "tempico",
         Run CommandReader "vol" "vol",
         Run CommandReader "volico" "volico"
     ],
-    template = "%XMonadLog% }{ <fc=<primary>>%bars%</fc> <box type=Bottom width=2 color=<primary>><fc=<primary>><fn=1>%volico%</fn></fc> %vol%</box> <box type=Bottom width=2 color=<primary>><fc=<primary>><fn=1>%batico%</fn></fc> %batcap%</box> %cpu% <box type=Bottom width=2 color=<primary>><fc=<primary>><fn=1>%tempico%</fn></fc> %temp%</box> %memory% %date% %time%"
+    template = "%XMonadLog% }{ <box type=Bottom width=2 color=<primary>><fc=<primary>><fn=1>%sigico%</fn></fc> %sig%</box> <box type=Bottom width=2 color=<primary>><fc=<primary>><fn=1>%volico%</fn></fc> %vol%</box> <box type=Bottom width=2 color=<primary>><fc=<primary>><fn=1>%batico%</fn></fc> %batcap%</box> %cpu% <box type=Bottom width=2 color=<primary>><fc=<primary>><fn=1>%tempico%</fn></fc> %temp%</box> %memory% %date% %time%"
 }

@@ -67,6 +67,7 @@ in
         alacritty
         fish
         pavucontrol
+        xorg.xbacklight
         (neovim { bin = with pkgs; [
             # nvim-tresitter dependencies
             coreutils
@@ -154,7 +155,9 @@ in
             ".config/fish/config.fish" = themeExpr:
                 { primary = fishTerminalColor themeExpr.primaryTerminalColor; };
 
-            ".xmonad/lib/Theme.hs" = id;
+            ".xmonad/lib/Theme.hs" = themeExpr:
+                themeExpr //
+                { inherit font; };
 
             ".config/xmobar/.xmobarrc" = themeExpr:
                 themeExpr //

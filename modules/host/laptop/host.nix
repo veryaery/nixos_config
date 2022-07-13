@@ -23,6 +23,8 @@
             };
         };
 
+        time.timeZone = "Europe/Stockholm";
+
         system.stateVersion = "22.05";
     };
 }

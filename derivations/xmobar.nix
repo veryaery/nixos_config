@@ -42,8 +42,8 @@ let
             end
         '';
 
-    bars =
-        pkgs.writeScriptBin "bars"
+    sig =
+        pkgs.writeScriptBin "sig"
         ''
             #!${pkgs.fish}/bin/fish
 
@@ -53,16 +53,34 @@ let
                     awk "/^\*/ { print \$2 }" \
                 )
                 
-                if [ -n $signal ]
-                    if [ $signal -ge 90 ]
-                        echo ▂▄▆█
-                    else if [ $signal -ge 55 ]
-                        echo ▂▄▆
-                    else if [ $signal -ge 30 ]
-                        echo ▂▄
-                    else
-                        echo ▂
-                    end
+                if [ -z "$signal" ]
+                    echo
+                else if [ $signal -ge 90 ]
+                    echo ▂▄▆█
+                else if [ $signal -ge 55 ]
+                    echo ▂▄▆
+                else if [ $signal -ge 30 ]
+                    echo ▂▄
+                else
+                    echo ▂
+                end
+
+                sleep 1
+            end
+        '';
+
+    sigico =
+        pkgs.writeScriptBin "sigico"
+        ''
+            #!${pkgs.fish}/bin/fish
+
+            while true
+                set -l inuse $(nmcli -f IN-USE device wifi | grep "^\*")
+
+                if [ -z "$inuse" ]
+                    echo 
+                else
+                    echo 
                 end
 
                 sleep 1
@@ -178,7 +196,8 @@ let
     path = pkgs.lib.makeBinPath [ 
         batcap
         batico
-        bars
+        sig
+        sigico
         temp
         tempico
         vol

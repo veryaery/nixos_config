@@ -1,3 +1,5 @@
+import Data.Ratio
+
 import XMonad
 
 import XMonad.Hooks.DynamicLog
@@ -9,11 +11,29 @@ import XMonad.Hooks.StatusBar.PP
 import XMonad.Layout
 import XMonad.Layout.Spacing
 import XMonad.Layout.Grid
-import XMonad.Layout.Tabbed
+
+import XMonad.Prompt
+import XMonad.Prompt.Shell
+
+import XMonad.Util.EZConfig
 
 import Theme
 
-layout' = avoidStruts . spacing' $ tall ||| Grid ||| simpleTabbed
+xpConfig :: XPConfig
+xpConfig = def
+    {
+        font = "xft:" ++ themeFont ++ ":pixelsize=12",
+        position = CenteredAt (1 % 2) (1 % 3),
+        bgColor = themeBackground,
+        fgColor = themeForeground,
+        bgHLight = themePrimary,
+        fgHLight = themeBackground,
+        borderColor = themePrimary,
+        promptBorderWidth = 1,
+        defaultPrompter = const "run "
+    }
+
+layout' = avoidStruts $ (spacing' $ tall ||| Grid) ||| Full 
     where
         tall = Tall 1 (3 / 100) (1 / 2)
 
@@ -25,7 +45,7 @@ layout' = avoidStruts . spacing' $ tall ||| Grid ||| simpleTabbed
             (Border screenBorder screenBorder screenBorder screenBorder) True
             (Border windowBorder windowBorder windowBorder windowBorder) True
 
-config' = def
+config'' = def
     {
         terminal = "alacritty",
         modMask = mod4Mask,
@@ -35,6 +55,19 @@ config' = def
         normalBorderColor = themeBackground,
         focusedBorderColor = themePrimary
     }
+
+keys' XConfig { modMask = modMask' } =
+    [ ( (modMask', xK_r), shellPrompt xpConfig )
+    ]
+
+config' =  additionalKeys config'' $ keys' config''
+
+mapLayout :: String -> String
+mapLayout layout
+    | layout == "Spacing Tall" = "tall"
+    | layout == "Spacing Grid" = "grid"
+    | layout == "Full"         = "full"
+    | otherwise                = layout
 
 prettyPrint :: PP
 prettyPrint = def
@@ -49,7 +82,7 @@ prettyPrint = def
         ppHiddenNoWindows = wrapPadding,
         ppWsSep = "",
 
-        ppLayout = colorPrimary,
+        ppLayout = colorPrimary . mapLayout,
         ppTitle = colorPrimary . shorten 64,
 
         ppOrder = \(_:layout:_:_) -> [ layout ],
