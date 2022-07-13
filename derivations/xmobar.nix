@@ -53,14 +53,16 @@ let
                     awk "/^\*/ { print \$2 }" \
                 )
                 
-                if [ $signal -ge 90 ]
-                    echo ▂▄▆█
-                else if [ $signal -ge 55 ]
-                    echo ▂▄▆
-                else if [ $signal -ge 30 ]
-                    echo ▂▄
-                else
-                    echo ▂
+                if [ -n $signal ]
+                    if [ $signal -ge 90 ]
+                        echo ▂▄▆█
+                    else if [ $signal -ge 55 ]
+                        echo ▂▄▆
+                    else if [ $signal -ge 30 ]
+                        echo ▂▄
+                    else
+                        echo ▂
+                    end
                 end
 
                 sleep 1
@@ -136,12 +138,51 @@ let
             end
         '';
 
+    vol =
+        pkgs.writeScriptBin "vol"
+        ''
+            #!${pkgs.fish}/bin/fish
+
+            while true
+                set -l vol $(${pkgs.pamixer}/bin/pamixer --get-volume)
+                echo $vol%
+                sleep 1
+            end
+        '';
+
+    volico =
+        pkgs.writeScriptBin "volico"
+        ''
+            #!${pkgs.fish}/bin/fish
+
+            while true
+                set -l vol $(${pkgs.pamixer}/bin/pamixer --get-volume)
+                set -l muted $(${pkgs.pamixer}/bin/pamixer --get-mute)
+
+                if [ $muted = true ]
+                    echo 
+                else
+                    if [ $vol -ge 75 ]
+                        echo 
+                    else if [ $vol -ge 25 ]
+                        echo 
+                    else
+                        echo 
+                    end
+                end
+
+                sleep 1
+            end
+        '';
+
     path = pkgs.lib.makeBinPath [ 
         batcap
         batico
         bars
         temp
         tempico
+        vol
+        volico
     ];
 in
 pkgs.runCommand "xmobar"
