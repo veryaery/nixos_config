@@ -46,6 +46,8 @@ treesitter.setup {
     }
 }
 
-autopairs.setup {}
+autopairs.setup {
+    check_ts = true
+}
 
 indentblankline.setup {}

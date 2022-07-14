@@ -2,7 +2,7 @@
     pkgs,
     config,
     flakeRoot,
-    themeExpr,
+    themes,
     ...
 }@args:
 
@@ -15,6 +15,8 @@ let
         mkIf
         mkOption;
 
+    xmonad = pkgs.xmonad { inherit themes; };
+
     cfg = config.services.xserver.windowManager._xmonad;
 in
 {
@@ -25,14 +27,14 @@ in
     config = mkIf cfg.enable
     (
         {
-            environment.systemPackages = with pkgs; [ xmonad ];
+            environment.systemPackages = [ xmonad ];
 
             services.xserver.windowManager.session = [
                 {
                     manage = "window";
                     name = "xmonad";
                     start = ''
-                        systemd-cat -t xmonad -- ${pkgs.xmonad}/bin/xmonad &
+                        systemd-cat -t xmonad -- ${xmonad}/bin/xmonad &
                         waitPID=$!
                     '';
                 }
@@ -41,9 +43,9 @@ in
             theme.postInstallScripts = {
                 xmonad = ''
                     echo Recompiling xmonad
-                    ${pkgs.xmonad}/bin/xmonad --recompile
+                    ${xmonad}/bin/xmonad --recompile
                     echo Restarting xmonad
-                    ${pkgs.xmonad}/bin/xmonad --restart
+                    ${xmonad}/bin/xmonad --restart
                 '';
             };
         }

@@ -91,6 +91,8 @@ for dotfile in $files
 
 end
 
+set -U NIXOSCFG_THEME $theme
+
 ${postinstall}
 
 echo $theme: Theme installed

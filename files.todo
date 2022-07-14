@@ -1,6 +1,0 @@
-{
-    # srcs :: Map string (string -> attrset)
-    srcs # files which will be copied over BEFORE subs
-    # subs :: Map string (attrset -> attrset)
-    subs
-}

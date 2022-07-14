@@ -33,6 +33,13 @@
         overlays = [
             (self: super:
                 {
+                    themes =
+                        import (derivationsDirPath + /themes.nix) super;
+                }
+            )
+
+            (self: super:
+                {
                     opentype-feature-freezer =
                         import (derivationsDirPath + /opentype-feature-freezer.nix) super;
                     xmobar =
@@ -44,8 +51,6 @@
                 {
                     dotfiles =
                         import (derivationsDirPath + /dotfiles.nix) super;
-                    themes =
-                        import (derivationsDirPath + /themes.nix) super;
                     installtheme =
                         import (derivationsDirPath + /installtheme.nix) super;
                     postinstall =
