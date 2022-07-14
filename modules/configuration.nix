@@ -67,7 +67,10 @@ in
         alacritty
         fish
         pavucontrol
-        xorg.xbacklight
+        unzip
+
+        imagemagick
+
         (neovim { bin = with pkgs; [
             # nvim-tresitter dependencies
             coreutils
