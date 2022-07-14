@@ -1,7 +1,7 @@
 {
     pkgs,
     config,
-    theme,
+    themeName,
     themes,
     flakeRoot,
     ...
@@ -17,27 +17,12 @@ let
     inherit (std)
         mkOption
         types;
-
-    evalSubs = themeExpr:
-        mapAttrs
-        (_: subFn: subFn themeExpr)
-        cfg.subs;
     
-    evalDotfiles = themeExpr:
-        pkgs.dotfiles
-        {
-            inherit lib;
-            dirPath = flakeRoot + /dotfiles;
-            subs = evalSubs themeExpr;
-        };
-    
-    _themes =
+    dotfilesThemes =
         pkgs.themes
         {
-            themes =
-                mapAttrs
-                (_: evalDotfiles)
-                themes;
+            inherit themes;
+            drvFn = cfg.dotfiles;
         };
     
     postinstall =
@@ -48,29 +33,31 @@ let
         pkgs.installtheme
         {
             inherit postinstall;
-            themes = _themes;
+            themes = dotfilesThemes;
         };
     
     lstheme =
         pkgs.lstheme
-        { themes = _themes; };
+        { themes = dotfilesThemes; };
     
     cfg = config.theme;
 in
 {
     options.theme = {
-        subs = mkOption {
+        dotfilesFn = mkOption {
             default = {};
             description = ''
-                Attrset of string substitutions.
+                dotfilesFn :: string -> Theme -> derivation
             '';
-            type = types.attrsOf (types.functionTo types.attrs);
+            type = types.functionTo types.package;
         };
 
         postInstallScripts = mkOption {
             default = {};
             description = ''
                 Attrset of scripts to run after theme installation.
+
+                postInstallScripts :: Map string string
             '';
             type = types.attrsOf types.lines;
         };
@@ -83,7 +70,7 @@ in
         ];
 
         system.userActivationScripts.theme.text = ''
-            ${installtheme}/bin/installtheme ${theme}
+            ${installtheme}/bin/installtheme ${themeName}
         '';
     };
 }

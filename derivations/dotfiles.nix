@@ -2,9 +2,17 @@ pkgs:
 
 {
     lib,
-    dirPath,
-    subs
+
+    # src :: derivation
+    src,
+
+    # files :: Map string { src? :: string -> derivation, subs :: Theme -> attrset }
+    #                       ^^^^ src is optional
+    files
 }:
+
+# string -> Theme -> derivation
+themeName: theme:
 
 let
     std = pkgs.lib;
@@ -17,27 +25,27 @@ let
         mapAttrsToList;
 
     inherit (lib)
-        escapeBREScriptBash
-        escapeSEDScriptBash
         sedScript;
     
     commands =
         mapAttrsToList
-        (file: sub:
-            ''
-                srcfile=$src/${file}
+        (file: themedDotfile:
+            let
+                _src =
+                    if themedDotfile ? "src"
+                    then themedDotfile.src
+                    else src + "/${file}";
+                subs = themedDotfile.subs theme; 
+            in ''
                 outfile=$out/${file}
                 mkdir -p $(dirname $outfile)
-                sed ${sedScript sub} $srcfile > $outfile
+                sed ${sedScript subs} ${_src} > $outfile
             ''
         )
-        subs;
+        files;
 in
-pkgs.runCommandLocal
-"dotfiles"
-{
-    src = dirPath;
-}
+pkgs.runCommandLocal "dotfiles"
+{}
 ''
 ${concatStringsSep "\n" commands}
 

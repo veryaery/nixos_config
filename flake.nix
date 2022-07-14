@@ -79,7 +79,7 @@
         nixosConfigurations = attrsetFromEachThemeEachHost themes hostDirPath
             # This function is evaluated for each combination of theme and host.
             # The function will return an appropriate NixOS configuration for that combination.
-            (theme: host:
+            (themeName: host:
                 let
                     hostPath = hostDirPath + "/${host}";
 
@@ -125,7 +125,7 @@
                                 pkgs = mkForce pkgs;
 
                                 inherit
-                                    themes theme
+                                    themes themeName
                                     host
                                     flakeRoot
                                     hostOptions

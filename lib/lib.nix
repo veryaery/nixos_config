@@ -58,19 +58,19 @@ in
     # attrsetFromEachThemeEachHost :: attrset -> path -> string -> string -> a -> Map string a
     attrsetFromEachThemeEachHost = themes: hostDirPath: f:
         let
-            themeList = attrNames themes;
+            themeNameList = attrNames themes;
             hostList = attrNames (readDir hostDirPath);
 
-            combinations = cartesianProduct themeList hostList;
+            combinations = cartesianProduct themeNameList hostList;
         in
             foldr
             (combination: z:
                 let
-                    theme = elemAt combination 0;
+                    themeName = elemAt combination 0;
                     host = elemAt combination 1;
 
-                    a = f theme host;
-                    x = { "${theme}.${host}" = a; };
+                    a = f themeName host;
+                    x = { "${themeName}.${host}" = a; };
                 in z // x
             )
             {}
@@ -84,7 +84,7 @@ in
         else
             color;
 
-    # readThemes :: path -> Map string attrset
+    # readThemes :: path -> Map string Theme
     readThemes = themeDirPath:
         let
             files = attrNames (readDir themeDirPath);
@@ -92,10 +92,10 @@ in
             foldr
             (file: z:
                 let
-                    theme = basenameWithoutExtention file;
-                    themeExpr = import (themeDirPath + "/${file}");
+                    themeName = basenameWithoutExtention file;
+                    theme = import (themeDirPath + "/${file}");
 
-                    x = { "${theme}" = themeExpr; };
+                    x = { "${themeName}" = theme; };
                 in z // x
             )
             {}

@@ -124,47 +124,52 @@ in
         };
     };
 
-    theme.subs =
-        let
-            neovim-pack =
-                pkgs.neovim-pack
-                {
-                    start = with pkgs.vimPlugins; [
-                        nvim-treesitter
-                        nvim-ts-rainbow
-                        nvim-autopairs
-                        indent-blankline-nvim
-                    ];
-                };
-        in
+    theme.dotfilesFn =
+        pkgs.dotfiles
         {
-            ".config/alacritty/alacritty.yml" = themeExpr:
-                let
-                    size =
-                        if (elem "laptop" hostOptions.roles)
-                        then 6
-                        else 11;
-                in
-                    themeExpr //
-                    {
-                        inherit font; 
-                        fish = toString pkgs.fish;
-                        size = toString size;
-                    };
+            inherit lib;
+            src = flakeRoot + /dotfiles;
+            files = {
+                ".config/alacritty/alacritty.yml".subs = theme:
+                    let
+                        size =
+                            if (elem "laptop" hostOptions.roles)
+                            then 6
+                            else 11;
+                    in
+                        theme //
+                        {
+                            inherit font; 
+                            fish = toString pkgs.fish;
+                            size = toString size;
+                        };
 
-            ".config/fish/config.fish" = themeExpr:
-                { primary = fishTerminalColor themeExpr.primaryTerminalColor; };
+                ".config/fish/config.fish".subs = theme:
+                    { primary = fishTerminalColor theme.primaryTerminalColor; };
 
-            ".xmonad/lib/Theme.hs" = themeExpr:
-                themeExpr //
-                { inherit font; };
+                ".xmonad/lib/Theme.hs".subs = theme:
+                    theme //
+                    { inherit font; };
 
-            ".config/xmobar/.xmobarrc" = themeExpr:
-                themeExpr //
-                { inherit font; };
+                ".config/xmobar/.xmobarrc".subs = theme:
+                    theme //
+                    { inherit font; };
 
-            ".config/nvim/init.lua" = _:
-                { packpath = toString neovim-pack; };
+                ".config/nvim/init.lua".subs = _:
+                    let
+                        neovim-pack =
+                            pkgs.neovim-pack
+                            {
+                                start = with pkgs.vimPlugins; [
+                                    nvim-treesitter
+                                    nvim-ts-rainbow
+                                    nvim-autopairs
+                                    indent-blankline-nvim
+                                ];
+                            };
+                    in
+                    { packpath = toString neovim-pack; };
+            };
         };
 
     # Installing Nix flakes system-wide.

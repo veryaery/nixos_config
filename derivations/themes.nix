@@ -1,7 +1,11 @@
 pkgs:
 
 {
-    themes
+    # themes :: Map string Theme
+    themes,
+
+    # drvFn :: Theme -> derivation
+    drvFn
 }:
 
 let
@@ -15,7 +19,11 @@ let
 
     commands =
         mapAttrsToList
-        (theme: dotfiles: "echo ${dotfiles} > $out/${theme}")
+        (themeName: theme:
+            let
+                drv = drvFn themeName theme;
+            in "echo ${drv} > $out/${themeName}"
+        )
         themes;
 in
 pkgs.runCommandLocal
