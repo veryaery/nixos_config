@@ -11,47 +11,45 @@ let
         let
             supply = "BAT0";
 
-            batcap =
-                pkgs.writeScriptBin "batcap"
-                ''
-                    #!${pkgs.fish}/bin/fish
-
-                    while true
-                        set -l capacity $(cat /sys/class/power_supply/${supply}/capacity)
-                        echo $capacity%
-                        sleep 1
-                    end
-                '';
-
-            batico =
-                pkgs.writeScriptBin "batico"
+            battery =
+                pkgs.writeScriptBin "battery"
                 ''
                     #!${pkgs.fish}/bin/fish
 
                     while true 
-                        set -l capacity $(cat /sys/class/power_supply/${supply}/capacity)
-                        set -l supply_status $(cat /sys/class/power_supply/${supply}/status)
-
-                        if [ $supply_status != "Discharging" ] && [ $supply_status != "Unknown" ]
-                            echo 
-                        else if [ $capacity -ge 80 ]
-                            echo 
-                        else if [ $capacity -ge 60 ]
-                            echo 
-                        else if [ $capacity -ge 40 ]
-                            echo 
-                        else if [ $capacity -ge 20 ]
-                            echo 
+                        set -l batcapacity $(cat /sys/class/power_supply/${supply}/capacity)
+                        set -l batstatus $(cat /sys/class/power_supply/${supply}/status)
+                        
+                        set -l icon
+                        if [ $batstatus != "Discharging" ] && [ $batstatus != "Unknown" ]
+                            set icon 
+                        else if [ $batcapacity -ge 80 ]
+                            set icon 
+                        else if [ $batcapacity -ge 60 ]
+                            set icon 
+                        else if [ $batcapacity -ge 40 ]
+                            set icon 
+                        else if [ $batcapacity -ge 20 ]
+                            set icon 
                         else
-                            echo 
+                            set icon 
                         end
+
+                        echo $(string join "" \
+                            "<box type=Bottom width=2 color=${theme.primary}>" \
+                                "<fc=${theme.primary}>" \
+                                    "<fn=1>$icon</fn>" \
+                                "</fc>" \
+                                " $batcapacity%" \
+                            "</box>" \
+                        )
 
                         sleep 1
                     end
                 '';
 
-            sig =
-                pkgs.writeScriptBin "sig"
+            signal =
+                pkgs.writeScriptBin "signal"
                 ''
                     #!${pkgs.fish}/bin/fish
 
@@ -61,104 +59,98 @@ let
                             awk "/^\*/ { print \$2 }" \
                         )
                         
-                        if [ -z "$signal" ]
-                            echo
-                        else if [ $signal -ge 90 ]
-                            echo ▂▄▆█
-                        else if [ $signal -ge 55 ]
-                            echo ▂▄▆
-                        else if [ $signal -ge 30 ]
-                            echo ▂▄
+                        set -l icon
+                        set -l bars
+                        if [ -n "$signal" ]
+                            set icon 
+
+                            if [ $signal -ge 90 ]
+                                set bars ▂▄▆█
+                            else if [ $signal -ge 55 ]
+                                set bars ▂▄▆
+                            else if [ $signal -ge 30 ]
+                                set bars ▂▄
+                            else
+                                set bars ▂
+                            end
                         else
-                            echo ▂
+                            set icon 
                         end
+
+                        echo $(string join "" \
+                            "<box type=Bottom width=2 color=${theme.primary}>" \
+                                "<fc=${theme.primary}>" \
+                                    "<fn=1>$icon</fn>" \
+                                "</fc>" \
+                                "$(if [ -n "$bars" ]
+                                    echo " $bars"
+                                end)" \
+                            "</box>" \
+                        )
 
                         sleep 1
                     end
-                '';
-
-            sigico =
-                pkgs.writeScriptBin "sigico"
-                ''
-                    #!${pkgs.fish}/bin/fish
-
-                    while true
-                        set -l inuse $(nmcli -f IN-USE device wifi | grep "^\*")
-
-                        if [ -z "$inuse" ]
-                            echo 
-                        else
-                            echo 
-                        end
-
-                        sleep 1
-                    end
-                '';
-
-            temp' =
-                pkgs.writeScript "tempprime"
-                ''
-                    #!${pkgs.fish}/bin/fish
-
-                    set -l max_temp
-                    set -l min_max
-
-                    for i in $(seq 2 5)
-                        set -l mtemp $(cat /sys/bus/platform/devices/coretemp.0/hwmon/hwmon4/temp$(echo $i)_input)
-                        set -l temp $(math $mtemp / 1000)
-                        set -l mmax $(cat /sys/bus/platform/devices/coretemp.0/hwmon/hwmon4/temp$(echo $i)_max)
-                        set -l max $(math $mmax / 1000)
-
-                        if [ -z $max_temp ] || [ $temp -gt $max_temp ]
-                            set max_temp $temp
-                        end
-
-                        if [ -z $min_max ] || [ $max -lt $min_max ]
-                            set min_max $max
-                        end
-                    end
-
-                    echo $max_temp
-                    echo $min_max
                 '';
 
             temp =
                 pkgs.writeScriptBin "temp"
                 ''
                     #!${pkgs.fish}/bin/fish
+                    
+                    function read_temp
+                        set -l mtemps $(cat /sys/bus/platform/devices/coretemp.*/hwmon/hwmon*/temp*_input)
+                        set -l mmaxs $(cat /sys/bus/platform/devices/coretemp.*/hwmon/hwmon*/temp*_max)
 
-                    while true
-                        set -l res $(${temp'}) 
-                        set -l temp $res[1]
-                        
-                        echo $temp °C
+                        set -l maxmtemp
+                        set -l minmmax
 
-                        sleep 1
+                        set -l mtempsc $(count $mtemps)
+                        set -l i 1
+                        while [ $i -le $mtempsc ]
+                            set -l mtemp $mtemps[$i]
+                            set -l mmax $mmax[$i]
+
+                            if [ -z "$maxmtemp" ] || [ $mtemp -gt $maxmtemp ]
+                                set maxmtemp $mtemp
+                            end
+
+                            if [ -z "$minmmax" ] || [ $mmax -lt $minmmax ]
+                                set minmmax $mmax
+                            end
+
+                            set i $(math $i + 1)
+                        end
+
+                        echo $(math $maxmtemp / 1000)
+                        echo $(math $minmmax / 1000)
                     end
-                '';
-
-            tempico =
-                pkgs.writeScriptBin "tempico"
-                ''
-                    #!${pkgs.fish}/bin/fish
 
                     while true
-                        set -l res $(${temp'})
+                        set -l res $(read_temp)
                         set -l temp $res[1]
                         set -l max $res[2]
-                        set -l percent $(math round $temp / $max \* 100)
 
+                        set -l percent $(math round $temp / $max \* 100) 
+
+                        set -l icon
                         if [ $percent -ge 80 ]
-                            echo 
-                        else if [ $percent -ge 60 ]
-                            echo 
+                            set icon 
                         else if [ $percent -ge 40 ]
-                            echo 
+                            set icon 
                         else if [ $percent -ge 20 ]
-                            echo 
+                            set icon 
                         else
-                            echo 
+                            set icon 
                         end
+
+                        echo $(string join "" \
+                            "<box type=Bottom width=2 color=${theme.primary}>" \
+                                "<fc=${theme.primary}>" \
+                                    "<fn=1>$icon</fn>" \
+                                "</fc>" \
+                                "$temp °C" \
+                            "</box>" \
+                        )
 
                         sleep 1
                     end
@@ -171,45 +163,39 @@ let
 
                     while true
                         set -l vol $(${pkgs.pamixer}/bin/pamixer --get-volume)
-                        echo $vol%
-                        sleep 1
-                    end
-                '';
-
-            volico =
-                pkgs.writeScriptBin "volico"
-                ''
-                    #!${pkgs.fish}/bin/fish
-
-                    while true
-                        set -l vol $(${pkgs.pamixer}/bin/pamixer --get-volume)
                         set -l muted $(${pkgs.pamixer}/bin/pamixer --get-mute)
-
+                        
+                        set -l icon
                         if [ $muted = true ]
                             echo 
                         else
                             if [ $vol -ge 75 ]
-                                echo 
+                                set icon 
                             else if [ $vol -ge 25 ]
-                                echo 
+                                set icon 
                             else
-                                echo 
+                                set icon 
                             end
                         end
+
+                        echo $(string join "" \
+                            "<box type=Bottom width=2 color=${theme.primary}>" \
+                                "<fc=${theme.primary}>" \
+                                    "<fn=1>$icon</fn>" \
+                                "</fc>" \
+                                " $vol%" \
+                            "</box>" \
+                        )
 
                         sleep 1
                     end
                 '';
 
             path = pkgs.lib.makeBinPath [ 
-                batcap
-                batico
-                sig
-                sigico
+                battery
+                signal
                 temp
-                tempico
                 vol
-                volico
             ];
         in
             pkgs.runCommandLocal "xmobarprime"
