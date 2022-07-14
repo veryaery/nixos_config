@@ -7,10 +7,10 @@ pkgs:
 let
     path = pkgs.lib.makeBinPath bin;
 in
-pkgs.runCommand
+pkgs.runCommandLocal
 "neovim"
 {
-    buildInputs = with pkgs; [ makeWrapper ];
+    nativeBuildInputs = with pkgs; [ makeWrapper ];
 }
 ''
 makeWrapper ${pkgs.neovim}/bin/nvim $out/bin/nvim \

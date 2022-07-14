@@ -16,7 +16,7 @@ let
             (xmobar { inherit themes; })
         ]);
 in
-pkgs.runCommand "xmonad"
+pkgs.runCommandLocal "xmonad"
 { nativeBuildInputs = with pkgs; [ makeWrapper ]; }
 ''
 makeWrapper ${xmonad}/bin/xmonad $out/bin/xmonad \
