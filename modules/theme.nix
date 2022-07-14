@@ -22,7 +22,7 @@ let
         pkgs.themes
         {
             inherit themes;
-            drvFn = cfg.dotfiles;
+            drvFn = cfg.dotfilesFn;
         };
     
     postinstall =
@@ -49,7 +49,7 @@ in
             description = ''
                 dotfilesFn :: string -> Theme -> derivation
             '';
-            type = types.functionTo types.package;
+            type = types.functionTo (types.functionTo types.package);
         };
 
         postInstallScripts = mkOption {
