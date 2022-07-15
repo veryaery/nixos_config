@@ -134,8 +134,8 @@ in
         {
             inherit lib;
             src = flakeRoot + /dotfiles;
-            files = {
-                ".config/alacritty/alacritty.yml".subs = theme:
+            filesFn = themeName: theme: {
+                ".config/alacritty/alacritty.yml".subs =
                     let
                         size =
                             if (elem "laptop" hostOptions.roles)
@@ -149,18 +149,24 @@ in
                             size = toString size;
                         };
 
-                ".config/fish/config.fish".subs = theme:
+                ".config/fish/config.fish".subs =
                     { primary = fishTerminalColor theme.primaryTerminalColor; };
 
-                ".xmonad/lib/Theme.hs".subs = theme:
+                ".xmonad/lib/Theme.hs".subs =
                     theme //
                     { inherit font; };
 
-                ".config/xmobar/.xmobarrc".subs = theme:
-                    theme //
-                    { inherit font; };
+                ".config/xmobar/.xmobarrc" = {
+                    variant =
+                        if (elem "laptop" hostOptions.roles)
+                        then "laptop"
+                        else "default";
+                    subs =
+                        theme //
+                        { inherit font; };
+                };
 
-                ".config/nvim/init.lua".subs = _:
+                ".config/nvim/init.lua".subs =
                     let
                         neovim-pack =
                             pkgs.neovim-pack

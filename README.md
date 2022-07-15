@@ -4,7 +4,7 @@
 
 * XMonad + xmobar
 * [picom (jonaburg/picom)](https://github.com/jonaburg/picom)
-* neovim – Configured with lua
+* neovim – Configured with Lua
 * Theming via Nix + shell scripts
 
 ## Screenshots
