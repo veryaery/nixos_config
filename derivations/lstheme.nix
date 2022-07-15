@@ -1,6 +1,7 @@
 pkgs:
 
 {
+    # themes :: derivation
     themes
 }:
 

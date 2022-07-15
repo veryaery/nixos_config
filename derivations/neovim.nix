@@ -1,6 +1,7 @@
 pkgs:
 
 {
+    # bin :: [ derivation ]
     bin
 }:
 

@@ -1,7 +1,10 @@
 pkgs:
 
 {
+    # themes :: derivation
     themes,
+
+    # postinstall :: derivation
     postinstall
 }:
 
