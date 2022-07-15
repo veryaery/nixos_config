@@ -3,7 +3,7 @@
 ## Specs
 
 * XMonad + xmobar
-* [Picom (jonaburg/picom)](https://github.com/jonaburg/picom)
+* [picom (jonaburg/picom)](https://github.com/jonaburg/picom)
 * neovim – Configured with lua
 * Theming via Nix + shell scripts
 
