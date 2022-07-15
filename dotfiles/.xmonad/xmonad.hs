@@ -59,8 +59,8 @@ config'' = def
             >> spawn "picom --experimental-backend"
     }
 
-keys' XConfig { modMask = modMask' } =
-    [ ( (modMask', xK_r), shellPrompt xpConfig )
+keys' XConfig { modMask = modMask } =
+    [ ( (modMask, xK_r), shellPrompt xpConfig )
     , ( (0, xK_Print), spawn "flameshot gui" )
     , ( (shiftMask, xK_Print), spawn "flameshot full")
     ]
