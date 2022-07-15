@@ -28,7 +28,7 @@ installtheme <theme>
 
 Create a directory in `modules/host` with your hostname.  
 It must contain a `default.nix` file and should evaluate to a Host (See type definitions).  
-You may optionally import a `hardware-configuration.nix` file from within your host's module.
+You may optionally import a `hardware-configuration.nix` file from within your host's module.  
 You can generate this file using `nixos-generate-config` or you can copy it from your own NixOS configuration.
 
 **Hosts are required to define a [`boot.loader`](https://search.nixos.org/options?query=boot.loader) and define [`system.stateVersion`](https://search.nixos.org/options?query=system.stateVersion).**
