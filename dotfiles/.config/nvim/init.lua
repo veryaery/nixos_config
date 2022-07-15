@@ -7,6 +7,10 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = -1
 vim.opt.shiftwidth = 0
 
+vim.opt.clipboard = "unnamedplus"
+
+vim.opt.splitright = true
+
 vim.g.nix_recommended_style = false
 
 local ok, treesitter = pcall(require, "nvim-treesitter.configs")
@@ -24,6 +28,12 @@ end
 local ok, indentblankline = pcall(require, "indent_blankline")
 if not ok then
     print "Require error indent_blankline"
+    return
+end
+
+local ok, tree = pcall(require, "nvim-tree")
+if not ok then
+    print "Require error nvim-tree"
     return
 end
 
@@ -51,3 +61,21 @@ autopairs.setup {
 }
 
 indentblankline.setup {}
+
+tree.setup {
+    hijack_cursor = true,
+
+    view = {
+        mappings = {
+            list = {
+                { key = { "<CR>", "l" }, action = "edit" }
+            }
+        }
+    },
+
+    renderer = {
+        indent_markers = {
+            enable = true
+        }
+    }
+}

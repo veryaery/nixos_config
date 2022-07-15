@@ -19,7 +19,7 @@ let
         id
         replace;
     
-    font = "Fira Code";
+    font = "FiraCode Nerd Font";
 in
 {
     imports = [
@@ -69,10 +69,8 @@ in
         pavucontrol
         unzip
         flameshot
-        
+        vscode
         imagemagick
-        
-        xclip
         (neovim { bin = with pkgs; [
             # nvim-tresitter dependencies
             coreutils
@@ -81,6 +79,7 @@ in
             curl
             git
             gcc
+            xclip
         ]; })
     ];
 
@@ -176,6 +175,8 @@ in
                                     nvim-ts-rainbow
                                     nvim-autopairs
                                     indent-blankline-nvim
+                                    nvim-tree-lua
+                                    nvim-web-devicons
                                 ];
                             };
                     in

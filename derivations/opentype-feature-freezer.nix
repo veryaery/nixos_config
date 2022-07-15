@@ -7,7 +7,7 @@ in
 pkgs.python3Packages.buildPythonApplication {
 	inherit pname version;
 
-	buildInputs = with pkgs.python3Packages; [
+	propagatedBuildInputs = with pkgs.python3Packages; [
 		fonttools
 	];
 

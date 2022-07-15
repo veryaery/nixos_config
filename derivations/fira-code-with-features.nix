@@ -12,25 +12,49 @@ let
 	version = "6.2";
 	features' = concatStringsSep "," features;
 in
-pkgs.fetchurl {
-	name = "fira-code-${version}";
-
+pkgs.runCommandLocal "fira-code-features"
+{
+    src = pkgs.fetchurl {
+        url = "https://github.com/tonsky/FiraCode/releases/download/${version}/Fira_Code_v${version}.zip";
+        recursiveHash = true;
+        sha256 = "sha256-BDdAvLUYncYJciMU5gDEmid7ru1xul0LLI8C3JwgN74=";
+    };
 	nativeBuildInputs = with pkgs; [
-		unzip
+        unzip
 		opentype-feature-freezer
+        nerd-font-patcher
 	];
-
-	url = "https://github.com/tonsky/FiraCode/releases/download/${version}/Fira_Code_v${version}.zip";
-	downloadToTemp = true;
-	recursiveHash = true;
-	sha256 = "sha256-+reVUJRXsu6QkiDJyxmT/lfZEgio+FIU3NEsxp+541I=";
-	
-	postFetch = ''
-		outFontDirPath=$out/share/fonts/truetype
-
-		unzip -j $downloadedFile variable_ttf/FiraCode-VF.ttf
-
-		mkdir -p $outFontDirPath
-		pyftfeatfreeze -f "${features'}" FiraCode-VF.ttf $outFontDirPath/FiraCode-Features-VF.ttf
-	'';
 }
+''
+unzip $src ttf/*
+
+featdir=feat
+
+mkdir $featdir
+
+files=$(find ttf -type f)
+for origfile in $files; do
+    basename=$(basename $origfile)
+    suffix=$(echo $basename | sed "s/^FiraCode//")
+    featfile=$featdir/FiraCode-Features$suffix
+
+    pyftfeatfreeze -f "${features'}" $origfile $featfile 
+done
+
+outdir=$out/share/fonts/truetype
+
+mkdir -p $outdir
+
+files=$(find $featdir -type f)
+for featfile in $files; do
+    nerd-font-patcher -out $outdir $featfile \
+        --fontawesome --fontawesomeextension \
+        --octicons \
+        --powersymbols \
+        --pomicons \
+        --powerline \
+        --powerlineextra \
+        --material \
+        --weather
+done
+''
