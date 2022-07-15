@@ -25,7 +25,7 @@
             nixosSystem;
         
         inherit (lib)
-            attrsetFromEachThemeEachHost
+            mapThemeHostToAttrset
             optionalPath
             overlayFromImports
             readThemes;
@@ -58,70 +58,66 @@
         themes = readThemes ./themes;
     in
     {
-        # Make a NixOS configuration for each combination of theme and host
-        # so that the appropriate combination may be selected from nixos-rebuild
-        # e.g. nixos-rebuild --flake .#<theme>.<host>
+        # nixosConfigurations is set to an attrset with an attr for each combination of theme and host
+        # where the key is the form of "<theme>.<host>"
+        # and where the value is the respective NixOS configuration for the combination.
         #
-        # This is possible becuase the attrset keys are in the form of "<theme>.<host>"
-        # as defined by attrsetFromEachThemeEachHost.
-        nixosConfigurations = attrsetFromEachThemeEachHost themes hostDirPath
-            # This function is evaluated for each combination of theme and host.
-            # The function will return an appropriate NixOS configuration for that combination.
-            (themeName: host:
-                let
-                    hostPath = hostDirPath + "/${host}";
+        # This is so that the appropriate theme and host can be selected from nixos-rebuild:
+        # λ nixos-rebuild switch --flake .#<theme>.<host>
+        nixosConfigurations = mapThemeHostToAttrset themes hostDirPath (themeName: host:
+            # This function is evaluated for each combination of themeName and host.
+            # This function should return the respective NixOS configuration for that combination.
+            let
+                hostPath = hostDirPath + "/${host}";
 
-                    hostExpr = import (hostPath + /host.nix);
-                    hostOptions = hostExpr.options;
-                    hostModule = hostExpr.module;
+                hostExpr = import hostPath;
+                hostOptions = hostExpr.options;
+                hostModule = hostExpr.module;
 
-                    localSystem = { inherit (hostOptions) system; };
-                    pkgs = import nixpkgs
-                        {
-                            inherit overlays localSystem;
+                localSystem = { inherit (hostOptions) system; };
+                pkgs = import nixpkgs
+                    {
+                        inherit overlays localSystem;
 
-                            config = {
-                                allowUnfree = true;
-                            };
+                        config = {
+                            allowUnfree = true;
                         };
-                    
-                    imports =
-                        [
-                            ./modules/configuration.nix
-                            hostModule
-                        ]
-                        # Import hardware-configuration.nix if it exists.
-                        ++ (optionalPath (hostPath + /hardware-configuration.nix));
-                in
-                nixosSystem {
-                    modules = [
-                        home-manager.nixosModules.home-manager
-                        {
-                            inherit imports;
-
-                            # Explicitly define localSystem.
-                            nixpkgs = { inherit localSystem; };
-
-                            # Define home-manager options.
-                            home-manager = {
-                                useGlobalPkgs = true;
-                                useUserPackages = true;
-                            };
-
-                            _module.args = {
-                                # Explicitly define pkgs.
-                                pkgs = mkForce pkgs;
-
-                                inherit
-                                    themes themeName
-                                    host
-                                    flakeRoot
-                                    hostOptions
-                                    hmlib;
-                            };
-                        }
+                    };
+                
+                imports =
+                    [
+                        ./modules/configuration.nix
+                        hostModule
                     ];
-                }
-            );
+            in
+            nixosSystem {
+                modules = [
+                    home-manager.nixosModules.home-manager
+                    {
+                        inherit imports;
+
+                        # Explicitly define localSystem.
+                        nixpkgs = { inherit localSystem; };
+
+                        # Define home-manager options.
+                        home-manager = {
+                            useGlobalPkgs = true;
+                            useUserPackages = true;
+                        };
+
+                        _module.args = {
+                            # Explicitly define pkgs.
+                            pkgs = mkForce pkgs;
+
+                            inherit
+                                themes themeName
+                                host
+                                flakeRoot
+                                hostOptions
+                                hmlib;
+                        };
+                    }
+                ];
+            });
     };
 }

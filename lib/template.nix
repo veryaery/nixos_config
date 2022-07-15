@@ -34,8 +34,10 @@ let
         {}
         (attrNames attrset);
 
+    # flattenAttrset :: attrset -> attrset
     flattenAttrset = flattenAttrset' null;
 
+    # attrNamesValues :: attrset -> { names :: [ string ]; values :: [ any ] }
     attrNamesValues = attrset:
         foldr
         (name: z:
@@ -52,12 +54,14 @@ let
         (attrNames attrset);
 in
 {
+    # replace :: attrset -> (string -> string)
     replace = attrset:
         let
             flatNamesValues = attrNamesValues (flattenAttrset attrset);
             froms = map (name: "<${name}>") flatNamesValues.names;
         in replaceStrings froms flatNamesValues.values;
     
+    # sedScript :: attrset -> string
     sedScript = attrset:
         let
             flat = flattenAttrset attrset;

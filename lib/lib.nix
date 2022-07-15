@@ -46,17 +46,16 @@ in
     # id :: a -> a
     id = a: a;
 
-    # A list containing the path if the path exists.
-    # Otherwise, an empty list.
+    # Returns a list which contains path if path exists and otherwise is empty. 
     # optionalPath :: path -> [ path ]
     optionalPath = path: if pathExists path then [ path ] else [];
 
-    # Reads the host directory
-    # then returns an attrset with an attr for each combination of theme and host.
-    # Each attrset key is the form of "<theme>.<host>".
-    # Each attrset valye is the returned value of f theme host.
-    # attrsetFromEachThemeEachHost :: attrset -> path -> (string -> string -> a) -> Map string a
-    attrsetFromEachThemeEachHost = themes: hostDirPath: f:
+    # Reads hostDirPath directory.
+    # Then maps each combination of themeName and host to an attrset
+    # where the key is the form of "<themeName>.<host>"
+    # and where the value is the returned value from function f evaluated with themeName and host.
+    # mapThemeHostToAttrset :: attrset -> path -> (string -> string -> a) -> Map string a
+    mapThemeHostToAttrset = themes: hostDirPath: f:
         let
             themeNameList = attrNames themes;
             hostList = attrNames (readDir hostDirPath);
@@ -83,6 +82,7 @@ in
             "br" + toLower (substring 6 (stringLength color) color)
         else
             color;
+
 
     # readThemes :: path -> Map string Theme
     readThemes = themeDirPath:

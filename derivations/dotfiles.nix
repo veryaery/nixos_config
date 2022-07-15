@@ -6,8 +6,7 @@ pkgs:
     # src :: derivation
     src,
 
-    # files :: Map string { src? :: string -> derivation, subs :: Theme -> attrset }
-    #                       ^^^^ src is optional
+    # files :: Map string { src? :: string -> derivation; subs :: Theme -> attrset }
     files
 }:
 

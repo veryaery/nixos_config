@@ -2,9 +2,9 @@ std:
 
 {
     inherit (import ./lib.nix std)
-        attrsetFromEachThemeEachHost
         fishTerminalColor
         id
+        mapThemeHostToAttrset
         optionalPath
         overlayFromImports
         readThemes;

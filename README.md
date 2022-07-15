@@ -1,75 +1,81 @@
-# NixOS Configuration (WIP)
+# NixOS configuration & dotfiles
+
+# Specs
+
+* XMonad + xmobar
+* Picom (jonaburg/picom)
+* neovim – Configured with lua
+* Theming via nix + shell scripts
 
 # Installing
 
 ```
-nixos-rebuild switch --flake .#<os>.<theme>.<host>
+nixos-rebuild switch --flake .#<theme>.<host>
 ```
 
-# Modules
+# Switching theme
 
-## OS
+```
+installtheme <theme>
+```
 
-`./modules/os/<os>/`:  
-* `os.nix` — OS-specific NixOS module option definitions.
+# Adding a host
 
-## Host
+Create a directory in `modules/host` with your hostname.
+It must contain a `default.nix` file and should evaluate to a Host (See type definitions).
+You may optionally import a `hardware-configuration.nix` file from within your host's module.
+You can generate this file using `nixos-generate-config` or you can copy it from your own NixOS configuration.
 
-`./modules/host/<host>/`:  
-* `host.nix` — Host options and host-specific NixOS module option definitions.
-* `hardware-configuration.nix` (Optional) — Hardware NixOS module option definitions. Generate this file using `nixos-generate-config` or copy it from your own NixOS configuration.  
+**Hosts are required to define a [`boot.loader`](https://search.nixos.org/options?query=boot.loader) and define [`system.stateVersion`](https://search.nixos.org/options?query=system.stateVersion).**
+**These options are not defined in `configuration.nix`.**
 
-**Hosts are expected to define a [`boot.loader`](https://search.nixos.org/options?query=boot.loader) and define [`system.stateVersion`](https://search.nixos.org/options?query=system.stateVersion).**
+# Type definitions
 
-### `host.nix` Schema
-
-```nix
-{
-    options = {
+```
+Host :: {
+    options :: {
         # The host's Nix platform type e.g. "x86_64-linux" "aarch64-linux".
-        # system :: string
+        system :: string
 
         # Available roles:
         # * "laptop" — The host is a laptop.
-        # roles :: [ string ]
-    };
+        # * "bluetooth" — The host should enable bluetooth functionality.
+        roles :: [ string ]
+    }
 
-    # module :: NixOS Module
+    module :: NixOSModule
 }
 ```
 
-# Themes
+```
+# Color strings should be 6 digit hexadecimal RGB prefixed with "#".
 
-### `./themes/<theme>.nix` Schema
+Theme :: {
 
-```nix
-{
-    # Colors should be 6 digit hexadecimal RGB prefixed with "#".
+    foreground :: string
+    background :: string
 
-    # foreground :: string
-    # background :: string
-
-    # primary :: string
+    primary :: string
     # Should be a key of terminalColors.
-    # primaryTerminalColor :: string
+    primaryTerminalColor :: string
 
-    terminalColors = {
-        # black :: string
-        # blue :: string
-        # green :: string
-        # cyan :: string
-        # red :: string
-        # magenta :: string
-        # yellow :: string
-        # white :: string
-        # brightBlack :: string
-        # brightBlue :: string
-        # brightGreen :: string
-        # brightCyan :: string
-        # brightRed :: string
-        # brightMagenta :: string
-        # brightYellow :: string
-        # brightWhite :: string
-    };
+    terminalColors :: {
+        black :: string
+        blue :: string
+        green :: string
+        cyan :: string
+        red :: string
+        magenta :: string
+        yellow :: string
+        white :: string
+        brightBlack :: string
+        brightBlue :: string
+        brightGreen :: string
+        brightCyan :: string
+        brightRed :: string
+        brightMagenta :: string
+        brightYellow :: string
+        brightWhite :: string
+    }
 }
 ```

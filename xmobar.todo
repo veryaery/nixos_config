@@ -1,3 +1,0 @@
-create xmobar for each theme
-
-create xmobar wrapper which switches binary depending on NIXOSCFG_THEME
