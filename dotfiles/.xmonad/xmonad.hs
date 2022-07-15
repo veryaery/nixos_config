@@ -61,6 +61,8 @@ config'' = def
 
 keys' XConfig { modMask = modMask' } =
     [ ( (modMask', xK_r), shellPrompt xpConfig )
+    , ( (0, xK_Print), spawn "flameshot gui" )
+    , ( (shiftMask, xK_Print), spawn "flameshot full")
     ]
 
 config' =  additionalKeys config'' $ keys' config''

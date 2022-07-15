@@ -68,10 +68,11 @@ in
         fish
         pavucontrol
         unzip
-        xclip
-
+        flameshot
+        
         imagemagick
-
+        
+        xclip
         (neovim { bin = with pkgs; [
             # nvim-tresitter dependencies
             coreutils

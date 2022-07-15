@@ -1,11 +1,16 @@
 # NixOS configuration & dotfiles
 
-# Specs
+## Specs
 
 * XMonad + xmobar
-* Picom (jonaburg/picom)
+* [Picom (jonaburg/picom)](https://github.com/jonaburg/picom)
 * neovim – Configured with lua
-* Theming via nix + shell scripts
+* Theming via Nix + shell scripts
+
+## Screenshots
+
+![Gruvbox theme](.githubassets/gruvbox.png)
+![PaperColor theme](.githubassets/papercolor.png)
 
 # Installing
 
@@ -21,8 +26,8 @@ installtheme <theme>
 
 # Adding a host
 
-Create a directory in `modules/host` with your hostname.
-It must contain a `default.nix` file and should evaluate to a Host (See type definitions).
+Create a directory in `modules/host` with your hostname.  
+It must contain a `default.nix` file and should evaluate to a Host (See type definitions).  
 You may optionally import a `hardware-configuration.nix` file from within your host's module.
 You can generate this file using `nixos-generate-config` or you can copy it from your own NixOS configuration.
 
