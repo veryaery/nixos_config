@@ -45,3 +45,5 @@ window:
     cursor:
         style:
             blinking: On
+
+    opacity: 0.9

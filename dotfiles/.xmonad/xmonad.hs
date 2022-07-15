@@ -56,6 +56,7 @@ config'' = def
 
         layoutHook = layout',
         startupHook = spawn "~/.fehbg"
+            >> spawn "picom --experimental-backend"
     }
 
 keys' XConfig { modMask = modMask' } =
@@ -87,7 +88,7 @@ prettyPrint = def
         ppLayout = colorPrimary . mapLayout,
         ppTitle = colorPrimary . shorten 64,
 
-        ppOrder = \(_:layout:_:_) -> [ layout ],
+        ppOrder = \(workspaces:layout:_:_) -> [ layout, workspaces ],
         ppSep = " "
     }
         where

@@ -14,6 +14,7 @@ let
         pkgs.lib.makeBinPath
         (with pkgs; [
             (xmobar { inherit themes; })
+            picom-jonaburg
         ]);
 in
 pkgs.runCommand "xmonad"

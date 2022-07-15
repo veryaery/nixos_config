@@ -44,6 +44,8 @@
                         import (derivationsDirPath + /opentype-feature-freezer.nix) super;
                     xmobar =
                         import (derivationsDirPath + /xmobar.nix) super;
+                    picom-jonaburg =
+                        import (derivationsDirPath + /picom-jonaburg.nix) super;
                 }
             )
 

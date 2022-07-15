@@ -68,6 +68,7 @@ in
         fish
         pavucontrol
         unzip
+        xclip
 
         imagemagick
 
