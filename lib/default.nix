@@ -6,6 +6,7 @@ std:
         fishTerminalColor
         id
         optionalPath
+        overlayFromImports
         readThemes;
 
     inherit (import ./escape.nix std)

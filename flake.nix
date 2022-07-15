@@ -27,48 +27,29 @@
         inherit (lib)
             attrsetFromEachThemeEachHost
             optionalPath
+            overlayFromImports
             readThemes;
         
-        derivationsDirPath = ./derivations;
+        drvDirPath = ./derivations;
         overlays = [
-            (self: super:
-                {
-                    themes =
-                        import (derivationsDirPath + /themes.nix) super;
-                }
-            )
-
-            (self: super:
-                {
-                    opentype-feature-freezer =
-                        import (derivationsDirPath + /opentype-feature-freezer.nix) super;
-                    xmobar =
-                        import (derivationsDirPath + /xmobar.nix) super;
-                    picom-jonaburg =
-                        import (derivationsDirPath + /picom-jonaburg.nix) super;
-                }
-            )
-
-            (self: super:
-                {
-                    dotfiles =
-                        import (derivationsDirPath + /dotfiles.nix) super;
-                    installtheme =
-                        import (derivationsDirPath + /installtheme.nix) super;
-                    postinstall =
-                        import (derivationsDirPath + /postinstall.nix) super;
-                    lstheme =
-                        import (derivationsDirPath + /lstheme.nix) super;
-                    neovim-pack =
-                        import (derivationsDirPath + /neovim-pack.nix) super;
-                    fira-code-with-features =
-                        import (derivationsDirPath + /fira-code-with-features.nix) super;
-                    neovim =
-                        import (derivationsDirPath + /neovim.nix) super;
-                    xmonad =
-                        import (derivationsDirPath + /xmonad.nix) super;
-                }
-            )
+            (overlayFromImports drvDirPath [
+                "themes"
+            ])
+            (overlayFromImports drvDirPath [
+                "opentype-feature-freezer"
+                "xmobar"
+                "picom-jonaburg"
+            ])
+            (overlayFromImports drvDirPath [
+                "dotfiles"
+                "installtheme"
+                "postinstall"
+                "lstheme"
+                "neovim"
+                "neovim-pack"
+                "fira-code-with-features"
+                "xmonad"
+            ])
         ];
 
         hostDirPath = ./modules/host;

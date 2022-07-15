@@ -55,7 +55,7 @@ in
     # then returns an attrset with an attr for each combination of theme and host.
     # Each attrset key is the form of "<theme>.<host>".
     # Each attrset valye is the returned value of f theme host.
-    # attrsetFromEachThemeEachHost :: attrset -> path -> string -> string -> a -> Map string a
+    # attrsetFromEachThemeEachHost :: attrset -> path -> (string -> string -> a) -> Map string a
     attrsetFromEachThemeEachHost = themes: hostDirPath: f:
         let
             themeNameList = attrNames themes;
@@ -100,4 +100,17 @@ in
             )
             {}
             files;
+
+    # overlayFromImports :: path -> [ string ] -> Overlay (Map string any)
+    overlayFromImports = drvDirPath: names:
+        self: super:
+            foldr
+            (name: z:
+                let
+                    expr = import (drvDirPath + "/${name}.nix") super;
+                    x = { "${name}" = expr; };
+                in z // x
+            )
+            {}
+            names;
 }
