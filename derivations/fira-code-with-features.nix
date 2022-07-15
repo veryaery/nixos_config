@@ -1,6 +1,7 @@
 pkgs:
 
 {
+	# features? :: [ string ]
     features ? []
 }:
 

@@ -1,7 +1,10 @@
 pkgs:
 
 {
+    # start? :: [ derivation ]
     start ? [],
+
+    # opt? :: [ derivation ]
     opt ? []
 }:
 

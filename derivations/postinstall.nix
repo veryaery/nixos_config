@@ -1,6 +1,7 @@
 pkgs:
 
 {
+    # scripts :: Map string string
     scripts
 }:
 

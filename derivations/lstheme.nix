@@ -1,12 +1,13 @@
 pkgs:
 
 {
+    # themes :: derivation
     themes
 }:
 
 pkgs.writeScriptBin "lstheme"
 ''
-    #!${pkgs.fish}/bin/fish
+#!${pkgs.fish}/bin/fish
 
-    ls -1 ${themes}
+ls -1 ${themes}
 ''
