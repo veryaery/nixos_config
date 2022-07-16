@@ -43,7 +43,7 @@ layout' = avoidStruts $ grid ||| full
         windowBorder = 16
         spacing' =
             spacingRaw
-            True
+            False
             (Border screenBorder screenBorder screenBorder screenBorder) True
             (Border windowBorder windowBorder windowBorder windowBorder) True
 
