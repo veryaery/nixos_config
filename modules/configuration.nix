@@ -177,6 +177,7 @@ in
                                     indent-blankline-nvim
                                     nvim-tree-lua
                                     nvim-web-devicons
+                                    gitsigns-nvim
                                 ];
                             };
                     in
