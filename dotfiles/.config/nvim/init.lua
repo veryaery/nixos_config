@@ -1,4 +1,4 @@
-vim.cmd [[ set packpath+=<packpath> ]]
+vim.opt.packpath = vim.opt.packpath + "<packpath>"
 
 vim.opt.number = true
 
@@ -10,6 +10,14 @@ vim.opt.shiftwidth = 0
 vim.opt.clipboard = "unnamedplus"
 
 vim.opt.splitright = true
+
+vim.keymap.set("n", "<C-n>", ":bnext<CR>")
+vim.keymap.set("n", "<C-p>", ":bprevious<CR>")
+
+vim.keymap.set("n", "<C-l>", "<C-w>l")
+vim.keymap.set("n", "<C-h>", "<C-w>h")
+vim.keymap.set("n", "<C-j>", "<C-w>j")
+vim.keymap.set("n", "<C-k>", "<C-w>k")
 
 vim.g.nix_recommended_style = false
 
@@ -40,6 +48,12 @@ end
 local ok, gitsigns = pcall(require, "gitsigns")
 if not ok then
     print "Require error gitsigns"
+    return
+end
+
+local ok, bufferline = pcall(require, "bufferline")
+if not ok then
+    print "Require error bufferline"
     return
 end
 
@@ -87,3 +101,9 @@ tree.setup {
 }
 
 gitsigns.setup {}
+
+bufferline.setup {
+    options = {
+        show_buffer_close_icons = false
+    }
+}

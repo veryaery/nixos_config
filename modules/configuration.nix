@@ -178,6 +178,7 @@ in
                                     nvim-tree-lua
                                     nvim-web-devicons
                                     gitsigns-nvim
+                                    bufferline-nvim
                                 ];
                             };
                     in

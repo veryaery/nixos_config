@@ -9,8 +9,9 @@ import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
 
 import XMonad.Layout
+import XMonad.Layout.NoBorders
 import XMonad.Layout.Spacing
-import XMonad.Layout.Grid
+import XMonad.Layout.GridVariants
 
 import XMonad.Prompt
 import XMonad.Prompt.Shell
@@ -33,9 +34,10 @@ xpConfig = def
         defaultPrompter = const "run "
     }
 
-layout' = avoidStruts $ (spacing' $ tall ||| Grid) ||| Full 
+layout' = avoidStruts $ grid ||| full
     where
-        tall = Tall 1 (3 / 100) (1 / 2)
+        grid = spacing' $ TallGrid 2 2 (3 % 4) (16 % 9) (3 % 100)
+        full = noBorders Full
 
         screenBorder = 32
         windowBorder = 16
@@ -69,10 +71,9 @@ config' =  additionalKeys config'' $ keys' config''
 
 mapLayout :: String -> String
 mapLayout layout
-    | layout == "Spacing Tall" = "tall"
-    | layout == "Spacing Grid" = "grid"
-    | layout == "Full"         = "full"
-    | otherwise                = layout
+    | layout == "Spacing TallGrid" = "grid"
+    | layout == "Full"             = "full"
+    | otherwise                    = layout
 
 prettyPrint :: PP
 prettyPrint = def
