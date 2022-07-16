@@ -179,6 +179,11 @@ in
                                     nvim-web-devicons
                                     gitsigns-nvim
                                     bufferline-nvim
+                                    comment-nvim
+                                    plenary-nvim
+                                    neorg
+                                    nvim-cmp
+                                    cmp-buffer
                                 ];
                             };
                     in

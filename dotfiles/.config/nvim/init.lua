@@ -11,13 +11,19 @@ vim.opt.clipboard = "unnamedplus"
 
 vim.opt.splitright = true
 
-vim.keymap.set("n", "<C-n>", ":bnext<CR>")
-vim.keymap.set("n", "<C-p>", ":bprevious<CR>")
+vim.keymap.set("n", "<C-l>", ":bnext<CR>")
+vim.keymap.set("n", "<C-h>", ":bprevious<CR>")
 
-vim.keymap.set("n", "<C-l>", "<C-w>l")
-vim.keymap.set("n", "<C-h>", "<C-w>h")
-vim.keymap.set("n", "<C-j>", "<C-w>j")
-vim.keymap.set("n", "<C-k>", "<C-w>k")
+vim.keymap.set("n", "<A-l>", "<C-w>l")
+vim.keymap.set("n", "<A-h>", "<C-w>h")
+vim.keymap.set("n", "<A-j>", "<C-w>j")
+vim.keymap.set("n", "<A-k>", "<C-w>k")
+
+vim.keymap.set("v", "<lt>", "<lt>gv")
+vim.keymap.set("v", ">", ">gv")
+
+vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv")
 
 vim.g.nix_recommended_style = false
 
@@ -57,6 +63,24 @@ if not ok then
     return
 end
 
+local ok, Comment = pcall(require, "Comment")
+if not ok then
+    print "Require error Comment"
+    return
+end
+
+local ok, neorg = pcall(require, "neorg")
+if not ok then
+    print "Require error neorg"
+    return
+end
+
+local ok, cmp = pcall(require, "cmp")
+if not ok then
+    print "Require error cmp"
+    return
+end
+
 treesitter.setup {
     ensure_installed = "all",
     sync_install = false,
@@ -77,10 +101,27 @@ treesitter.setup {
 }
 
 autopairs.setup {
+    disable_filetype = { "norg" },
     check_ts = true
 }
 
 indentblankline.setup {}
+
+cmp.setup {
+    mapping = cmp.mapping.preset.insert {
+        ["<C-Space>"] = cmp.mapping.complete(),
+        ["<CR>"] = cmp.mapping.confirm { select = true },
+        ["<C-j>"] = cmp.mapping.select_next_item(),
+        ["<C-k>"] = cmp.mapping.select_prev_item(),
+        ["<C-f>"] = cmp.mapping.scroll_docs(4),
+        ["<C-b>"] = cmp.mapping.scroll_docs(4),
+        ["<C-e>"] = cmp.mapping.abort()
+    },
+    sources = cmp.config.sources {
+        { name = "buffer" },
+        { name = "neorg" }
+    }
+}
 
 tree.setup {
     hijack_cursor = true,
@@ -105,5 +146,19 @@ gitsigns.setup {}
 bufferline.setup {
     options = {
         show_buffer_close_icons = false
+    }
+}
+
+Comment.setup {}
+
+neorg.setup {
+    load = {
+        ["core.defaults"] = {},
+        ["core.norg.concealer"] = {},
+        ["core.norg.completion"] = {
+            config = {
+                engine = "nvim-cmp"
+            }
+        }
     }
 }
