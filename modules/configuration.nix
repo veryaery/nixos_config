@@ -59,6 +59,8 @@ in
     environment.systemPackages = with pkgs; [
         git
         gcc
+        gnumake
+        binutils
         tree
         killall
         bat
@@ -71,6 +73,7 @@ in
         flameshot
         vscode
         imagemagick
+        obs-studio
         (neovim { bin = with pkgs; [
             # nvim-tresitter dependencies
             coreutils

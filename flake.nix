@@ -17,7 +17,7 @@
     let
         std = nixpkgs.lib;
         lib = import ./lib std;
-        hmlib= home-manager.lib;
+        hmlib = home-manager.lib;
 
         inherit (std)
             importJSON
