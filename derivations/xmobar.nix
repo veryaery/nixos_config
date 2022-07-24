@@ -167,7 +167,7 @@ let
                         
                         set -l icon
                         if [ $muted = true ]
-                            echo 
+                            set icon 
                         else
                             if [ $vol -ge 75 ]
                                 set icon 
