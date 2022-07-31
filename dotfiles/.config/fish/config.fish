@@ -29,30 +29,6 @@ end
 
 function fish_prompt
     printf "\n"
-    
-    switch $fish_bind_mode
-        case default
-            printf "%sNORMAL%s " \
-                (set_color -b green black) \
-                (set_color normal)
-        case insert
-            printf "%sINSERT%s " \
-                (set_color -b cyan black) \
-                (set_color normal)
-        case replace_one
-            printf "%sREPLACE%s " \
-                (set_color -b red black) \
-                (set_color normal)
-        case replace
-            printf "%sREPLACE%s " \
-                (set_color -b red black) \
-                (set_color normal)
-        case visual
-            printf "%sVISUAL%s " \
-                (set_color -b magenta black) \
-                (set_color normal)
-    end
-
     printf "%s\n" (prompt_pwd -d 0)
     printf "%sλ%s " \
         (set_color -o "<primary>") \
@@ -61,11 +37,11 @@ end
 
 function fish_right_prompt
     if [ $status = 0 ]
-        printf "%s✓%s" \
+        printf "%s✓%s " \
             (set_color -o brgreen) \
             (set_color normal)
     else
-        printf "%s$status%s" \
+        printf "%s$status%s " \
             (set_color -o brred) \
             (set_color normal)
     end
@@ -77,11 +53,34 @@ function fish_right_prompt
         or [ $ms -gt 0 ]
     set -l had_duration $status
 
-    [ $had_duration = 0 ]; and printf " ("
+    [ $had_duration = 0 ]; and printf "("
     if [ $s -gt 0 ]
         printf "$s s"
         [ $ms -gt 0 ]; and printf " "
     end
     [ $ms -gt 0 ]; and printf "$ms ms"
-    [ $had_duration = 0 ]; and printf ")"
+    [ $had_duration = 0 ]; and printf ") "
+    
+    switch $fish_bind_mode
+        case default
+            printf "%sNORMAL%s" \
+                (set_color -b green black) \
+                (set_color normal)
+        case insert
+            printf "%sINSERT%s" \
+                (set_color -b cyan black) \
+                (set_color normal)
+        case replace_one
+            printf "%sREPLACE%s" \
+                (set_color -b red black) \
+                (set_color normal)
+        case replace
+            printf "%sREPLACE%s" \
+                (set_color -b red black) \
+                (set_color normal)
+        case visual
+            printf "%sVISUAL%s" \
+                (set_color -b magenta black) \
+                (set_color normal)
+    end
 end
