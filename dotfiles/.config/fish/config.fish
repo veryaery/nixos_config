@@ -1,6 +1,9 @@
 # Remove greeting.
 set -U fish_greeting
 
+# Erase default mode prompt.
+functions -e fish_mode_prompt
+
 set -x EDITOR "nvim"
 
 alias .. "cd .."
@@ -8,8 +11,48 @@ alias commit "git add --all; git commit"
 alias lsl "ls -l"
 alias treel "tree -L 2"
 
+fish_vi_key_bindings
+
+# Set vim mode cursor shapes.
+set fish_cursor_default block
+set fish_cursor_insert line
+set fish_cursor_replace_one underscore
+set fish_cursor_visual block
+
+function fish_user_key_bindings
+    # Bind Ctrl+c to exit mode.
+    bind -M insert \cc "if commandline -P; commandline -f cancel; else; set fish_bind_mode default; commandline -f backward-char repaint-mode; end"
+    bind -M replace_one -m default \cc cancel repaint-mode
+    bind -M replace -m default \cc cancel repaint-mode
+    bind -M visual -m default \cc end-selection repaint-mode
+end
+
 function fish_prompt
     printf "\n"
+    
+    switch $fish_bind_mode
+        case default
+            printf "%sNORMAL%s " \
+                (set_color -b green black) \
+                (set_color normal)
+        case insert
+            printf "%sINSERT%s " \
+                (set_color -b cyan black) \
+                (set_color normal)
+        case replace_one
+            printf "%sREPLACE%s " \
+                (set_color -b red black) \
+                (set_color normal)
+        case replace
+            printf "%sREPLACE%s " \
+                (set_color -b red black) \
+                (set_color normal)
+        case visual
+            printf "%sVISUAL%s " \
+                (set_color -b magenta black) \
+                (set_color normal)
+    end
+
     printf "%s\n" (prompt_pwd -d 0)
     printf "%sλ%s " \
         (set_color -o "<primary>") \

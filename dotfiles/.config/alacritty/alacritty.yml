@@ -46,4 +46,6 @@ window:
         style:
             blinking: On
 
+        blink_interval: 750
+
     opacity: 0.9
