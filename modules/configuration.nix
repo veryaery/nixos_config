@@ -74,6 +74,7 @@ in
         vscode
         imagemagick
         obs-studio
+        obsidian
         (neovim { bin = with pkgs; [
             # nvim-tresitter dependencies
             coreutils

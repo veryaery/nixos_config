@@ -5,6 +5,8 @@ set -x EDITOR "nvim"
 
 alias .. "cd .."
 alias commit "git add --all; git commit"
+alias lsl "ls -l"
+alias treel "tree -L 2"
 
 function fish_prompt
     printf "\n"
