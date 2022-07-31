@@ -25,6 +25,13 @@ function fish_user_key_bindings
     bind -M replace_one -m default \cc cancel repaint-mode
     bind -M replace -m default \cc cancel repaint-mode
     bind -M visual -m default \cc end-selection repaint-mode
+
+    # Accept autosuggestion.
+    bind -M default \cl accept-autosuggestion
+    bind -M insert \cl accept-autosuggestion
+    bind -M replace_one \cl accept-autosuggestion
+    bind -M replace \cl accept-autosuggestion
+    bind -M visual \cl accept-autosuggestion
 end
 
 function fish_prompt
