@@ -19,6 +19,13 @@ set fish_cursor_insert line
 set fish_cursor_replace_one underscore
 set fish_cursor_visual block
 
+function bind_all_modes
+    set -l modes default insert replace_one replace visual
+    for mode in $modes
+        bind -M $mode $argv
+    end
+end
+
 function fish_user_key_bindings
     # Bind Ctrl+c to exit mode.
     bind -M insert \cc "if commandline -P; commandline -f cancel; else; set fish_bind_mode default; commandline -f backward-char repaint-mode; end"
@@ -26,12 +33,9 @@ function fish_user_key_bindings
     bind -M replace -m default \cc cancel repaint-mode
     bind -M visual -m default \cc end-selection repaint-mode
 
-    # Accept autosuggestion.
-    bind -M default \cl accept-autosuggestion
-    bind -M insert \cl accept-autosuggestion
-    bind -M replace_one \cl accept-autosuggestion
-    bind -M replace \cl accept-autosuggestion
-    bind -M visual \cl accept-autosuggestion
+    bind_all_modes \cl accept-autosuggestion
+    bind_all_modes \cj history-search-forward
+    bind_all_modes \ck history-search-backward
 end
 
 function fish_prompt

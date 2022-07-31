@@ -75,6 +75,7 @@ in
         imagemagick
         obs-studio
         obsidian
+        docker
         (neovim { bin = with pkgs; [
             # nvim-tresitter dependencies
             coreutils
