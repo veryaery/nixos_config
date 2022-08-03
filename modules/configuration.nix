@@ -75,7 +75,9 @@ in
         imagemagick
         obs-studio
         obsidian
-        docker
+        postgresql
+        nodejs
+        nodePackages.ts-node
         (neovim { bin = with pkgs; [
             # nvim-tresitter dependencies
             coreutils
@@ -85,6 +87,7 @@ in
             git
             gcc
             xclip
+            findutils
         ]; })
     ];
 
@@ -99,6 +102,8 @@ in
             "ss03"
         ]; })
     ];
+
+    virtualisation.docker.enable = true;
 
     programs = {
         ssh = {
@@ -183,12 +188,11 @@ in
                                     nvim-tree-lua
                                     nvim-web-devicons
                                     gitsigns-nvim
-                                    bufferline-nvim
                                     comment-nvim
                                     plenary-nvim
-                                    neorg
                                     nvim-cmp
                                     cmp-buffer
+                                    telescope-nvim
                                 ];
                             };
                     in

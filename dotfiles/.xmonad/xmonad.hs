@@ -34,8 +34,9 @@ xpConfig = def
         defaultPrompter = const "run "
     }
 
-layout' = avoidStruts $ grid ||| full
+layout' = avoidStruts $ tall ||| grid ||| full
     where
+        tall = spacing' $ Tall 1 (3 % 100) (1 % 2)
         grid = spacing' $ TallGrid 2 2 (3 % 4) (16 % 9) (3 % 100)
         full = noBorders Full
 
@@ -71,6 +72,7 @@ config' =  additionalKeys config'' $ keys' config''
 
 mapLayout :: String -> String
 mapLayout layout
+    | layout == "Spacing Tall"     = "tall"
     | layout == "Spacing TallGrid" = "grid"
     | layout == "Full"             = "full"
     | otherwise                    = layout

@@ -11,9 +11,6 @@ vim.opt.clipboard = "unnamedplus"
 
 vim.opt.splitright = true
 
-vim.keymap.set("n", "<C-l>", ":bnext<CR>")
-vim.keymap.set("n", "<C-h>", ":bprevious<CR>")
-
 vim.keymap.set("n", "<A-l>", "<C-w>l")
 vim.keymap.set("n", "<A-h>", "<C-w>h")
 vim.keymap.set("n", "<A-j>", "<C-w>j")
@@ -57,27 +54,27 @@ if not ok then
     return
 end
 
-local ok, bufferline = pcall(require, "bufferline")
-if not ok then
-    print "Require error bufferline"
-    return
-end
-
 local ok, Comment = pcall(require, "Comment")
 if not ok then
     print "Require error Comment"
     return
 end
 
-local ok, neorg = pcall(require, "neorg")
-if not ok then
-    print "Require error neorg"
-    return
-end
-
 local ok, cmp = pcall(require, "cmp")
 if not ok then
     print "Require error cmp"
+    return
+end
+
+local ok, telescope = pcall(require, "telescope")
+if not ok then
+    print "Require error telescope"
+    return
+end
+
+local ok, telescope_builtin = pcall(require, "telescope.builtin")
+if not ok then
+    print "Require error telescope.builtin"
     return
 end
 
@@ -143,22 +140,10 @@ tree.setup {
 
 gitsigns.setup {}
 
-bufferline.setup {
-    options = {
-        show_buffer_close_icons = false
-    }
-}
-
 Comment.setup {}
 
-neorg.setup {
-    load = {
-        ["core.defaults"] = {},
-        ["core.norg.concealer"] = {},
-        ["core.norg.completion"] = {
-            config = {
-                engine = "nvim-cmp"
-            }
-        }
-    }
-}
+telescope.setup {}
+
+vim.keymap.set("n", "<A-f>", function()
+    telescope_builtin.buffers {}
+end)
