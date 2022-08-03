@@ -78,6 +78,12 @@ if not ok then
     return
 end
 
+local ok, telescope_actions = pcall(require, "telescope.actions")
+if not ok then
+    print "Require error telescope.actions"
+    return
+end
+
 treesitter.setup {
     ensure_installed = "all",
     sync_install = false,
@@ -142,7 +148,16 @@ gitsigns.setup {}
 
 Comment.setup {}
 
-telescope.setup {}
+telescope.setup {
+    defaults = {
+        mappings = {
+            i = {
+                ["<C-j>"] = telescope_actions.move_selection_next,
+                ["<C-k>"] = telescope_actions.move_selection_previous
+            }
+        }
+    }
+}
 
 vim.keymap.set("n", "<A-f>", function()
     telescope_builtin.buffers {}
