@@ -27,12 +27,6 @@ function bind_all_modes
 end
 
 function fish_user_key_bindings
-    # Bind Ctrl+c to exit mode.
-    bind -M insert \cc "if commandline -P; commandline -f cancel; else; set fish_bind_mode default; commandline -f backward-char repaint-mode; end"
-    bind -M replace_one -m default \cc cancel repaint-mode
-    bind -M replace -m default \cc cancel repaint-mode
-    bind -M visual -m default \cc end-selection repaint-mode
-
     bind_all_modes \cl accept-autosuggestion
     bind_all_modes \cj history-search-forward
     bind_all_modes \ck history-search-backward

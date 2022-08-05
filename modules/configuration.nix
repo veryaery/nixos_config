@@ -198,6 +198,7 @@ in
                                     comment-nvim
                                     plenary-nvim
                                     nvim-cmp
+                                    luasnip
                                     cmp-buffer
                                     cmp-nvim-lsp
                                     telescope-nvim

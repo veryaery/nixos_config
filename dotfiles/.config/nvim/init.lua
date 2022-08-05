@@ -31,6 +31,13 @@ vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist)
 
 vim.g.nix_recommended_style = false
 
+local theme_name = os.getenv("NIXOSCFG_THEME_NAME")
+
+local ok, err = pcall(require, "themes." .. theme_name)
+if not ok then
+    print("Require error theme " .. theme_name .. ": " .. err)
+end
+
 local ok, lspconfig = pcall(require, "lspconfig")
 if not ok then
     print "Require error lspconfig"
@@ -76,6 +83,12 @@ end
 local ok, cmp = pcall(require, "cmp")
 if not ok then
     print "Require error cmp"
+    return
+end
+
+local ok, luasnip = pcall(require, "luasnip")
+if not ok then
+    print "Require error luasnip"
     return
 end
 
@@ -134,7 +147,7 @@ capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
 lspconfig["tsserver"].setup {
     cmd = { "typescript-language-server", "--stdio", "--tsserver-path=<typescript>/lib/node_modules/typescript/lib" },
     capabilities = capabilities,
-    on_attach = on_attach,
+    on_attach = on_attach
 }
 
 treesitter.setup {
@@ -164,6 +177,11 @@ autopairs.setup {
 indentblankline.setup {}
 
 cmp.setup {
+    snippet = {
+        expand = function(args)
+            luasnip.lsp_expand(args.body)
+        end
+    },
     mapping = cmp.mapping.preset.insert {
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<CR>"] = cmp.mapping.confirm { select = true },
@@ -215,10 +233,3 @@ telescope.setup {
 vim.keymap.set("n", "<A-f>", function()
     telescope_builtin.buffers {}
 end)
-
-local theme_name = os.getenv("NIXOSCFG_THEME_NAME")
-
-local ok, err = pcall(require, "themes." .. theme_name)
-if not ok then
-    print("Require error theme " .. theme_name .. ": " .. err)
-end
