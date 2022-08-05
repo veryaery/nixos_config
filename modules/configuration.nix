@@ -79,6 +79,9 @@ in
         nodejs
         nodePackages.ts-node
         (neovim { bin = with pkgs; [
+            # Clipboard dependencies
+            xclip
+
             # nvim-tresitter dependencies
             coreutils
             gnutar
@@ -86,8 +89,10 @@ in
             curl
             git
             gcc
-            xclip
-            findutils
+
+            # TypeScript language server dependencies
+            nodePackages.typescript
+            nodePackages.typescript-language-server
         ]; })
     ];
 
@@ -181,6 +186,7 @@ in
                             pkgs.neovim-pack
                             {
                                 start = with pkgs.vimPlugins; [
+                                    nvim-lspconfig
                                     nvim-treesitter
                                     nvim-ts-rainbow
                                     nvim-autopairs
@@ -192,11 +198,15 @@ in
                                     plenary-nvim
                                     nvim-cmp
                                     cmp-buffer
+                                    cmp-nvim-lsp
                                     telescope-nvim
                                 ];
                             };
                     in
-                    { packpath = toString neovim-pack; };
+                    {
+                        packpath = toString neovim-pack;
+                        typescript = toString pkgs.nodePackages.typescript;
+                    };
             };
         };
 

@@ -22,7 +22,20 @@ vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv")
 
+-- LSP mappings
+-- Recommended by https://github.com/neovim/nvim-lspconfig
+vim.keymap.set("n", "<space>e", vim.diagnostic.open_float)
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
+vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist)
+
 vim.g.nix_recommended_style = false
+
+local ok, lspconfig = pcall(require, "lspconfig")
+if not ok then
+    print "Require error lspconfig"
+    return
+end
 
 local ok, treesitter = pcall(require, "nvim-treesitter.configs")
 if not ok then
@@ -66,6 +79,12 @@ if not ok then
     return
 end
 
+local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+if not ok then
+    print "Require error cmp_nvim_lsp"
+    return
+end
+
 local ok, telescope = pcall(require, "telescope")
 if not ok then
     print "Require error telescope"
@@ -83,6 +102,40 @@ if not ok then
     print "Require error telescope.actions"
     return
 end
+
+function on_attach(client, bufn)
+    local opts = {
+        buffer = bufn,
+        noremap = true
+    }
+
+    -- LSP mappings
+    -- Recommended by https://github.com/neovim/nvim-lspconfig
+    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+    vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+    vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, opts)
+    vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, opts)
+    vim.keymap.set("n", "<space>wl", function()
+        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, opts)
+    vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, opts)
+    vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
+    vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, opts)
+    vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+    vim.keymap.set("n", "<space>f", vim.lsp.buf.formatting, opts)
+end
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
+
+lspconfig["tsserver"].setup {
+    cmd = { "typescript-language-server", "--stdio", "--tsserver-path=<typescript>/lib/node_modules/typescript/lib" },
+    capabilities = capabilities,
+    on_attach = on_attach,
+}
 
 treesitter.setup {
     ensure_installed = "all",
@@ -122,7 +175,7 @@ cmp.setup {
     },
     sources = cmp.config.sources {
         { name = "buffer" },
-        { name = "neorg" }
+        { name = "nvim_lsp" }
     }
 }
 
