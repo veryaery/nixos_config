@@ -216,7 +216,7 @@ pkgs.writeScriptBin "xmobar"
 ''
     #!${pkgs.fish}/bin/fish
 
-    set -l themedrv $(cat ${xmobarThemes}/$NIXOSCFG_THEME)
+    set -l themedrv $(cat ${xmobarThemes}/$NIXOSCFG_THEME_NAME)
 
     $themedrv/bin/xmobarprime $argv
 ''

@@ -1,5 +1,6 @@
 {
     pkgs,
+    themeName,
     flakeRoot,
     hostOptions,
     ...
@@ -78,7 +79,7 @@ in
         postgresql
         nodejs
         nodePackages.ts-node
-        (neovim { bin = with pkgs; [
+        (nvim { bin = with pkgs; [
             # Clipboard dependencies
             xclip
 
@@ -200,10 +201,17 @@ in
                                     cmp-buffer
                                     cmp-nvim-lsp
                                     telescope-nvim
+
+                                    # Themes
+                                    papercolor-theme
+                                    tokyonight-nvim
+                                    nord-nvim
                                 ];
                             };
                     in
                     {
+                        inherit themeName;
+
                         packpath = toString neovim-pack;
                         typescript = toString pkgs.nodePackages.typescript;
                     };

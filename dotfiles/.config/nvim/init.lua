@@ -215,3 +215,10 @@ telescope.setup {
 vim.keymap.set("n", "<A-f>", function()
     telescope_builtin.buffers {}
 end)
+
+local theme_name = os.getenv("NIXOSCFG_THEME_NAME")
+
+local ok, err = pcall(require, "themes." .. theme_name)
+if not ok then
+    print("Require error theme " .. theme_name .. ": " .. err)
+end

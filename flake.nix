@@ -45,7 +45,7 @@
                 "installtheme"
                 "postinstall"
                 "lstheme"
-                "neovim"
+                "nvim"
                 "neovim-pack"
                 "fira-code-with-features"
                 "xmonad"

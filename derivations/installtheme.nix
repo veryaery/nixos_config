@@ -94,7 +94,7 @@ for dotfile in $files
 
 end
 
-set -U NIXOSCFG_THEME $theme
+set -U NIXOSCFG_THEME_NAME $theme
 
 ${postinstall}
 
