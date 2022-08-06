@@ -11,8 +11,6 @@ vim.opt.clipboard = "unnamedplus"
 
 vim.opt.splitright = true
 
-vim.keymap.set("i", "jj", "<Esc>")
-
 vim.keymap.set("n", "<A-l>", "<C-w>l")
 vim.keymap.set("n", "<A-h>", "<C-w>h")
 vim.keymap.set("n", "<A-j>", "<C-w>j")

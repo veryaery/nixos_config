@@ -44,6 +44,7 @@ in
             enable = true;
             
             layout = "se";
+            xkbOptions = "caps:escape";
 
             windowManager._xmonad = {
                 enable = true;
