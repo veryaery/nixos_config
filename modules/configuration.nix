@@ -65,7 +65,7 @@ in
         binutils
         tree
         killall
-        bat
+        bright
         firefox
         feh
         alacritty
@@ -79,7 +79,6 @@ in
         obsidian
         postgresql
         nodejs
-        nodePackages.ts-node
         (nvim { bin = with pkgs; [
             # Clipboard dependencies
             xclip

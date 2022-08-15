@@ -95,7 +95,7 @@ in
                     themeName = basenameWithoutExtention file;
                     theme = import (themeDirPath + "/${file}");
 
-                    x = { "${themeName}" = theme; };
+                    x = { ${themeName} = theme; };
                 in z // x
             )
             {}
@@ -108,7 +108,7 @@ in
             (name: z:
                 let
                     expr = import (drvDirPath + "/${name}.nix") super;
-                    x = { "${name}" = expr; };
+                    x = { ${name} = expr; };
                 in z // x
             )
             {}

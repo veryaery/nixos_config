@@ -24,11 +24,11 @@ let
         (name: z:
             let
                 _path = if path == null then name else "${path}.${name}"; 
-                value = attrset."${name}";
+                value = attrset.${name};
                 x =
                     if isAttrs value
                     then flattenAttrset' _path value
-                    else { "${_path}" = value; };
+                    else { ${_path} = value; };
             in z // x
         )
         {}
@@ -41,7 +41,7 @@ let
     attrNamesValues = attrset:
         foldr
         (name: z:
-            let value = attrset."${name}";
+            let value = attrset.${name};
             in {
                 names = z.names ++ [ name ];
                 values = z.values ++ [ value ];

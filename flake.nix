@@ -49,6 +49,7 @@
                 "neovim-pack"
                 "fira-code-with-features"
                 "xmonad"
+                "bright"
             ])
         ];
 
