@@ -79,6 +79,8 @@ in
         obsidian
         postgresql
         nodejs
+        buf
+        bloomrpc
         (nvim { bin = with pkgs; [
             # Clipboard dependencies
             xclip
