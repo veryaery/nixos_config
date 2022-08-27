@@ -4,7 +4,7 @@ pkgs:
     # themes :: Map string Theme
     themes,
 
-    # drvFn :: Theme -> derivation
+    # drvFn :: string -> Theme -> derivation
     drvFn
 }:
 

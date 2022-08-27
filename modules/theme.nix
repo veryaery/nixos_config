@@ -17,12 +17,19 @@ let
     inherit (std)
         mkOption
         types;
+
+    dotfilesDrvFn = themeName: theme:
+        pkgs.substitute-dir
+        { inherit lib; }
+        "dotfiles"
+        (flakeRoot + /dotfiles)
+        (cfg.dotfilesSubs themeName theme);
     
     dotfilesThemes =
         pkgs.themes
         {
             inherit themes;
-            drvFn = cfg.dotfilesFn;
+            drvFn = dotfilesDrvFn;
         };
     
     postinstall =
@@ -44,12 +51,14 @@ let
 in
 {
     options.theme = {
-        dotfilesFn = mkOption {
+        dotfilesSubs = mkOption {
             default = {};
             description = ''
-                dotfilesFn :: string -> Theme -> derivation
+                Function which is evaluated for each theme and returns substitutions for dotfiles.
+
+                dotfilesFn :: string -> Theme -> Map string { variant? :: string; subs :: attrset }
             '';
-            type = types.functionTo (types.functionTo types.package);
+            type = types.functionTo (types.functionTo types.attrs);
         };
 
         postInstallScripts = mkOption {

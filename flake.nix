@@ -41,7 +41,7 @@
                 "picom-jonaburg"
             ])
             (overlayFromImports drvDirPath [
-                "dotfiles"
+                "substitute-dir"
                 "installtheme"
                 "postinstall"
                 "lstheme"
@@ -50,6 +50,7 @@
                 "fira-code-with-features"
                 "xmonad"
                 "bright"
+                "discord"
             ])
         ];
 
@@ -76,13 +77,11 @@
                 hostModule = hostExpr.module;
 
                 localSystem = { inherit (hostOptions) system; };
+                config = { allowUnfree = true; };
                 pkgs = import nixpkgs
                     {
-                        inherit overlays localSystem;
+                        inherit overlays localSystem config;
 
-                        config = {
-                            allowUnfree = true;
-                        };
                     };
                 
                 imports =
@@ -98,7 +97,7 @@
                         inherit imports;
 
                         # Explicitly define localSystem.
-                        nixpkgs = { inherit localSystem; };
+                        nixpkgs = { inherit localSystem config; };
 
                         # Define home-manager options.
                         home-manager = {

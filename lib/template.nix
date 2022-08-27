@@ -54,8 +54,8 @@ let
         (attrNames attrset);
 in
 {
-    # replace :: attrset -> (string -> string)
-    replace = attrset:
+    # substitute :: attrset -> (string -> string)
+    substitute = attrset:
         let
             flatNamesValues = attrNamesValues (flattenAttrset attrset);
             froms = map (name: "<${name}>") flatNamesValues.names;

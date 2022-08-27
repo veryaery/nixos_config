@@ -28,8 +28,10 @@ in
         ./theme.nix
 
         # Roles.
+        ./desktop.nix
         ./laptop.nix
         ./bluetooth.nix
+        ./nvidia.nix
     ];
 
     console.keyMap = "sv-latin1";
@@ -79,8 +81,10 @@ in
         obsidian
         postgresql
         nodejs
-        buf
+        buf # TODO: Should be removed and moved to a Nix shell.
         bloomrpc
+        bitwarden
+        pulseaudio
         (nvim { bin = with pkgs; [
             # Clipboard dependencies
             xclip
@@ -146,79 +150,74 @@ in
         };
     };
 
-    theme.dotfilesFn =
-        pkgs.dotfiles
+    theme.dotfilesSubs = themeName: theme:
         {
-            inherit lib;
-            src = flakeRoot + /dotfiles;
-            filesFn = themeName: theme: {
-                ".config/alacritty/alacritty.yml".subs =
-                    let
-                        size =
-                            if (elem "laptop" hostOptions.roles)
-                            then 6
-                            else 11;
-                    in
-                        theme //
-                        {
-                            inherit font; 
-                            fish = toString pkgs.fish;
-                            size = toString size;
-                        };
+            ".config/alacritty/alacritty.yml".subs =
+                let
+                    size =
+                        if (elem "desktop" hostOptions.roles) then 8
+                        else if (elem "laptop" hostOptions.roles) then 6
+                        else 11;
+                in
+                    theme //
+                    {
+                        inherit font; 
+                        fish = toString pkgs.fish;
+                        size = toString size;
+                    };
 
-                ".config/fish/config.fish".subs =
-                    { primary = fishTerminalColor theme.primaryTerminalColor; };
+            ".config/fish/config.fish".subs =
+                { primary = fishTerminalColor theme.primaryTerminalColor; };
 
-                ".xmonad/lib/Theme.hs".subs =
+            ".xmonad/lib/Theme.hs".subs =
+                theme //
+                { inherit font; };
+
+            ".config/xmobar/.xmobarrc" = {
+                variant =
+                    if (elem "laptop" hostOptions.roles)
+                    then "laptop"
+                    else "default";
+                subs =
                     theme //
                     { inherit font; };
-
-                ".config/xmobar/.xmobarrc" = {
-                    variant =
-                        if (elem "laptop" hostOptions.roles)
-                        then "laptop"
-                        else "default";
-                    subs =
-                        theme //
-                        { inherit font; };
-                };
-
-                ".config/nvim/init.lua".subs =
-                    let
-                        neovim-pack =
-                            pkgs.neovim-pack
-                            {
-                                start = with pkgs.vimPlugins; [
-                                    nvim-lspconfig
-                                    nvim-treesitter
-                                    nvim-ts-rainbow
-                                    nvim-autopairs
-                                    indent-blankline-nvim
-                                    nvim-tree-lua
-                                    nvim-web-devicons
-                                    gitsigns-nvim
-                                    comment-nvim
-                                    plenary-nvim
-                                    nvim-cmp
-                                    luasnip
-                                    cmp-buffer
-                                    cmp-nvim-lsp
-                                    telescope-nvim
-
-                                    # Themes
-                                    papercolor-theme
-                                    tokyonight-nvim
-                                    nord-nvim
-                                ];
-                            };
-                    in
-                    {
-                        inherit themeName;
-
-                        packpath = toString neovim-pack;
-                        typescript = toString pkgs.nodePackages.typescript;
-                    };
             };
+
+            ".config/nvim/init.lua".subs =
+                let
+                    neovim-pack =
+                        pkgs.neovim-pack
+                        {
+                            start = with pkgs.vimPlugins; [
+                                nvim-lspconfig
+                                nvim-treesitter
+                                nvim-ts-rainbow
+                                nvim-autopairs
+                                indent-blankline-nvim
+                                nvim-tree-lua
+                                nvim-web-devicons
+                                gitsigns-nvim
+                                comment-nvim
+                                plenary-nvim
+                                nvim-cmp
+                                luasnip
+                                cmp-buffer
+                                cmp-nvim-lsp
+                                telescope-nvim
+
+                                # Themes
+                                papercolor-theme
+                                tokyonight-nvim
+                                nord-nvim
+                            ];
+                        };
+                in
+                {
+                    inherit themeName;
+
+                    packpath = toString neovim-pack;
+                    typescript = toString pkgs.nodePackages.typescript;
+                };
         };
 
     # Installing Nix flakes system-wide.
