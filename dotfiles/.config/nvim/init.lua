@@ -1,4 +1,6 @@
-vim.opt.packpath = vim.opt.packpath + "<packpath>"
+vim.opt.packpath = vim.opt.packpath + "{{ packpath }}"
+
+local typescript = "{{ pkgs.typescript }}"
 
 vim.opt.number = true
 
@@ -145,7 +147,7 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
 
 lspconfig["tsserver"].setup {
-    cmd = { "typescript-language-server", "--stdio", "--tsserver-path=<typescript>/lib/node_modules/typescript/lib" },
+    cmd = { "typescript-language-server", "--stdio", "--tsserver-path=" .. typescript .. "/lib/node_modules/typescript/lib" },
     capabilities = capabilities,
     on_attach = on_attach
 }

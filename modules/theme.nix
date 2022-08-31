@@ -25,16 +25,9 @@ let
         (flakeRoot + /dotfiles)
         (cfg.dotfilesSubs themeName theme);
     
-    dotfilesThemes =
-        pkgs.themes
-        {
-            inherit themes;
-            drvFn = dotfilesDrvFn;
-        };
+    dotfilesThemes = pkgs.themes themes dotfilesDrvFn;
     
-    postinstall =
-        pkgs.postinstall
-        { scripts = cfg.postInstallScripts; };
+    postinstall = pkgs.postinstall cfg.postInstallScripts;
     
     installtheme =
         pkgs.installtheme
@@ -43,9 +36,7 @@ let
             themes = dotfilesThemes;
         };
     
-    lstheme =
-        pkgs.lstheme
-        { themes = dotfilesThemes; };
+    lstheme = pkgs.lstheme dotfilesThemes;
     
     cfg = config.theme;
 in
@@ -56,8 +47,8 @@ in
             description = ''
                 Function which is evaluated for each theme and returns substitutions for dotfiles.
 
-                dotfilesFn :: string -> Theme -> Map string { variant? :: string; subs :: attrset }
-            '';
+                dotfilesFn :: string -> Theme -> FileSubstitutionMap
+                '';
             type = types.functionTo (types.functionTo types.attrs);
         };
 

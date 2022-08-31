@@ -32,15 +32,16 @@
         
         drvDirPath = ./derivations;
         overlays = [
-            (overlayFromImports drvDirPath [
-                "themes"
-            ])
+            # (overlayFromImports drvDirPath [
+            # ])
             (overlayFromImports drvDirPath [
                 "opentype-feature-freezer"
-                "xmobar"
-                "picom-jonaburg"
+                # "xmobar"
+                "substitution-json"
             ])
             (overlayFromImports drvDirPath [
+                "themes"
+                "picom-jonaburg"
                 "substitute-dir"
                 "installtheme"
                 "postinstall"
@@ -48,7 +49,7 @@
                 "nvim"
                 "neovim-pack"
                 "fira-code-with-features"
-                "xmonad"
+                # "xmonad"
                 "bright"
                 "discord"
             ])
@@ -79,10 +80,7 @@
                 localSystem = { inherit (hostOptions) system; };
                 config = { allowUnfree = true; };
                 pkgs = import nixpkgs
-                    {
-                        inherit overlays localSystem config;
-
-                    };
+                    { inherit overlays localSystem config; };
                 
                 imports =
                     [

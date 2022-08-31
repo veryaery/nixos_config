@@ -12,56 +12,61 @@ pkgs.writeScriptBin "installtheme"
 ''
 #!${pkgs.fish}/bin/fish
 
-set -l theme $argv[1]
-set -l file ${themes}/$theme
-if [ ! -e $file ]
-    echo $theme: Invalid theme.
+set -l theme_name $argv[1]
+set -l themefile ${themes}/$theme_name
+if [ ! -f $themefile ]
+    echo $theme_name: Invalid theme.
     return 1
 end
-set -l dotfiles $(cat $file)
+set -l themedir $(cat $themefile)
 
-set -l themelog ~/.themelog
+set -l themelogfile ~/.themelog
 
-if [ -e $themelog ]
-    set -l newlog
+# TODO: Keep looping until all directories which do not exist in dotfiles have files or have been deleted and files ahve not been deleted.
 
-    set -l files $(cat $themelog)
-    for file in $files
-        set -l dotfile $dotfiles/$file
-        set -l homefile ~/$file
+if [ -f $themelogfile ]
+    set -l themelog $(cat $themelogfile)
 
-        if [ -e $dotfile ]
-            # file is still in dotfiles.
-            set -a newlog $file # keep the log entry.
-            continue
+    set -l has_rm true
+    while [ $has_rm = true ]
+        set -l newthemelog
+
+        set has_rm false
+
+        for file in $themelog
+            set -l homefile ~/$file
+            set -l themefile $themedir/$file
+            
+            if [ -e $themefile ]
+                set -a newthemelog $file # Keep theme log entry.
+                continue
+            end
+
+            if [ -f $homefile ]
+                rm $homefile
+                set has_rm true
+                echo Removed regular file $file
+            end
+
+            if [ -d $homefile ] && [ -z "$(ls -A $homefile)" ]
+                rm $homefile
+                set keep_loop true
+                echo Removed directory $file
+            end
         end
-        # file is no longer in dotfiles.
 
-        if [ -f $homefile ]
-            # file is a regular file.
-            rm $homefile
-            echo Removed regular file $file
+        truncate -s 0 $themelog
+        for entry in $newthemelog
+            echo $entry >> $themelog
         end
-        if [ -d $homefile ] && [ -z "$(ls -A $homefile)" ]
-            # file is an empty directory.
-            rm $homefile
-            echo Removed empty directory $file
-        end
-    end
-
-    truncate -s 0 $themelog
-    for entry in $newlog
-        echo $entry >> $themelog
     end
 end
 
-set -l files $(find $dotfiles -type f)
-for dotfile in $files
-    set -l file $(string split -n -m1 $dotfiles/ $dotfile)
+set -l themefiles $(find $themedir -type f)
+for themefile in $themefiles
+    set -l file $(string split -n -m1 $themedir/ $themefile)
     set -l homefile ~/$file
 
-    set -l dirlog
-    
     set -l segments $(string split / $(dirname $file))
     set -l segments_count $(count $segments)
     set -l i 1
@@ -71,32 +76,31 @@ for dotfile in $files
 
         if [ ! -e $homedir ]
             mkdir $homedir
-            set -p dirlog $dir
+            echo $dir >> $themelog
             echo Created directory $dir
         end
 
         set i $(math $i + 1)
     end
 
-    for entry in $dirlog
-        echo $entry >> $themelog
+    cp $themefile $homefile
+    if [ -x $themefile ]
+        chmod +x $homefile
+    else
+        chmod -x $homefile
     end
 
     if [ -e $homefile ]
-        truncate -s 0 $homefile
-        cat $dotfile >> $homefile
         echo Updated regular file $file
     else
-        cat $dotfile >> $homefile
         echo $file >> $themelog
         echo Created regular file $file
     end
-
 end
 
 set -U NIXOSCFG_THEME_NAME $theme
 
 ${postinstall}
 
-echo $theme: Theme installed
+echo $theme_name: Theme installed
 ''

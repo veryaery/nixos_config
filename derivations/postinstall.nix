@@ -1,9 +1,7 @@
 pkgs:
 
-{
-    # scripts :: Map string string
-    scripts
-}:
+# Map string string -> derivation
+scripts:
 
 let
     std = pkgs.lib;

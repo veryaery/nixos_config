@@ -1,41 +1,41 @@
 colors:
     primary:
-        foreground: "<foreground>"
-        background: "<background>"
+        foreground: "{{ foreground }}"
+        background: "{{ background }}"
     
     normal:
-        black: "<terminalColors.black>"
-        blue: "<terminalColors.blue>"
-        green: "<terminalColors.green>"
-        cyan: "<terminalColors.cyan>"
-        red: "<terminalColors.red>"
-        magenta: "<terminalColors.magenta>"
-        yellow: "<terminalColors.yellow>"
-        white: "<terminalColors.white>"
+        black: "{{ terminalColors.black }}"
+        blue: "{{ terminalColors.blue }}"
+        green: "{{ terminalColors.green }}"
+        cyan: "{{ terminalColors.cyan }}"
+        red: "{{ terminalColors.red }}"
+        magenta: "{{ terminalColors.magenta }}"
+        yellow: "{{ terminalColors.yellow }}"
+        white: "{{ terminalColors.white }}"
     
     bright:
-        black: "<terminalColors.brightBlack>"
-        blue: "<terminalColors.brightBlue>"
-        green: "<terminalColors.brightGreen>"
-        cyan: "<terminalColors.brightCyan>"
-        red: "<terminalColors.brightRed>"
-        magenta: "<terminalColors.brightMagenta>"
-        yellow: "<terminalColors.brightYellow>"
-        white: "<terminalColors.brightWhite>"
+        black: "{{ terminalColors.brightBlack }}"
+        blue: "{{ terminalColors.brightBlue }}"
+        green: "{{ terminalColors.brightGreen }}"
+        cyan: "{{ terminalColors.brightCyan }}"
+        red: "{{ terminalColors.brightRed }}"
+        magenta: "{{ terminalColors.brightMagenta }}"
+        yellow: "{{ terminalColors.brightYellow }}"
+        white: "{{ terminalColors.brightWhite }}"
 
 shell:
-    program: "<fish>/bin/fish"
+    program: "{{ fish }}/bin/fish"
 
 font:
-    size: <size>
+    size: {{ size }}
     normal:
-        family: "<font>"
+        family: "{{ font }}"
     bold:
-        family: "<font>"
+        family: "{{ font }}"
     italic:
-        family: "<font>"
+        family: "{{ font }}"
     bold_italic:
-        family: "<font>"
+        family: "{{ font }}"
 
 window:
     padding:
@@ -48,4 +48,4 @@ window:
 
         blink_interval: 750
 
-    opacity: 0.8
+    opacity: 0.85

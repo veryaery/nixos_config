@@ -1,9 +1,7 @@
 pkgs:
 
-{
-    # themes :: derivation
-    themes
-}:
+# derivation -> derivation
+themes:
 
 pkgs.writeScriptBin "lstheme"
 ''

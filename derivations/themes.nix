@@ -1,12 +1,7 @@
 pkgs:
 
-{
-    # themes :: Map string Theme
-    themes,
-
-    # drvFn :: string -> Theme -> derivation
-    drvFn
-}:
+# Map string Theme -> (string -> Theme -> derivation) -> derivation
+themes: drvFn:
 
 let
     std = pkgs.lib;

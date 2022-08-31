@@ -12,10 +12,11 @@ let
 
     inherit (builtins)
         elem
-        toString
-        readFile;
+        readFile
+        toString;
 
     inherit (lib)
+        attrsetToStrSubstitutionMap
         fishTerminalColor
         id
         replace;
@@ -41,6 +42,8 @@ in
         doas.enable = true;
     };
 
+    sound.enable = true;
+
     services = {
         xserver = {
             enable = true;
@@ -48,7 +51,7 @@ in
             layout = "se";
             xkbOptions = "caps:escape";
 
-            windowManager._xmonad = {
+            windowManager.herbstluftwm = {
                 enable = true;
             };
         };
@@ -151,6 +154,9 @@ in
     };
 
     theme.dotfilesSubs = themeName: theme:
+        let
+            themeSubMap = attrsetToStrSubstitutionMap theme;
+        in
         {
             ".config/alacritty/alacritty.yml".subs =
                 let
@@ -159,29 +165,29 @@ in
                         else if (elem "laptop" hostOptions.roles) then 6
                         else 11;
                 in
-                    theme //
+                    themeSubMap //
                     {
-                        inherit font; 
-                        fish = toString pkgs.fish;
-                        size = toString size;
+                        font.str = font;
+                        fish.str = toString pkgs.fish;
+                        size.str = toString size;
                     };
 
             ".config/fish/config.fish".subs =
-                { primary = fishTerminalColor theme.primaryTerminalColor; };
+                { primary.str = fishTerminalColor theme.primaryTerminalColor; };
 
-            ".xmonad/lib/Theme.hs".subs =
-                theme //
-                { inherit font; };
+            # ".xmonad/lib/Theme.hs".subs =
+            #     theme //
+            #     { inherit font; };
 
-            ".config/xmobar/.xmobarrc" = {
-                variant =
-                    if (elem "laptop" hostOptions.roles)
-                    then "laptop"
-                    else "default";
-                subs =
-                    theme //
-                    { inherit font; };
-            };
+            # ".config/xmobar/.xmobarrc" = {
+            #     variant =
+            #         if (elem "laptop" hostOptions.roles)
+            #         then "laptop"
+            #         else "default";
+            #     subs =
+            #         theme //
+            #         { inherit font; };
+            # };
 
             ".config/nvim/init.lua".subs =
                 let
@@ -213,10 +219,20 @@ in
                         };
                 in
                 {
-                    inherit themeName;
-
-                    packpath = toString neovim-pack;
-                    typescript = toString pkgs.nodePackages.typescript;
+                    packpath.str = toString neovim-pack;
+                    pkgs = {
+                        typescript.str = toString pkgs.nodePackages.typescript;
+                    };
+                };
+            
+            ".config/herbstluftwm/autostart".subs =
+                themeSubMap //
+                {
+                    font.str = font;
+                    size.str = toString 12;
+                    pkgs = {
+                        fish.str = toString pkgs.fish;
+                    };
                 };
         };
 

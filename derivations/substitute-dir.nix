@@ -1,11 +1,18 @@
 pkgs:
 
 {
-    lib,
+    lib
 }:
 
-# string -> path -> Map string { variant? :: string; subs :: attrset }
-name: src: subs:
+#   FileSubstitution = {
+#       variant? :: string;
+#       subs :: substitutionMap;
+#   }
+#
+#   FileSubstitutionMap = Map string FileSubstitution
+
+# string -> path -> FileSubstitutionMap -> derivation
+name: src: fileSubMap:
 
 let
     std = pkgs.lib;
@@ -13,70 +20,76 @@ let
     inherit (builtins)
         baseNameOf
         concatStringsSep
-        dirOf
-        toString;
-
-    inherit (std.attrsets)
-        mapAttrsToList;
+        dirOf;
 
     inherit (std.strings)
         optionalString;
 
-    inherit (lib)
-        sedScript;
+    inherit (std.attrsets)
+        mapAttrsToList;
 
-    commands =
+    cmds =
         mapAttrsToList
-        (file: sub:
+        (file: fileSub:
             let
                 srcfile =
-                    if sub ? "variant"
+                    if fileSub ? "variant"
                     then
                         let
                             dir = dirOf file;
                         in
-                            src +
-                            (
-                                (optionalString (dir != ".") "/${dir}") +
-                                "/${sub.variant}.${baseNameOf file}"
-                            )
-                    else src + "/${file}";
+                        "${src}${optionalString (dir != ".") "/${dir}"}/${fileSub.variant}.${baseNameOf file}"
+                    else "${src}/${file}";
+                subsJson = pkgs.substitution-json { inherit lib; } fileSub.subs;
             in ''
                 outfile=$out/${file}
-                mkdir -p $(dirname $outfile)
-                sed ${sedScript sub.subs} ${srcfile} > $outfile
+                outdir=$(dirname $outfile)
+
+                mkdir -p $outdir
+
+                mustache ${subsJson} ${srcfile} > $outfile
+
+                if [ -x ${srcfile} ]; then
+                    chmod +x $outfile
+                fi
             ''
         )
-        subs;
+        fileSubMap;
 in
-pkgs.runCommandLocal name
-{}
+pkgs.runCommand name
+{
+    nativeBuildInputs = with pkgs; [ mustache-go ];
+}
 ''
-mkdir -p $out
+    mkdir -p $out
 
-${concatStringsSep "\n" commands}
+    ${concatStringsSep "\n" cmds}
 
-# Copy files which were not written by a substitution command.
-files=$(find ${src} -type f)
-for srcfile in $files; do
-    file=''${srcfile#${src}/}
+    srcfiles=$(find ${src} -type f)
+    for srcfile in $srcfiles; do
+        file=''${srcfile#${src}/}
 
-    outfile=$out/$file
-    outdir=$(dirname $outfile)
+        outfile=$out/$file
+        outdir=$(dirname $outfile)
 
-    basename=$(basename $file)
-    variant=$(echo $basename | sed "s/^[^.]*\.//")
-    outfile_variant=$outdir/$variant # outfile without variant prefix.
-    
-    # Skip srcfile if another variant of it already exists.
-    if [ -e $outfile_variant ]; then
-        continue
-    fi
+        basename=$(basename $file)
+        variant=$(echo $basename | sed "s/^[^.]*\.//")
+        outfile_variant=$outdir/$variant # outfile without variant prefix.
+        
+        # Skip srcfile if another variant of it already exists.
+        if [ -e $outfile_variant ]; then
+            continue
+        fi
 
-    # Skip srcfile if it has already been written by a substitution command.
-    if [ ! -e $outfile ]; then
+        # Skip srcfile if it already exits.
+        if [ -e $outfile ]; then
+            continue
+        fi
+
         mkdir -p $outdir
         cp $srcfile $outfile
-    fi
-done
+        if [ -x $srcfile ]; then
+            chmod +x $outfile
+        fi
+    done
 ''

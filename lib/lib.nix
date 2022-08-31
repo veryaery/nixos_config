@@ -6,7 +6,9 @@ let
         baseNameOf
         concatStringsSep
         elemAt
+        isAttrs
         map
+        mapAttrs
         pathExists
         readDir
         stringLength
@@ -40,6 +42,32 @@ let
     # basenameWithoutExtention :: string -> string 
     basenameWithoutExtention = s:
         concatStringsSep "." (init (splitString "." (baseNameOf s)));
+    
+    # flattenAttrset' :: string | null -> attrset -> attrset
+    # flattenAttrset' = path: attrset:
+    #         foldr
+    #         (name: z:
+    #             let
+    #                 _path = if path == null then name else "${path}.${name}"; 
+    #                 value = attrset.${name};
+    #                 x =
+    #                     if isAttrs value
+    #                     then flattenAttrset' _path value
+    #                     else { ${_path} = value; };
+    #             in z // x
+    #         )
+    #         {}
+    #         (attrNames attrset);
+
+    # attrsetToStrSubstitutionMap' :: attrset -> SubstitutionMap
+    attrsetToStrSubstitutionMap' = attrset:
+        mapAttrs
+        (key: value:
+            if isAttrs value
+            then attrsetToStrSubstitutionMap' value
+            else { str = value; }
+        )
+        attrset;
 in
 {
     # Identity function.
@@ -113,4 +141,10 @@ in
             )
             {}
             names;
+
+    # flattenAttrset :: attrset -> attrset
+    # flattenAttrset = flattenAttrset' null;
+
+    # attrsetToStrSubstitutionMap :: attrset -> SubstitutionMap
+    attrsetToStrSubstitutionMap = attrsetToStrSubstitutionMap';
 }

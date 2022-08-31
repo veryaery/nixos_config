@@ -1,3 +1,5 @@
+set -l primary "{{ primary }}"
+
 # Remove greeting.
 set -U fish_greeting
 
@@ -36,7 +38,7 @@ function fish_prompt
     printf "\n"
     printf "%s\n" (prompt_pwd -d 0)
     printf "%sλ%s " \
-        (set_color -o "<primary>") \
+        (set_color -o $primary) \
         (set_color normal)
 end
 
