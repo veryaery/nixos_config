@@ -1,13 +1,24 @@
 #!{{ pkgs.fish }}/bin/fish
 
+set -l autorandr "{{ pkgs.autorandr }}"
+set -l rofi "{{ pkgs.rofi }}"
+set -l flameshot "{{ pkgs.flameshot }}"
+set -l picom "{{ pkgs.picom }}"
+
 set -l font "{{ font }}"
 set -l size "{{ size }}"
 
 set -l theme_foreground "{{ foreground }}"
 set -l theme_background "{{ background }}"
 set -l theme_primary "{{ primary }}"
+set -l theme_background_mix "{{ backgroundMix }}"
+set -l theme_primary_mix "{{ primaryMix }}"
 
 alias hc herbstclient
+
+# Detect monitors.
+$autorandr/bin/autorandr --change
+wait $last_pid
 
 hc detect_monitors
 
@@ -18,7 +29,7 @@ hc keyunbind -all
 hc mouseunbind --all
 
 hc keybind $mod-Shift-Return    spawn alacritty 
-hc keybind $mod-Shift-BackSpace close
+hc keybind $mod-Shift-c         close
 
 # Focus clients.
 hc keybind $mod-h               focus left
@@ -26,7 +37,7 @@ hc keybind $mod-j               focus down
 hc keybind $mod-k               focus up
 hc keybind $mod-l               focus right
 
-# Moveing clients.
+# Moving clients.
 hc keybind $mod-Shift-h         shift left
 hc keybind $mod-Shift-j         shift down
 hc keybind $mod-Shift-k         shift up
@@ -64,8 +75,7 @@ hc keybind $mod-comma           use_index -1 --skip-visible
 hc keybind $mod-s               floating toggle
 hc keybind $mod-f               fullscreen toggle
 hc keybind $mod-space \
-    or , and . compare tags.focus.curframe_wcount = 2 \
-             . cycle_layout +1 vertical horizontal max vertical grid \
+    or , and . compare tags.focus.curframe_wcount = 2 \ . cycle_layout +1 vertical horizontal max vertical grid \
        , cycle_layout +1
 
 # Mouse.
@@ -80,9 +90,19 @@ hc keybind $mod-Shift-Tab       cycle_all -1
 hc keybind $mod-c               cycle
 hc keybind $mod-i               jumpto urgent
 
+# Run menu.
+hc keybind $mod-d               spawn $rofi/bin/rofi -show run -display-run ""
+
+# Screenshot.
+hc keybind Print                spawn $flameshot/bin/flameshot gui
+hc keybind Shift-Print          spawn $flameshot/bin/flameshot full
+
+# Theme.
 hc set frame_gap 32
 hc set window_gap 32
 hc set frame_padding -32
+
+hc set frame_bg_transparent true
 
 hc set frame_border_width 1
 hc attr theme.border_width 1
@@ -95,11 +115,25 @@ hc attr theme.title_depth $(math "round($size / 3)")
 hc set frame_border_normal_color $theme_background
 hc set frame_border_active_color $theme_primary
 
+hc attr theme.normal.outer_width 1
+hc attr theme.active.outer_width 1
+
 hc attr theme.normal.color $theme_background
-hc attr theme.normal.tab_title_color \#ff0000
-hc attr theme.normal.title_color \#ffff00
+hc attr theme.normal.outer_color $theme_background
+hc attr theme.normal.tab_color $theme_background_mix
+hc attr theme.normal.tab_outer_color $theme_background_mix
+hc attr theme.normal.title_color $theme_foreground
+hc attr theme.normal.tab_title_color $theme_foreground
+
 hc attr theme.active.color $theme_primary
-hc attr theme.active.tab_title_color \#0000ff
-hc attr theme.active.title_color \#00ffff
+hc attr theme.active.outer_color $theme_primary
+hc attr theme.active.tab_color $theme_primary_mix
+hc attr theme.active.tab_outer_color $theme_primary_mix
+hc attr theme.active.title_color $theme_background
+hc attr theme.active.tab_title_color $theme_background
 
 ~/.fehbg
+
+if ! pgrep picom
+    $picom/bin/picom --experimental-backends &
+end

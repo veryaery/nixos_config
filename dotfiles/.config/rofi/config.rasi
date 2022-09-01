@@ -1,0 +1,43 @@
+* {
+    font: "{{ font }} 12";
+
+    foreground: {{ foreground }};
+    background: {{ background }};
+    foreground-mix: {{ foregroundMix }};
+    transparent-background: {{ transparentBackground }};
+
+    normal-foreground: var(foreground);
+    normal-background: transparent;
+    alternate-normal-foreground: var(foreground);
+    alternate-normal-background: transparent;
+    selected-normal-foreground: var(background);
+    selected-normal-background: var(foreground);
+}
+
+window {
+    background-color: var(transparent-background);
+}
+
+listview {
+    padding: 0 8px;
+    border: none;
+    scrollbar: false;
+}
+
+inputbar {
+    padding: 16px 8px;
+}
+
+entry {
+    placeholder-color: var(foreground-mix);
+    placeholder: "run";
+}
+
+textbox-prompt-colon {
+    margin: 0;
+    str: "";
+}
+
+num-rows { enabled: false; }
+textbox-num-sep { enabled: false; }
+num-filtered-rows { enabled: false; }

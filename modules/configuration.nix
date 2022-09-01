@@ -13,7 +13,11 @@ let
     inherit (builtins)
         elem
         readFile
+        replaceStrings
         toString;
+
+    inherit (std)
+        escapeShellArg;
 
     inherit (lib)
         attrsetToStrSubstitutionMap
@@ -25,8 +29,8 @@ let
 in
 {
     imports = [
-        ./xmonad.nix
         ./theme.nix
+        ./herbstluftwm.nix
 
         # Roles.
         ./desktop.nix
@@ -51,7 +55,7 @@ in
             layout = "se";
             xkbOptions = "caps:escape";
 
-            windowManager.herbstluftwm = {
+            windowManager._herbstluftwm = {
                 enable = true;
             };
         };
@@ -156,8 +160,17 @@ in
     theme.dotfilesSubs = themeName: theme:
         let
             themeSubMap = attrsetToStrSubstitutionMap theme;
+            quote = pkgs.writeShellScriptBin "quote" "sed 's/^/\"/ ; s/$/\"/'";
+            rgba = a: pkgs.writeShellScriptBin "rgba" "${pkgs.pastel}/bin/pastel format rgb | sed 's/^.\\{3\\}/rgba/ ; s/)$/, ${replaceStrings [ "." ] [ "\\." ] (toString a)})/'";
+
+            primaryMix.cmd = "${pkgs.pastel}/bin/pastel mix -f 0.75 ${escapeShellArg theme.primary} ${escapeShellArg theme.background} | ${pkgs.pastel}/bin/pastel format hex | ${quote}/bin/quote";
+            foregroundMix.cmd = "${pkgs.pastel}/bin/pastel mix -f 0.75 ${escapeShellArg theme.foreground} ${escapeShellArg theme.background} | ${pkgs.pastel}/bin/pastel format hex | ${quote}/bin/quote";
+            backgroundMix.cmd = "${pkgs.pastel}/bin/pastel mix -f 0.75 ${escapeShellArg theme.background} ${escapeShellArg theme.primary} | ${pkgs.pastel}/bin/pastel format hex | ${quote}/bin/quote";
         in
         {
+            "debug".subs =
+                themeSubMap;
+
             ".config/alacritty/alacritty.yml".subs =
                 let
                     size =
@@ -228,11 +241,27 @@ in
             ".config/herbstluftwm/autostart".subs =
                 themeSubMap //
                 {
+                    inherit primaryMix backgroundMix;
+
                     font.str = font;
                     size.str = toString 12;
-                    pkgs = {
-                        fish.str = toString pkgs.fish;
+
+                    pkgs = with pkgs; {
+                        fish.str = toString fish;
+                        autorandr.str = toString autorandr;
+                        rofi.str = toString rofi;
+                        flameshot.str = toString flameshot;
+                        picom.str = toString picom-jonaburg;
                     };
+                };
+
+            ".config/rofi/config.rasi".subs =
+                themeSubMap //
+                {
+                    inherit foregroundMix;
+
+                    font.str = font;
+                    transparentBackground.cmd = "echo ${escapeShellArg theme.background} | ${rgba 0.5}/bin/rgba";
                 };
         };
 

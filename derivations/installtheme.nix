@@ -22,8 +22,6 @@ set -l themedir $(cat $themefile)
 
 set -l themelogfile ~/.themelog
 
-# TODO: Keep looping until all directories which do not exist in dotfiles have files or have been deleted and files ahve not been deleted.
-
 if [ -f $themelogfile ]
     set -l themelog $(cat $themelogfile)
 
@@ -83,7 +81,7 @@ for themefile in $themefiles
         set i $(math $i + 1)
     end
 
-    cp $themefile $homefile
+    cp --no-preserve=mode,ownership $themefile $homefile
     if [ -x $themefile ]
         chmod +x $homefile
     else
@@ -98,7 +96,7 @@ for themefile in $themefiles
     end
 end
 
-set -U NIXOSCFG_THEME_NAME $theme
+set -U NIXOSCFG_THEME_NAME $theme_name
 
 ${postinstall}
 
