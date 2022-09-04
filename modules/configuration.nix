@@ -73,7 +73,6 @@ in
         gnumake
         binutils
         tree
-        killall
         bright
         firefox
         feh
@@ -93,10 +92,10 @@ in
         bitwarden
         pulseaudio
         (nvim { bin = with pkgs; [
-            # Clipboard dependencies
+            # Clipboard dependencies.
             xclip
 
-            # nvim-tresitter dependencies
+            # nvim-tresitter dependencies:
             coreutils
             gnutar
             gzip
@@ -104,9 +103,14 @@ in
             git
             gcc
 
-            # TypeScript language server dependencies
+            # TypeScript language server dependencies.
             nodePackages.typescript
             nodePackages.typescript-language-server
+
+            # Rust language server dependencies.
+            rust-analyzer
+            rustc
+            cargo
         ]; })
     ];
 
@@ -160,17 +164,23 @@ in
     theme.dotfilesSubs = themeName: theme:
         let
             themeSubMap = attrsetToStrSubstitutionMap theme;
-            quote = pkgs.writeShellScriptBin "quote" "sed 's/^/\"/ ; s/$/\"/'";
-            rgba = a: pkgs.writeShellScriptBin "rgba" "${pkgs.pastel}/bin/pastel format rgb | sed 's/^.\\{3\\}/rgba/ ; s/)$/, ${replaceStrings [ "." ] [ "\\." ] (toString a)})/'";
+            pastel = "${pkgs.pastel}/bin/pastel";
 
-            primaryMix.cmd = "${pkgs.pastel}/bin/pastel mix -f 0.75 ${escapeShellArg theme.primary} ${escapeShellArg theme.background} | ${pkgs.pastel}/bin/pastel format hex | ${quote}/bin/quote";
-            foregroundMix.cmd = "${pkgs.pastel}/bin/pastel mix -f 0.75 ${escapeShellArg theme.foreground} ${escapeShellArg theme.background} | ${pkgs.pastel}/bin/pastel format hex | ${quote}/bin/quote";
-            backgroundMix.cmd = "${pkgs.pastel}/bin/pastel mix -f 0.75 ${escapeShellArg theme.background} ${escapeShellArg theme.primary} | ${pkgs.pastel}/bin/pastel format hex | ${quote}/bin/quote";
+            quote = pkgs.writeShellScriptBin "quote" "sed 's/^/\"/ ; s/$/\"/'";
+            rgba = a: pkgs.writeShellScriptBin "rgba" "${pastel} format rgb | sed 's/^.\\{3\\}/rgba/ ; s/)$/, ${replaceStrings [ "." ] [ "\\." ] (toString a)})/'";
+
+            formatCmd = "${pastel} format hex | ${quote}/bin/quote";
+            foregroundCmd = color: "${pastel} maxcontrast ${escapeShellArg color} ${escapeShellArg theme.foreground} ${escapeShellArg theme.background} | ${formatCmd}";
+
+            primaryMix.cmd = "${pastel} mix -f 0.75 ${escapeShellArg theme.primary} ${escapeShellArg theme.background} | ${formatCmd}";
+            foregroundMix.cmd = "${pastel} mix -f 0.75 ${escapeShellArg theme.foreground} ${escapeShellArg theme.background} | ${formatCmd}";
+            backgroundMix.cmd = "${pastel} mix -f 0.75 ${escapeShellArg theme.background} ${escapeShellArg theme.primary} | ${formatCmd}";
+
+            redForeground.cmd = foregroundCmd theme.terminalColors.red;
+            greenForeground.cmd = foregroundCmd theme.terminalColors.green;
+            magentaForeground.cmd = foregroundCmd theme.terminalColors.magenta;
         in
         {
-            "debug".subs =
-                themeSubMap;
-
             ".config/alacritty/alacritty.yml".subs =
                 let
                     size =
@@ -251,6 +261,7 @@ in
                         autorandr.str = toString autorandr;
                         rofi.str = toString rofi;
                         flameshot.str = toString flameshot;
+                        polybar.str = toString polybar;
                         picom.str = toString picom-jonaburg;
                     };
                 };
@@ -262,6 +273,30 @@ in
 
                     font.str = font;
                     transparentBackground.cmd = "echo ${escapeShellArg theme.background} | ${rgba 0.5}/bin/rgba";
+                };
+
+            ".config/polybar/config.ini".subs = 
+                themeSubMap //
+                {
+                    inherit
+                        redForeground
+                        greenForeground
+                        magentaForeground;
+
+                    font.str = font;
+                };
+
+            ".config/polybar/scripts/tags/event_loop.sh".subs =
+                { runtimeShell.str = toString pkgs.runtimeShell; };
+
+            ".config/polybar/scripts/tags/on_hook.fish".subs =
+                themeSubMap //
+                {
+                    inherit primaryMix backgroundMix;
+
+                    pkgs = with pkgs; {
+                        fish.str = toString fish;
+                    };
                 };
         };
 

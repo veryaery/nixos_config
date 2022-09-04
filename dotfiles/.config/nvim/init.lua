@@ -152,6 +152,13 @@ lspconfig["tsserver"].setup {
     on_attach = on_attach
 }
 
+lspconfig["rust_analyzer"].setup {
+    on_attach = on_attach,
+    settings = {
+        ["rust-analyzer"] = {}
+    }
+}
+
 treesitter.setup {
     ensure_installed = "all",
     sync_install = false,

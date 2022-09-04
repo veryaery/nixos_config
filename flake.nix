@@ -52,6 +52,7 @@
                 # "xmonad"
                 "bright"
                 "discord"
+                "pastel"
             ])
         ];
 

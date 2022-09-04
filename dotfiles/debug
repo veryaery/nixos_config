@@ -1,1 +1,2 @@
-{{ background }}
+red mix: {{ redMix }}
+red mix foreground: {{ redMixForeground }}

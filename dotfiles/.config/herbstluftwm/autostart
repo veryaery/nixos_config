@@ -3,24 +3,31 @@
 set -l autorandr "{{ pkgs.autorandr }}"
 set -l rofi "{{ pkgs.rofi }}"
 set -l flameshot "{{ pkgs.flameshot }}"
+set -l polybar "{{ pkgs.polybar }}"
 set -l picom "{{ pkgs.picom }}"
 
 set -l font "{{ font }}"
 set -l size "{{ size }}"
 
+set -l theme_primary "{{ primary }}"
 set -l theme_foreground "{{ foreground }}"
 set -l theme_background "{{ background }}"
-set -l theme_primary "{{ primary }}"
-set -l theme_background_mix "{{ backgroundMix }}"
 set -l theme_primary_mix "{{ primaryMix }}"
+set -l theme_background_mix "{{ backgroundMix }}"
 
 alias hc herbstclient
 
 # Detect monitors.
-$autorandr/bin/autorandr --change
-wait $last_pid
+$autorandr/bin/autorandr -c
 
 hc detect_monitors
+
+# Tags.
+hc rename default 1
+for i in (seq 1 9)
+    set -l name (math "($i + 1) % 10")
+    hc add $name
+end
 
 set -l mod Mod4
 
@@ -59,10 +66,8 @@ hc keybind $mod-Control-k       resize up +$resizestep
 hc keybind $mod-Control-l       resize right +$resizestep
 
 # Tags.
-hc rename default 0
-for i in $(seq 0 9)
-    set -l key $(math "($i + 1) % 10")
-    hc add $key
+for i in (seq 0 9)
+    set -l key (math "($i + 1) % 10")
     hc keybind $mod-$key       use_index $i
     hc keybind $mod-Shift-$key move_index $i
 end
@@ -75,7 +80,8 @@ hc keybind $mod-comma           use_index -1 --skip-visible
 hc keybind $mod-s               floating toggle
 hc keybind $mod-f               fullscreen toggle
 hc keybind $mod-space \
-    or , and . compare tags.focus.curframe_wcount = 2 \ . cycle_layout +1 vertical horizontal max vertical grid \
+    or , and . compare tags.focus.curframe_wcount = 2 \
+             . cycle_layout +1 vertical horizontal max vertical grid \
        , cycle_layout +1
 
 # Mouse.
@@ -136,4 +142,14 @@ hc attr theme.active.tab_title_color $theme_background
 
 if ! pgrep picom
     $picom/bin/picom --experimental-backends &
+end
+
+pkill polybar
+
+set -l monitors ($polybar/bin/polybar -M | cut -d : -f 1)
+set -l monitors_count (count $monitors)
+for i_plus_1 in (seq $monitors_count)
+    set -x MONITOR_I (math $i_plus_1 - 1)
+    set -x MONITOR $monitors[$i_plus_1]
+    $polybar/bin/polybar &
 end

@@ -67,8 +67,7 @@ for themefile in $themefiles
 
     set -l segments $(string split / $(dirname $file))
     set -l segments_count $(count $segments)
-    set -l i 1
-    while [ $i -le $segments_count ]
+    for i in (seq $segments_count)
         set -l dir $(string join / $segments[$(seq $i)])
         set -l homedir ~/$dir
 
@@ -77,8 +76,6 @@ for themefile in $themefiles
             echo $dir >> $themelog
             echo Created directory $dir
         end
-
-        set i $(math $i + 1)
     end
 
     cp --no-preserve=mode,ownership $themefile $homefile
