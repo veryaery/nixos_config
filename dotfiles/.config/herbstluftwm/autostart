@@ -1,5 +1,7 @@
 #!{{ pkgs.fish }}/bin/fish
 
+set -l roles "{{ roles }}"
+
 set -l autorandr "{{ pkgs.autorandr }}"
 set -l rofi "{{ pkgs.rofi }}"
 set -l flameshot "{{ pkgs.flameshot }}"
@@ -18,7 +20,9 @@ set -l theme_background_mix "{{ backgroundMix }}"
 alias hc herbstclient
 
 # Detect monitors.
-$autorandr/bin/autorandr -c
+if contains desktop $roles
+    $autorandr/bin/autorandr -c
+end
 
 hc detect_monitors
 

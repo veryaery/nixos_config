@@ -1,14 +1,12 @@
 use crate::commands::prelude::*;
 
-use pastel::parser::parse_color;
-
 pub struct MaxContrastCommand;
 
 impl GenericCommand for MaxContrastCommand {
     fn run(&self, out: &mut Output, matches: &ArgMatches, config: &Config) -> Result<()> {
         let color = matches.value_of("color").expect("required argument");
         let color = ColorArgIterator::from_color_arg(config, color, &mut PrintSpectrum::Yes)?;
-
+        
         let mut options = vec![];
         for option in ColorArgIterator::from_args(config, matches.values_of("option"))? {
             options.push(option?);

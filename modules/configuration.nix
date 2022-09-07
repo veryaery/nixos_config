@@ -91,6 +91,7 @@ in
         bloomrpc
         bitwarden
         pulseaudio
+        spotify
         (nvim { bin = with pkgs; [
             # Clipboard dependencies.
             xclip
@@ -253,6 +254,7 @@ in
                 {
                     inherit primaryMix backgroundMix;
 
+                    roles.str = toString hostOptions.roles;
                     font.str = font;
                     size.str = toString 12;
 
