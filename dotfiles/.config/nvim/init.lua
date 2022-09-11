@@ -3,6 +3,19 @@ vim.opt.packpath = vim.opt.packpath + "{{ packpath }}"
 local typescript = "{{ pkgs.typescript }}"
 
 vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.cursorline = true
+
+vim.opt.wrap = false
+vim.opt.scrolloff = 4
+vim.opt.sidescrolloff = 8
+
+vim.opt.list = true
+vim.opt.listchars:append({
+    precedes = "<",
+    extends = ">",
+    trail = " "
+})
 
 vim.opt.expandtab = true
 vim.opt.tabstop = 4
@@ -183,7 +196,10 @@ autopairs.setup {
     check_ts = true
 }
 
-indentblankline.setup {}
+indentblankline.setup {
+    char_blankline = "┆",
+    show_trailing_blankline = false
+}
 
 cmp.setup {
     snippet = {

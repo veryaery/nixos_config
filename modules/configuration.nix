@@ -223,7 +223,7 @@ in
                                 nvim-treesitter
                                 nvim-ts-rainbow
                                 nvim-autopairs
-                                indent-blankline-nvim
+                                pkgs.indent-blankline-nvim
                                 nvim-tree-lua
                                 nvim-web-devicons
                                 gitsigns-nvim

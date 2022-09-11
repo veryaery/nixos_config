@@ -18,6 +18,7 @@ in
         environment.systemPackages = with pkgs; [
             discord
             audacity
+            gimp
         ];
 
         services.autorandr.enable = true;

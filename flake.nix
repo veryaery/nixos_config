@@ -53,6 +53,7 @@
                 "bright"
                 "discord"
                 "pastel"
+                "indent-blankline-nvim"
             ])
         ];
 
