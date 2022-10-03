@@ -1,6 +1,6 @@
 #!{{ pkgs.fish }}/bin/fish
 
-set -l roles "{{ roles }}"
+set -l roles (string split " " "{{ roles }}")
 
 set -l autorandr "{{ pkgs.autorandr }}"
 set -l rofi "{{ pkgs.rofi }}"

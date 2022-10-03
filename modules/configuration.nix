@@ -65,6 +65,9 @@ in
             alsa.enable = true;
             pulse.enable = true;
         };
+
+        # Required by vscode.
+        gnome.gnome-keyring.enable = true;
     };
 
     environment.systemPackages = with pkgs; [
@@ -73,7 +76,6 @@ in
         gnumake
         binutils
         tree
-        bright
         firefox
         feh
         alacritty
@@ -81,17 +83,42 @@ in
         pavucontrol
         unzip
         flameshot
-        vscode
         imagemagick
         obs-studio
         obsidian
         postgresql
         nodejs
-        buf # TODO: Should be removed and moved to a Nix shell.
+        rustc
+        cargo
         bloomrpc
         bitwarden
         pulseaudio
+        qpwgraph
         spotify
+        yt-dlp
+        mpv
+        (vscode-with-extensions.override {
+            vscodeExtensions = with pkgs.vscode-extensions; [
+                vscodevim.vim
+                ms-vsliveshare.vsliveshare
+
+                (pkgs.vscode-utils.extensionFromVscodeMarketplace {
+                    name = "glassit";
+                    publisher = "s-nlf-fh";
+                    version = "0.2.4";
+                    sha256 = "sha256-YmohKiypAl9sbnmg3JKtvcGnyNnmHvLKK1ifl4SmyQY=";
+                })
+                (pkgs.vscode-utils.extensionFromVscodeMarketplace {
+                    name = "tokyo-night";
+                    publisher = "enkia";
+                    version = "0.9.4";
+                    sha256 = "sha256-pKokB6446SR6LsTHyJtQ+FEA07A0W9UAI+byqtGeMGw=";
+                })
+                
+                # Rust
+                matklad.rust-analyzer
+            ];
+        })
         (nvim { bin = with pkgs; [
             # Clipboard dependencies.
             xclip
@@ -198,20 +225,6 @@ in
 
             ".config/fish/config.fish".subs =
                 { primary.str = fishTerminalColor theme.primaryTerminalColor; };
-
-            # ".xmonad/lib/Theme.hs".subs =
-            #     theme //
-            #     { inherit font; };
-
-            # ".config/xmobar/.xmobarrc" = {
-            #     variant =
-            #         if (elem "laptop" hostOptions.roles)
-            #         then "laptop"
-            #         else "default";
-            #     subs =
-            #         theme //
-            #         { inherit font; };
-            # };
 
             ".config/nvim/init.lua".subs =
                 let

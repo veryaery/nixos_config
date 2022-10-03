@@ -32,11 +32,8 @@
         
         drvDirPath = ./derivations;
         overlays = [
-            # (overlayFromImports drvDirPath [
-            # ])
             (overlayFromImports drvDirPath [
                 "opentype-feature-freezer"
-                # "xmobar"
                 "substitution-json"
             ])
             (overlayFromImports drvDirPath [
@@ -49,7 +46,6 @@
                 "nvim"
                 "neovim-pack"
                 "fira-code-with-features"
-                # "xmonad"
                 "bright"
                 "discord"
                 "pastel"

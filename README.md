@@ -1,15 +1,15 @@
-# NixOS configuration & dotfiles
+# NixOS configuration & dotfiles ❄️❄️❄️
 
 ## Specs
 
-* XMonad + xmobar
+* [herbstluftwm](https://herbstluftwm.org/) + [polybar](https://github.com/polybar/polybar)
 * [picom (jonaburg/picom)](https://github.com/jonaburg/picom)
 * neovim – Configured with Lua
 * Theming via Nix + shell scripts
 
 ## Screenshots
 
-![Gruvbox theme](.githubassets/gruvbox.png)
+![Tokyo Night theme](.githubassets/tokyonight.png)
 ![PaperColor theme](.githubassets/papercolor.png)
 
 # Installing

@@ -15,12 +15,13 @@ let
 in
 {
     config = mkIf (elem "desktop" hostOptions.roles) {
+        services.autorandr.enable = true;
+
         environment.systemPackages = with pkgs; [
             discord
             audacity
             gimp
+            noisetorch
         ];
-
-        services.autorandr.enable = true;
     };
 }

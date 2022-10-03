@@ -1,4 +1,5 @@
 {
+    pkgs,
     hostOptions,
     ...
 }@args:
@@ -29,5 +30,9 @@ in
 
             touchpad.naturalScrolling = true;
         };
+
+        environment.systemPackages = with pkgs; [
+            bright
+        ];
     };
 }
