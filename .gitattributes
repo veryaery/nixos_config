@@ -1,1 +1,2 @@
-derivations/pastel/** linguist-vendored
+derivations/pastel/**/* linguist-vendored
+dotfiles/**/* linguist-vendored
