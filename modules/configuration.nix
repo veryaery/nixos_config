@@ -179,6 +179,7 @@ in
 
             redForeground.cmd = foregroundCmd theme.terminalColors.red;
             greenForeground.cmd = foregroundCmd theme.terminalColors.green;
+            blueForeground.cmd = foregroundCmd theme.terminalColors.blue;
             magentaForeground.cmd = foregroundCmd theme.terminalColors.magenta;
         in
         {
@@ -277,16 +278,24 @@ in
                     transparentBackground.cmd = "echo ${escapeShellArg theme.background} | ${rgba 0.5}/bin/rgba";
                 };
 
-            ".config/polybar/config.ini".subs = 
-                themeSubMap //
-                {
-                    inherit
-                        redForeground
-                        greenForeground
-                        magentaForeground;
+            ".config/polybar/config.ini" = {
+                variant =
+                    if (elem "laptop" hostOptions.roles)
+                    then "laptop"
+                    else "default";
 
-                    font.str = font;
-                };
+                subs = 
+                    themeSubMap //
+                    {
+                        inherit
+                            redForeground
+                            greenForeground
+                            blueForeground
+                            magentaForeground;
+
+                        font.str = font;
+                    };
+            };
 
             ".config/polybar/scripts/tags/event_loop.sh".subs =
                 { runtimeShell.str = toString pkgs.runtimeShell; };
