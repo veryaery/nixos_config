@@ -22,6 +22,8 @@ in
             audacity
             gimp
             noisetorch
+            godot
+            v4l-utils
         ];
     };
 }
