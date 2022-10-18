@@ -97,6 +97,11 @@ in
         spotify
         yt-dlp
         mpv
+        htop
+        rsync
+        zip
+        qbittorrent
+        vlc
         (vscode-with-extensions.override {
             vscodeExtensions = with pkgs.vscode-extensions; [
                 vscodevim.vim
