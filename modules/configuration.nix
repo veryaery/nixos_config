@@ -102,6 +102,7 @@ in
         zip
         qbittorrent
         vlc
+        vivaldi
         (vscode-with-extensions.override {
             vscodeExtensions = with pkgs.vscode-extensions; [
                 vscodevim.vim
