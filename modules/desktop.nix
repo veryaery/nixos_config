@@ -24,6 +24,9 @@ in
             noisetorch
             godot
             v4l-utils
+            qbittorrent
+            vivaldi
+            vlc
         ];
     };
 }
