@@ -2,14 +2,8 @@ std:
 
 let
     inherit (builtins)
-        baseNameOf
-        concatStringsSep
-        map
         mapAttrs
         readDir;
-
-    inherit (std.strings)
-        splitString;
 
     inherit (std.attrsets)
         mapAttrs'
@@ -17,22 +11,16 @@ let
         nameValuePair;
 
     inherit (std.lists)
-        foldr
-        init;
-
-    baseNameOfExtentionless = s: concatStringsSep "." (init (splitString "." (baseNameOf s)));
+        foldr;
 
     cartesianEachHost = hostsPath: f:
         let
             hosts =
                 mapAttrs'
                 (file: _:
-                    let
-                        hostName = baseNameOfExtentionless file;
-                    in
-                        nameValuePair
-                        hostName
-                        (import (hostsPath + "/${file}"))
+	            nameValuePair
+                    file
+                    (import (hostsPath + "/${file}"))
                 )
                 (readDir hostsPath);
             hostAttrs =

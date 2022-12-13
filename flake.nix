@@ -18,25 +18,20 @@
     {
         nixosConfigurations = cartesianEachHost ./hosts ({ hostName, host, ... }:
             eachTheme ./themes {} ({ themeName, theme, module, ... }:
-                let
-                    hostOptions = host.options;
-                    imports = [
-                        host.module
-                    ];
-                in
                 std.nixosSystem {
                     modules = [
                         module
                         {
-                            nixpkgs = {
-                                localSystem = { inherit (hostOptions) system; };
-                            };
+                            imports = [
+                                host.module
+                            ];
 
                             _module.args = {
                                 inherit
-                                    hostName
-                                    themeName theme
-                                    hostOptions;
+                                    hostName host
+                                    themeName theme;
+
+                                flakeRoot = ./.;
                             };
                         }
                     ];
