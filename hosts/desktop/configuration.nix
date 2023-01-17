@@ -4,10 +4,12 @@
 
 { config, pkgs, ... }:
 
+let flakeRoot = ../..; in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      (flakeRoot + /modules/configuration.nix)
     ];
 
   # Bootloader.

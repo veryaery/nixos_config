@@ -1,13 +1,30 @@
-{} @ args:
+{ pkgs, config, ... } @ args:
 
 {
+    imports = [
+        ./dotfiles.nix
+    ];
+
     nixpkgs.config.allowUnfree = true;
 
+    security.sudo.enable = false;
+    security.doas.enable = true;
+    security.doas.wheelNeedsPassword = false;
+
     environment.systemPackages = with pkgs; [
+        tree
+        htop
         git
         vim
         nodejs
+        firefox
+        pavucontrol
+        waybar
+        kitty
+        libreoffice-qt
+        jq
     ];
+    environment.shells = [ pkgs.fish ];
 
     networking.networkmanager.enable = true;
 
@@ -27,31 +44,39 @@
         LC_TIME = "sv_SE.UTF-8";
     };
   
-    services.xserver.enable = true;
-  
-    services.xserver.displayManager.lightdm.enable = true;
-    services.xserver.desktopManager.cinnamon.enable = true;
-    # services.xserver.windowManager._herbstluftwm.enable = true;
-  
-    services.xserver = {
-        layout = "se";
-        xkbVariant = "";
-        xkbOptions = "caps:escape";
+    services.greetd = {
+        enable = true;
+        vt = 7;
+        settings.default_session = {
+	    command =
+	        let sessions = config.services.xserver.displayManager.sessionData.desktops;
+	        in "${pkgs.greetd.tuigreet}/bin/tuigreet --sessions ${sessions}/share/wayland-sessions --asterisks";
+	    user = "greeter";
+        };
     };
-  
+
+    xdg.portal = {
+        enable = true;
+        wlr.enable = true;
+        extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    };
+
+    programs.sway = {
+        enable = true;
+        wrapperFeatures.gtk = true;
+    };
+    
     console.keyMap = "sv-latin1";
-  
-    sound.enable = true;
-    hardware.pulseaudio.enable = false;
+ 
+    sound.enable = true; 
     security.rtkit.enable = true;
     services.pipewire = {
         enable = true;
         alsa.enable = true;
-        alsa.support32Bit = true;
         pulse.enable = true;
-        media-session.enable = true;
     };
-  
+ 
+    users.defaultUserShell = pkgs.fish; 
     users.users.aery = {
         isNormalUser = true;
         createHome = true;
@@ -59,11 +84,12 @@
         description = "aery";
         extraGroups = [ "networkmanager" "wheel" ];
         packages = with pkgs; [
-            firefox
             bitwarden
-            pavucontrol
+            timg
         ];
     };
   
     programs.ssh.startAgent = true;
+
+    programs.fish.enable = true;
 }
