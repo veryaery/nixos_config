@@ -22,11 +22,15 @@ set $menu dmenu_path | dmenu | xargs swaymsg exec --
 set $use ~/.config/sway/use.fish
 
 ### Gaps
-gaps inner 8
-smart_gaps on
+    gaps inner 8
+    smart_gaps on
 
 ### Border
-smart_borders on
+    # Disable title bars.
+    default_border pixel 2
+
+    smart_borders on
+
 
 ### Output configuration
 #

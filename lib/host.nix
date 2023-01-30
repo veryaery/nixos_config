@@ -13,7 +13,7 @@ let
     inherit (std.lists)
         foldr;
 
-    cartesianEachHost = hostsPath: f:
+    eachHost = hostsPath: f:
         let
             hosts =
                 mapAttrs'
@@ -23,24 +23,30 @@ let
                     (import (hostsPath + "/${file}"))
                 )
                 (readDir hostsPath);
-            hostAttrs =
-                mapAttrs
-                (hostName: host: f { inherit hosts hostName host; })
-                hosts;
+        in
+            mapAttrs
+            (hostName: host: f { inherit hosts hostName host; })
+            hosts;
+
+    cartesianEachHost = hostsPath: f:
+        let
+            hostAttrs = eachHost hostsPath f;
         in
             foldr
             (x: z: z // x)
             {}
             (
                 mapAttrsToList
-                (hostName: attrs:
+                (hostName:
                     mapAttrs'
                     (name: nameValuePair "${hostName}.${name}")
-                    attrs
                 )
                 hostAttrs
             );
+
 in
 {
-    inherit cartesianEachHost;
+    inherit
+        eachHost
+	cartesianEachHost;
 }

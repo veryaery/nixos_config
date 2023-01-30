@@ -20,7 +20,7 @@ set -l focus (printf %s\n $outs | jq -r ".[] | select(.focused == true) | .name,
 set -l focus_out $focus[1]
 set -l focus_w $focus[2]
 
-[ -n "$prev_out" ]; and swaymsg -- "workspace \"$focus_w\"; move workspace output \"$prev_out\""
 swaymsg -- workspace $name_args
 swaymsg -- move workspace output \"$focus_out\"
+[ -n "$prev_out" ]; and swaymsg -- "workspace \"$focus_w\"; move workspace output \"$prev_out\""
 swaymsg -- workspace $name_args

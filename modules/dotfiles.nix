@@ -1,11 +1,20 @@
-{ flakeRoot, ... } @ args:
+{
+    hostName, host,
+    themeName, theme,
+    flakeRoot,
+    pkgs,
+    ...
+} @ args:
 
 {
     theme.enable = true;
     theme.src = flakeRoot + /dotfiles;
-    theme.files = _: {
-	".config/sway/config" = {};
-        ".config/fish/config.fish" = {};
+    theme.files = import (flakeRoot + /files.nix) {
+        inherit
+            hostName host
+            themeName theme
+            flakeRoot
+            pkgs;
     };
     theme.postInstallScripts = {};
 }

@@ -21,8 +21,13 @@
         pavucontrol
         waybar
         kitty
+        timg
         libreoffice-qt
         jq
+        flameshot
+        gimp
+        wl-clipboard
+        emacs
     ];
     environment.shells = [ pkgs.fish ];
 
@@ -75,6 +80,10 @@
         alsa.enable = true;
         pulse.enable = true;
     };
+
+    services.gnome.gnome-keyring.enable = true;
+
+    services.emacs.enable = true;
  
     users.defaultUserShell = pkgs.fish; 
     users.users.aery = {
@@ -85,11 +94,13 @@
         extraGroups = [ "networkmanager" "wheel" ];
         packages = with pkgs; [
             bitwarden
-            timg
         ];
     };
   
     programs.ssh.startAgent = true;
 
     programs.fish.enable = true;
+
+    # Enable nix-command and flakes.
+    nix.settings.experimental-features = [ "nix-command" "flakes" ];
 }
