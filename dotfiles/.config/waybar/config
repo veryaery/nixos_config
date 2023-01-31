@@ -1,0 +1,13 @@
+{
+    "height": 32,
+    "margin": 4,
+
+    "modules-left": [ "wlr/taskbar" ],
+
+    "wlr/taskbar": {
+        "all-outputs": true,
+        "format": "{icon}",
+        "tooltip-format": "{title}",
+        "on-click": "activate"
+    }
+}

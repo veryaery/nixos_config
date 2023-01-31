@@ -1,0 +1,10 @@
+border.width: 2
+padding.height: 6
+
+window.active.title.bg.color: {{ primary }}
+window.active.label.text.color: {{ primary_foreground }}
+window.active.border.color: {{ primary_1 }}
+
+window.inactive.title.bg.color: {{ foreground }}
+window.inactive.label.text.color: {{ background }}
+window.inactive.border.color: {{ foreground_1 }}

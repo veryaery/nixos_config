@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<labwc_config>
+    <snapping>
+        <range>16</range>
+    </snapping>
+
+    <keyboard>
+        <keybind key="W-Return">
+            <action name="Execute" command="kitty" />
+        </keybind>
+    </keyboard>
+
+    <theme>
+        <font name="sans" size="12" />
+    </theme>
+</labwc_config>

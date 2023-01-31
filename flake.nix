@@ -22,6 +22,14 @@
 
         inherit (themenix.lib.helper)
             eachTheme;
+
+        overlays = [
+            (self: super: {
+                labwc = import ./derivations/labwc super;
+                pastel = import ./derivations/pastel super;
+                fundle = import ./derivations/fundle super;
+            })
+        ];
     in
     {
         nixosConfigurations = cartesianEachHost ./hosts ({ hostName, host, ... }:
@@ -33,6 +41,8 @@
                             imports = [
                                 host.module
                             ];
+
+                            nixpkgs.overlays = overlays;
 
                             _module.args = {
                                 inherit
@@ -50,13 +60,17 @@
     //
     flake-utils.lib.eachDefaultSystem (system:
         let
-            pkgs = import nixpkgs { localSystem = { inherit system; }; };
+            pkgs = import nixpkgs {
+                inherit overlays;
+
+                localSystem = { inherit system; };
+            };
         in
         {
             apps = eachHost ./hosts ({ hostName, host, ... }:
                 eachTheme ./themes {} ({ themes, themeName, theme, ... }:
                     let
-                        files = import ./files.nix {
+                        dotfilesAttrs = import ./dotfiles {
                             inherit
                                 hostName host
                                 themeName theme
@@ -65,7 +79,11 @@
                             flakeRoot = ./.;
                         };
                         themenixPkg = themenix.packages.${system}.default.override {
-                            inherit themes files; src = ./dotfiles;
+                            inherit themes;
+                            inherit (dotfilesAttrs)
+                                files postInstallScripts;
+
+                            src = ./dotfiles;
                         };
                         installthemeWrapper = pkgs.writeShellScript "installtheme-wrapper" ''
                             exec ${themenixPkg}/bin/installtheme ${escapeShellArg themeName}

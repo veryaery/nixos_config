@@ -2,10 +2,17 @@
 
 {
     imports = [
-        ./dotfiles.nix
+        ./theme.nix
+        ./labwc.nix
     ];
 
     nixpkgs.config.allowUnfree = true;
+
+    services.openssh = {
+        enable = true;
+        ports = [ 32168 ];
+        openFirewall = true;
+    };
 
     security.sudo.enable = false;
     security.doas.enable = true;
@@ -25,9 +32,11 @@
         libreoffice-qt
         jq
         flameshot
+        grim # flameshot dependency.
         gimp
         wl-clipboard
         emacs
+        exa
     ];
     environment.shells = [ pkgs.fish ];
 
@@ -70,6 +79,8 @@
         enable = true;
         wrapperFeatures.gtk = true;
     };
+
+    programs._labwc.enable = true;
     
     console.keyMap = "sv-latin1";
  
