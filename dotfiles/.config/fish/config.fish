@@ -4,8 +4,9 @@ fundle plugin "laughedelic/pisces"
 fundle init
 
 alias .. "cd .."
-alias ls "exa -alT -L2 -I ".git" --no-time --git --group-directories-first"
-alias lst "exa -alT -I ".git" --no-time --git --group-directories-first"
+alias lst "exa -alT -I ".git" --icons --no-time --git --group-directories-first"
+alias ls "lst -L2"
+alias ls1 "lst -L1"
 
 fish_vi_key_bindings
 

@@ -39,6 +39,19 @@
         exa
     ];
     environment.shells = [ pkgs.fish ];
+    fonts.fonts = with pkgs; [
+        font-awesome
+        (fira-code-with-features.override { features = [
+            "cv01" # Single story "a".
+            "cv02" # Single story "g".
+            "cv06" # "i".
+            "cv11" # "0".
+            "ss05" # Standard "@".
+            "ss03" # Standard "&".
+            "ss02" # "<=" ">=" no slant.
+            "ss10" # "Fl" "Tl" "fi" "fj" "fl" "ft" ligatures.
+        ]; })
+    ];
 
     networking.networkmanager.enable = true;
 

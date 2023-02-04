@@ -25,9 +25,13 @@
 
         overlays = [
             (self: super: {
+                fontfreeze-cli = import ./derivations/fontfreeze-cli super;
+            })
+            (self: super: {
                 labwc = import ./derivations/labwc super;
                 pastel = import ./derivations/pastel super;
                 fundle = import ./derivations/fundle super;
+                fira-code-with-features = import ./derivations/fira-code-with-features super;
             })
         ];
     in

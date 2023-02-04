@@ -1,5 +1,5 @@
 border.width: 2
-padding.height: 6
+padding.height: 7
 
 window.active.title.bg.color: {{ primary }}
 window.active.label.text.color: {{ primary_foreground }}
