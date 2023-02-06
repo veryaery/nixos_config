@@ -3,14 +3,19 @@ set -U primary "{{ primary }}"
 # Plugin management.
 source {{ pkgs.fundle }}/functions/fundle.fish
 
+fundle plugin "jethrokuan/z"
 fundle plugin "laughedelic/pisces"
 fundle plugin "acomagu/fish-async-prompt"
-fundle init
+fundle init 1>/dev/null
+fundle install 1>/dev/null
 
 alias .. "cd .."
 alias lst "exa -alT -I ".git" --icons --no-time --git --group-directories-first"
 alias ls "lst -L2"
 alias ls1 "lst -L1"
+
+# Typos.
+alias claer "clear"
 
 fish_vi_key_bindings
 
@@ -150,13 +155,13 @@ function hostname_prompt
 end
 
 function pwd_prompt
-    prompt_pwd -d0
+    printf "%s " (prompt_pwd -d0)
 end
 
 function branch_prompt
     set -l branch (git symbolic-ref --short HEAD 2>/dev/null)
     if [ -n "$branch" ]
-        printf "  %s" "$branch"
+        printf " %s" "$branch"
     end
 end
 
