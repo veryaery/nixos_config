@@ -25,4 +25,8 @@ rec {
         brightCyan = "#73daca";
         brightMagenta = "#bb9af7";
     };
+
+    shell = {
+        primary = "blue";
+    };
 }

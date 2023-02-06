@@ -9,11 +9,15 @@ let
     std = pkgs.lib;
     lib = import (flakeRoot + /lib) std;
 
+    inherit (std.attrsets)
+        mapAttrsRecursive;
+
     inherit (std.strings)
         escapeShellArg;
 
     inherit (lib.theme)
-        strAttrs;
+        strAttrs
+        fishColor;
 
     pastel = "${pkgs.pastel}/bin/pastel";
     fmt = "${pastel} format hex";
@@ -24,15 +28,16 @@ let
     themeSubs = (strAttrs theme) // {
         primary_foreground.cmd = textColor theme.primary;
     };
+    fishColors = mapAttrsRecursive (_: color: { str = fishColor color; }) theme.shell;
 in
 
 {
     files = _: {
         ".config/sway/config" = {};
-        ".config/fish/config.fish".subs = {
+        ".config/fish/fish_plugins" = {};
+        ".config/fish/config.fish".subs = fishColors // {
             pkgs.fundle.str = toString pkgs.fundle;
         };
-        ".config/fish/fish_plugins" = {};
         ".config/waybar/config" = {};
         ".config/waybar/style.css".subs = themeSubs;
         ".config/labwc/rc.xml" = {};
