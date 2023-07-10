@@ -48,6 +48,8 @@ in
             primary_1.cmd = darken 0.15 theme.primary;
         };
         ".config/kitty/kitty.conf".subs = themeSubs;
+        ".config/emacs/init.el" = {};
+        ".config/emacs/early-init.el" = {};
     };
 
     postInstallScripts = {

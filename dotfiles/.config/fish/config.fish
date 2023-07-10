@@ -191,14 +191,13 @@ end
 
 function pipestatus_prompt
     if contains $_pipestatus[-1] 0 141
-        printf " %s" (fmt_pipestatus $_pipestatus[-1])
+        printf " %s " (fmt_pipestatus $_pipestatus[-1])
     else
         set -l lst
         for __pipestatus in $_pipestatus
             set -a lst (fmt_pipestatus $__pipestatus)
         end
-        printf " "
-        string join "|" $lst
+        printf " %s " (string join "|" $lst)
     end
 end
 

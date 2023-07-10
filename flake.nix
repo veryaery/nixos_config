@@ -1,14 +1,20 @@
 {
     inputs = {
         nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+        flake-utils.url = "github:numtide/flake-utils";
         themenix = {
             url = "github:veryaery/themenix";
             inputs.nixpkgs.follows = "nixpkgs";
+            inputs.flake-utils.follows = "flake-utils";
         };
-        flake-utils.url = "github:numtide/flake-utils";
+        neovim = {
+            url = "github:neovim/neovim?dir=contrib";
+            inputs.nixpkgs.follows = "nixpkgs";
+            inputs.flake-utils.follows = "flake-utils";
+        };
     };
 
-    outputs = { nixpkgs, themenix, flake-utils, ... } @ inputs:
+    outputs = { nixpkgs, flake-utils, themenix, neovim, ... } @ inputs:
     let
         std = nixpkgs.lib;
         lib = import ./lib std;
@@ -32,6 +38,8 @@
                 pastel = import ./derivations/pastel super;
                 fundle = import ./derivations/fundle super;
                 fira-code-with-features = import ./derivations/fira-code-with-features super;
+                zrythm = import ./derivations/zrythm super;
+                cardinal = import ./derivations/cardinal super;
             })
         ];
     in
@@ -41,6 +49,11 @@
                 std.nixosSystem {
                     modules = [
                         module
+                        ({ config, ... }: {
+                            _module.args.flakePkgs = {
+                                neovim = neovim.packages.${config.nixpkgs.hostSystem}.default;
+                            }; 
+                        })
                         {
                             imports = [
                                 host.module

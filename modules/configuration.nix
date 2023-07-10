@@ -37,6 +37,12 @@
         wl-clipboard
         emacs
         exa
+        (zrythm.override {
+            clapPath = [ "${cardinal}/lib/clap" ];
+            lv2Path = [ "${cardinal}/lib/lv2" ];
+            vst3Path = [ "${cardinal}/lib/vst3" ];
+        })
+        cardinal
     ];
     environment.shells = [ pkgs.fish ];
     fonts.fonts = with pkgs; [
@@ -103,6 +109,7 @@
         enable = true;
         alsa.enable = true;
         pulse.enable = true;
+        jack.enable = true;
     };
 
     services.gnome.gnome-keyring.enable = true;
